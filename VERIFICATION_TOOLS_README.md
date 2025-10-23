@@ -62,6 +62,15 @@ python3 verify_any_contest.py --contest "Contest Name" --county "County"
 
 # List all contests
 python3 verify_any_contest.py --list-contests
+
+# List all counties with audit data
+python3 verify_any_contest.py --list-counties
+
+# List contests audited in a specific county
+python3 verify_any_contest.py --list-contests-for-county Bent
+
+# List counties that audited a specific contest
+python3 verify_any_contest.py --list-counties-for-contest "Amendment 79 (CONSTITUTIONAL)"
 ```
 
 **Note:** Currently works best for contests where `ballot_card_count` = `contest_ballot_card_count` (i.e., the contest appears on all ballot cards in the county).
@@ -87,6 +96,18 @@ for i in 1 to sample_size:
 2. **Unpredictable:** Cannot predict without computing SHA-256
 3. **Unbiased:** Uniform distribution over domain (with negligible bias)
 4. **Verifiable:** Anyone can recompute and verify
+
+### Critical Assumption:
+**The ballot manifest must be provided BEFORE the random seed is generated.**
+
+This is essential for audit integrity. If the seed were generated first, someone could potentially manipulate the manifest to favor specific ballot selections. The proper sequence is:
+
+1. Counties upload ballot manifests (locked in)
+2. Random seed is generated publicly
+3. Ballots are selected using seed + manifests
+4. Audit proceeds
+
+This verification assumes this proper sequence was followed.
 
 ## Data Sources
 

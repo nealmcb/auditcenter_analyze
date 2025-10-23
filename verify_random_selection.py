@@ -65,7 +65,7 @@ def load_ballot_manifest(manifest_file: str) -> List[Tuple[str, str, str, int]]:
     """
     ballots = []
     
-    with open(manifest_file, 'r') as f:
+    with open(manifest_file, 'r', encoding='utf-8-sig') as f:  # utf-8-sig handles BOM
         reader = csv.DictReader(f)
         for row in reader:
             county = row['County']
@@ -192,6 +192,10 @@ def main():
         print()
         print("Note: This contest required 32 ballots across 2 rounds to achieve the risk limit.")
         print("      Initial estimate was 31, but one additional ballot was needed.")
+        print()
+        print("IMPORTANT ASSUMPTION:")
+        print("      This verification assumes the ballot manifest was provided BEFORE the")
+        print("      random seed was generated, which is critical for audit integrity.")
         return True
     else:
         print("✗✗✗ VERIFICATION FAILED ✗✗✗")

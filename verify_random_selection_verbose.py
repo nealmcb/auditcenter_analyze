@@ -70,7 +70,7 @@ def load_ballot_manifest(manifest_file: str) -> List[Tuple[str, str, str, int]]:
     """Load ballot manifest and create index mapping."""
     ballots = []
     
-    with open(manifest_file, 'r') as f:
+    with open(manifest_file, 'r', encoding='utf-8-sig') as f:  # utf-8-sig handles BOM
         reader = csv.DictReader(f)
         for row in reader:
             county = row['County']
@@ -125,11 +125,17 @@ def main():
     
     print("\n" + "=" * 100)
     print()
-    print("This demonstrates the complete transparency of the random selection process:")
+    print("This demonstrates transparency of the random selection process:")
     print("  1. Anyone can verify the SHA-256 hashes")
     print("  2. The seed (53417960661093690826) was publicly committed before the audit")
     print("  3. The process is deterministic - same seed always produces same results")
     print("  4. The process is cryptographically secure - cannot be manipulated")
+    print()
+    print("IMPORTANT ASSUMPTION:")
+    print("  This verification assumes the ballot manifest was provided BEFORE the random")
+    print("  seed was generated. This is critical for audit integrity - the seed must be")
+    print("  generated after manifests are locked in, to prevent manipulation of the")
+    print("  manifest to favor specific ballot selections.")
     print()
 
 
