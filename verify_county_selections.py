@@ -244,24 +244,18 @@ def verify_county(county: str, round_num: int = 3):
             all_selections |= selected_ballots
             print(f"  ✓ Generated {len(selected_ballots)} selections")
         else:
-            # Multi-county contest
+            # Multi-county contest - build combined manifest
             multi_county_contests.append(contest)
-            
-            # Check if contest appears on all ballot cards or needs CVR mapping
-            if contest['ballot_card_count'] != contest['contest_ballot_card_count']:
-                print(f"Skipping {contest['name'][:50]}...")
-                print(f"  Multi-county contest with CVR mapping required")
-                print(f"    ballot_card_count: {contest['ballot_card_count']:,}")
-                print(f"    contest_ballot_card_count: {contest['contest_ballot_card_count']:,}")
-                print(f"  Random selection uses {contest['contest_ballot_card_count']:,} cards,")
-                print(f"  but we don't know WHICH cards have this contest without CVR data.")
-                continue
             
             print(f"Generating {contest['audited_sample_count']} selections for: {contest['name'][:50]}...")
             print(f"  Multi-county contest spanning {len(counties_with_contest)} counties")
             
-            # Build combined manifest in county ID order
+            # Build combined manifest in county ID order (alphabetically)
+            # Track position ranges for each county
             combined_manifest = []
+            county_ranges = {}
+            current_pos = 0
+            
             for cid in sorted(counties_with_contest):
                 county_name = COUNTY_IDS[cid]
                 # Remove spaces from county name for file path
@@ -269,21 +263,37 @@ def verify_county(county: str, round_num: int = 3):
                 county_manifest_file = f"{BASE_PATH}/{county_file_name}BallotManifest.csv"
                 try:
                     county_ballots = load_ballot_manifest(county_manifest_file)
+                    start = current_pos + 1
+                    end = current_pos + len(county_ballots)
+                    county_ranges[cid] = (start, end)
                     combined_manifest.extend(county_ballots)
+                    current_pos = end
                 except FileNotFoundError:
                     print(f"  ✗ ERROR: Missing manifest for {county_name}")
                     return False
             
             print(f"  Combined manifest: {len(combined_manifest):,} cards from {len(counties_with_contest)} counties")
             
-            # Generate selections from combined manifest
-            selections = generate_random_numbers(SEED, contest['audited_sample_count'], len(combined_manifest))
-            selected_ballots = {combined_manifest[s-1] for s in selections}
+            # Find this county's range in the combined manifest
+            this_county_id = COUNTY_NAME_TO_ID[county]
+            if this_county_id in county_ranges:
+                range_start, range_end = county_ranges[this_county_id]
+                print(f"  {county} range: [{range_start:,} to {range_end:,}]")
+            else:
+                range_start, range_end = -1, -1
             
-            # Filter to just the ballots from THIS county
-            selected_in_this_county = {b for b in selected_ballots if b in set(manifest)}
-            all_selections |= selected_in_this_county
-            print(f"  ✓ Generated {len(selected_ballots)} total selections, {len(selected_in_this_county)} in {county} County")
+            # Domain is the full combined manifest
+            domain_size = len(combined_manifest)
+            
+            # Generate selections from combined manifest
+            selections = generate_random_numbers(SEED, contest['audited_sample_count'], domain_size)
+            
+            # Filter to just selections in THIS county's range
+            selections_in_this_county = [s for s in selections if range_start <= s <= range_end]
+            selected_ballots = {combined_manifest[s-1] for s in selections_in_this_county}
+            
+            all_selections |= selected_ballots
+            print(f"  ✓ Generated {len(selections)} total selections, {len(selections_in_this_county)} in {county} County")
     
     print()
     
