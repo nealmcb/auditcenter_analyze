@@ -144,7 +144,20 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
             total_observed += observed_count
     
     if not county_data:
-        return {'error': 'No examined ballots in any county (skip)'}
+        # Check if contest appears in contestsByCounty but has no examined ballots
+        counties_in_contest = [c for c in counties if c in manifest_counts and manifest_counts[c] > 0]
+        if counties_in_contest:
+            return {
+                'error': f'Contest appears in {len(counties_in_contest)} county(ies) but has zero examined ballots',
+                'details': f'Counties: {", ".join(counties_in_contest)}',
+                'reason': 'Contest does not appear on any sampled ballot'
+            }
+        else:
+            return {
+                'error': 'Contest not found in any county manifest',
+                'details': 'No counties have this contest in their ballot manifests',
+                'reason': 'Contest may be misnamed or not applicable to any county'
+            }
     
     if show_work:
         print("Step 1: Observed ballots with contest")
@@ -296,9 +309,14 @@ def main():
                                          show_work=args.show_work)
         
         if 'error' in result:
-            errors[result['error']] += 1
+            error_key = result['error']
+            errors[error_key] += 1
             if args.show_work:
                 print(f"ERROR for {contest_name}: {result['error']}")
+                if 'details' in result:
+                    print(f"  Details: {result['details']}")
+                if 'reason' in result:
+                    print(f"  Reason: {result['reason']}")
             continue
         
         result['audit_reason'] = audit_reason
@@ -337,6 +355,19 @@ def main():
         print(f"\nErrors encountered:")
         for error, count in errors.items():
             print(f"  {error}: {count} contests")
+        
+        # Show detailed breakdown for common errors
+        if any("zero examined ballots" in error for error in errors.keys()):
+            print(f"\nDetailed breakdown:")
+            print(f"  Contests with zero examined ballots:")
+            print(f"    - These contests appear in county manifests but were not found on any sampled ballot")
+            print(f"    - This can happen if the contest name doesn't match exactly between files")
+            print(f"    - Or if the contest was on ballots that weren't selected for audit")
+        
+        if any("not found in any county manifest" in error for error in errors.keys()):
+            print(f"  Contests not in manifests:")
+            print(f"    - These contests are in contest.csv but not found in any county ballot manifest")
+            print(f"    - May be misnamed or not applicable to any county in this election")
     
     return 0
 
