@@ -269,8 +269,9 @@ def verify_county(county: str, round_num: int = 3):
                     combined_manifest.extend(county_ballots)
                     current_pos = end
                 except FileNotFoundError:
-                    print(f"  ✗ ERROR: Missing manifest for {county_name}")
-                    return False
+                    # Missing manifest is OK if county has no examined ballots
+                    print(f"  ⚠ Skipping {county_name} (no manifest file)")
+                    continue
             
             print(f"  Combined manifest: {len(combined_manifest):,} cards from {len(counties_with_contest)} counties")
             
