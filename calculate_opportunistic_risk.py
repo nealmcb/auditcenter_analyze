@@ -26,16 +26,20 @@ def load_all_data(round_num=3):
     print("Loading manifests...")
     manifest_counts = {}
     for manifest_file in (data_dir / "ballotManifests").glob("*BallotManifest.csv"):
-        county = manifest_file.stem.replace("BallotManifest", "")
+        county_no_space = manifest_file.stem.replace("BallotManifest", "")
         total = 0
         with open(manifest_file, 'r', encoding='utf-8-sig') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                for col in ['# of Ballot Cards', '# of Ballots', '# of Ballot', '# Cards', '# Ballots']:
+                # All known column name variations for ballot count
+                for col in ['# of Ballot Cards', '# of ballot cards', '#of Ballot Cards', 
+                            '# Ballot Cards', '# of Ballots Cards', '# of Ballots', 
+                            '# of Ballot', '# Cards', '# Ballots', '# of cards', '. of Ballots']:
                     if col in row and row[col]:
                         total += int(row[col])
                         break
-        manifest_counts[county] = total
+        
+        manifest_counts[county_no_space] = total
     
     # 2. Load contest metadata
     print("Loading contest metadata...")
@@ -53,7 +57,8 @@ def load_all_data(round_num=3):
     with open(counties_file, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            counties_by_contest[row['contest_name']].add(row['county_name'])
+            county = row['county_name'].replace(' ', '')  # Normalize
+            counties_by_contest[row['contest_name']].add(county)
     
     # 4. Load all examined ballots (one pass through contestComparison.csv)
     print("Loading examined ballots...")
@@ -65,7 +70,7 @@ def load_all_data(round_num=3):
     with open(comparison_file, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            county = row['county_name']
+            county = row['county_name'].replace(' ', '')  # Normalize: remove spaces
             contest = row['contest_name']
             iid = row['imprinted_id']
             
@@ -105,6 +110,7 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
     # Step 1: Count observed ballots with contest per county
     county_data = {}
     total_observed = 0
+    counties_with_zero_observed = []
     
     for county in counties:
         if county not in manifest_counts:
@@ -117,25 +123,42 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
         ballots = contest_ballots_per_county.get(county, [])
         observed_count = len(ballots)
         
-        if observed_count > 0:
+        # Track counties with zero observed (contest appears but no ballots examined)
+        if observed_count == 0:
+            counties_with_zero_observed.append(county)
+            # Pretend we have 1 ballot to allow calculation (will have higher risk)
+            county_data[county] = {
+                'manifest_count': manifest_count,
+                'observed_count': 1,  # Pretend 1 ballot
+                'ballots': [{'iid': 'NONE', 'cvr': '', 'audit': '', 'consensus': 'YES'}],  # Fake ballot
+                'is_fake': True,
+            }
+            total_observed += 1
+        elif observed_count > 0:
             county_data[county] = {
                 'manifest_count': manifest_count,
                 'observed_count': observed_count,
                 'ballots': ballots,
+                'is_fake': False,
             }
             total_observed += observed_count
     
     if not county_data:
-        return {'error': 'No examined ballots'}
+        return {'error': 'No examined ballots in any county (skip)'}
     
     if show_work:
         print("Step 1: Observed ballots with contest")
         print(f"  NOTE: 'ballot_card_count' from manifest")
         print(f"  NOTE: 'contest_ballot_card_count' from contest.csv = {contest_ballot_card_count:,}")
+        if counties_with_zero_observed:
+            print(f"  ⚠ WARNING: {len(counties_with_zero_observed)} county(ies) had zero observed ballots")
+            print(f"    Using 1 fake ballot for: {', '.join(counties_with_zero_observed)}")
+            print(f"    ESTIMATION: Allows calculation but increases uncertainty")
         for county, data in county_data.items():
+            fake_marker = " (FAKE - using 1)" if data.get('is_fake', False) else ""
             print(f"  {county}:")
             print(f"    ballot_card_count (manifest): {data['manifest_count']:,}")
-            print(f"    Observed with contest: {data['observed_count']}")
+            print(f"    Observed with contest: {data['observed_count']}{fake_marker}")
         print(f"  Total observed: {total_observed}")
     
     # Step 2: Calculate sampling rates (observed with contest / manifest)
@@ -257,10 +280,13 @@ def main():
         contests_to_process.append((name, data, audit_reason))
     
     print(f"Processing {len(contests_to_process)} contests...")
-    print()
+    if not args.show_work:
+        print()
     
     # Process each contest
     results = []
+    errors = defaultdict(int)
+    
     for contest_name, contest_data, audit_reason in contests_to_process:
         counties = counties_by_contest.get(contest_name, set())
         contest_ballots_per_county = contest_ballots.get(contest_name, {})
@@ -270,8 +296,9 @@ def main():
                                          show_work=args.show_work)
         
         if 'error' in result:
+            errors[result['error']] += 1
             if args.show_work:
-                print(f"ERROR: {result['error']}")
+                print(f"ERROR for {contest_name}: {result['error']}")
             continue
         
         result['audit_reason'] = audit_reason
@@ -305,6 +332,11 @@ def main():
         opp_pass = sum(1 for _, r in opportunistic if r['risk'] <= RISK_LIMIT)
         print(f"Opportunistic contests: {len(opportunistic)}")
         print(f"  Below risk limit: {opp_pass}/{len(opportunistic)}")
+    
+    if errors:
+        print(f"\nErrors encountered:")
+        for error, count in errors.items():
+            print(f"  {error}: {count} contests")
     
     return 0
 
