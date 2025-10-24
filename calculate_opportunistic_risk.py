@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Calculate Risk for Opportunistic Contests - CORRECTED v4
+Calculate Risk for Opportunistic Contests - CORRECTED
 
-Key fix: Use CONTEST-BALLOT sampling rates, not overall sampling rates.
+Sampling rate = (observed ballots with contest) / (manifest ballot_card_count)
 """
 
 import csv
@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 from collections import defaultdict
 
-script_dir = Path(__file__).parent.parent / "server" / "eclipse-project" / "script" / "rla_export" / "rla_export"
+script_dir = Path(__file__).parent / "server" / "eclipse-project" / "script" / "rla_export" / "rla_export"
 sys.path.insert(0, str(script_dir))
 
 import rlacalc
@@ -18,12 +18,16 @@ import rlacalc
 GAMMA = 1.03905
 RISK_LIMIT = 0.03
 
-def load_manifest_count(county_name):
-    """Get total ballot cards from a county's manifest."""
-    try:
-        manifest_file = Path(__file__).parent / "neal_ignore" / "auditcenter-2024g" / "ballotManifests" / f"{county_name}BallotManifest.csv"
+def load_all_data(round_num=3):
+    """Load all data efficiently in one pass."""
+    data_dir = Path(__file__).parent / "neal_ignore" / "auditcenter-2024g"
+    
+    # 1. Load manifest counts per county
+    print("Loading manifests...")
+    manifest_counts = {}
+    for manifest_file in (data_dir / "ballotManifests").glob("*BallotManifest.csv"):
+        county = manifest_file.stem.replace("BallotManifest", "")
         total = 0
-        
         with open(manifest_file, 'r', encoding='utf-8-sig') as f:
             reader = csv.DictReader(f)
             for row in reader:
@@ -31,273 +35,276 @@ def load_manifest_count(county_name):
                     if col in row and row[col]:
                         total += int(row[col])
                         break
-        
-        return total
-    except FileNotFoundError:
-        return None
-
-def load_comparison_data(round_num=3):
-    """Load examined ballots with discrepancy info."""
-    data_dir = Path(__file__).parent / "neal_ignore" / "auditcenter-2024g"
-    file_path = data_dir / f"round{round_num}" / "contestComparison.csv"
+        manifest_counts[county] = total
     
-    # Track contest-specific ballots per county
-    contest_ballots_per_county = defaultdict(lambda: defaultdict(list))
+    # 2. Load contest metadata
+    print("Loading contest metadata...")
+    contest_file = data_dir / f"round{round_num}" / "contest.csv"
+    contest_metadata = {}
+    with open(contest_file, 'r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            contest_metadata[row['contest_name']] = row
     
-    # Track all examined ballots per county (unique)
-    all_examined_per_county = defaultdict(set)
+    # 3. Load which counties have which contests
+    print("Loading contest-county mappings...")
+    counties_file = data_dir / "contestsByCounty.csv"
+    counties_by_contest = defaultdict(set)
+    with open(counties_file, 'r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            counties_by_contest[row['contest_name']].add(row['county_name'])
     
-    with open(file_path, 'r', encoding='utf-8-sig') as f:
+    # 4. Load all examined ballots (one pass through contestComparison.csv)
+    print("Loading examined ballots...")
+    comparison_file = data_dir / f"round{round_num}" / "contestComparison.csv"
+    
+    # Track contest ballots per county with discrepancy info
+    contest_ballots = defaultdict(lambda: defaultdict(list))
+    
+    with open(comparison_file, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         for row in reader:
             county = row['county_name']
-            iid = row['imprinted_id']
             contest = row['contest_name']
+            iid = row['imprinted_id']
             
-            # Track all examined ballots per county
-            all_examined_per_county[county].add(iid)
-            
-            # Track ballots with this specific contest
-            contest_ballots_per_county[contest][county].append({
+            contest_ballots[contest][county].append({
                 'iid': iid,
                 'cvr': row.get('choice_per_voting_computer', ''),
                 'audit': row.get('audit_board_selection', ''),
                 'consensus': row.get('consensus', 'YES'),
             })
     
-    return dict(contest_ballots_per_county), dict(all_examined_per_county)
+    return manifest_counts, contest_metadata, dict(counties_by_contest), dict(contest_ballots)
 
-def load_contest_data(round_num=3):
-    """Load contest metadata."""
-    data_dir = Path(__file__).parent / "neal_ignore" / "auditcenter-2024g"
-    file_path = data_dir / f"round{round_num}" / "contest.csv"
-    
-    contests = {}
-    with open(file_path, 'r', encoding='utf-8-sig') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            contests[row['contest_name']] = row
-    
-    return contests
-
-def load_counties_by_contest(round_num=3):
-    """Load which counties each contest appears in."""
-    data_dir = Path(__file__).parent / "neal_ignore" / "auditcenter-2024g"
-    file_path = data_dir / "contestsByCounty.csv"
-    
-    counties_by_contest = defaultdict(set)
-    
-    with open(file_path, 'r', encoding='utf-8-sig') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            counties_by_contest[row['contest_name']].add(row['county_name'])
-    
-    return dict(counties_by_contest)
-
-def has_discrepancy(ballot_data):
+def has_discrepancy(ballot):
     """Check if a ballot has a discrepancy."""
-    if ballot_data['consensus'] == 'NO':
+    if ballot['consensus'] == 'NO':
         return True
-    cvr = ballot_data['cvr'].strip()
-    audit = ballot_data['audit'].strip()
+    cvr = ballot['cvr'].strip()
+    audit = ballot['audit'].strip()
     return cvr != audit and cvr != '' and audit != ''
 
-def calculate_multicounty_risk(contest_name, contest_data, counties, 
-                                 contest_ballots_per_county, all_examined_per_county, show_work=False):
-    """Calculate risk using CONTEST-BALLOT sampling rates."""
+def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots_per_county, 
+                            manifest_counts, show_work=False):
+    """Calculate risk for one contest."""
     
     if show_work:
         print(f"\n{'='*80}")
-        print(f"DETAILED CALCULATION: {contest_name}")
+        print(f"CONTEST: {contest_name}")
         print(f"{'='*80}\n")
     
-    # Get total contest universe from contest.csv
+    # Get contest metadata
     try:
-        total_contest_universe = int(contest_data['contest_ballot_card_count'])
         min_margin = int(contest_data['min_margin'])
-    except:
+        contest_ballot_card_count = int(contest_data['contest_ballot_card_count'])
+    except (KeyError, ValueError):
         return {'error': 'Missing contest data'}
     
-    # Step 1: Get manifest counts and total examined per county
-    county_info = {}
+    # Step 1: Count observed ballots with contest per county
+    county_data = {}
+    total_observed = 0
     
     for county in counties:
-        manifest_count = load_manifest_count(county)
-        if manifest_count is None:
+        if county not in manifest_counts:
             continue
         
-        # Total examined (all contests)
-        total_examined = len(all_examined_per_county.get(county, []))
+        manifest_count = manifest_counts[county]
+        if manifest_count == 0:
+            continue
         
-        # Contest ballots examined
-        contest_ballots = contest_ballots_per_county.get(county, [])
-        examined_contest_count = len(contest_ballots)
+        ballots = contest_ballots_per_county.get(county, [])
+        observed_count = len(ballots)
         
-        if examined_contest_count > 0:
-            county_info[county] = {
+        if observed_count > 0:
+            county_data[county] = {
                 'manifest_count': manifest_count,
-                'total_examined': total_examined,
-                'examined_contest_ballots': contest_ballots,
-                'examined_count': examined_contest_count,
+                'observed_count': observed_count,
+                'ballots': ballots,
             }
+            total_observed += observed_count
     
-    if len(county_info) == 0:
-        return {'error': 'No counties with examined ballots'}
-    
-    total_examined_with_contest = sum(info['examined_count'] for info in county_info.values())
+    if not county_data:
+        return {'error': 'No examined ballots'}
     
     if show_work:
-        print("Step 1: Manifest counts and total examined")
-        for county, info in county_info.items():
+        print("Step 1: Observed ballots with contest")
+        print(f"  NOTE: 'ballot_card_count' from manifest")
+        print(f"  NOTE: 'contest_ballot_card_count' from contest.csv = {contest_ballot_card_count:,}")
+        for county, data in county_data.items():
             print(f"  {county}:")
-            print(f"    Manifest: {info['manifest_count']:,} ballot cards")
-            print(f"    Total examined (all contests): {info['total_examined']} ballots")
-            print(f"    With this contest: {info['examined_count']} ballots")
-        print(f"  Total with contest: {total_examined_with_contest}")
+            print(f"    ballot_card_count (manifest): {data['manifest_count']:,}")
+            print(f"    Observed with contest: {data['observed_count']}")
+        print(f"  Total observed: {total_observed}")
     
-    # Step 2: Estimate contest ballots per county (based on proportion)
-    for county, info in county_info.items():
-        fraction = info['examined_count'] / total_examined_with_contest
-        estimated_contest_ballots = int(total_contest_universe * fraction)
-        info['fraction'] = fraction
-        info['estimated_contest_ballots'] = estimated_contest_ballots
+    # Step 2: Calculate sampling rates (observed with contest / manifest)
+    for county, data in county_data.items():
+        data['sampling_rate'] = data['observed_count'] / data['manifest_count']
     
     if show_work:
-        print(f"\nStep 2: Estimate contest ballots per county")
-        print(f"  Total contest universe: {total_contest_universe:,}")
-        for county, info in county_info.items():
-            print(f"  {county}: {total_contest_universe:,} × {info['fraction']:.4f} = {info['estimated_contest_ballots']:,} estimated")
+        print(f"\nStep 2: Sampling rates")
+        print(f"  Formula: (observed with contest) / (ballot_card_count)")
+        for county, data in county_data.items():
+            print(f"  {county}: {data['observed_count']} / {data['manifest_count']:,} = {data['sampling_rate']:.8f} = {data['sampling_rate']*100:.6f}%")
     
-    # Step 3: Calculate CONTEST-BALLOT sampling rates
-    for county, info in county_info.items():
-        info['contest_sampling_rate'] = info['examined_count'] / info['estimated_contest_ballots']
-    
-    if show_work:
-        print(f"\nStep 3: CONTEST-BALLOT sampling rates")
-        for county, info in county_info.items():
-            print(f"  {county}: {info['examined_count']}/{info['estimated_contest_ballots']:,} = {info['contest_sampling_rate']:.6f} = {info['contest_sampling_rate']*100:.4f}%")
-    
-    # Step 4: Find minimum contest-ballot rate
-    min_rate = min(info['contest_sampling_rate'] for info in county_info.values())
-    min_county = min(county_info.items(), key=lambda x: x[1]['contest_sampling_rate'])[0]
+    # Step 3: Find minimum rate
+    min_rate = min(data['sampling_rate'] for data in county_data.values())
+    min_county = min(county_data.items(), key=lambda x: x[1]['sampling_rate'])[0]
     
     if show_work:
-        print(f"\nStep 4: Minimum contest-ballot rate: {min_rate:.6f} ({min_county})")
+        print(f"\nStep 3: Minimum sampling rate")
+        print(f"  {min_rate:.8f} ({min_county})")
     
-    # Step 5: Downsample to minimum rate
-    valid_sample_ballots = []
+    # Step 4: Downsample to minimum rate
+    valid_sample = []
     
-    for county, info in county_info.items():
+    for county, data in county_data.items():
         if county == min_county:
-            # Use ALL contest ballots from minimum-rate county
-            n_to_use = info['examined_count']
+            # Use ALL from minimum-rate county
+            n_to_use = data['observed_count']
         else:
-            # Downsample to minimum rate
-            n_to_use = int(info['estimated_contest_ballots'] * min_rate)
+            # Downsample: manifest × min_rate
+            n_to_use = int(data['manifest_count'] * min_rate)
         
-        info['n_to_use'] = n_to_use
-        ballots_to_use = info['examined_contest_ballots'][:n_to_use]
-        info['ballot_ids_used'] = [b['iid'] for b in ballots_to_use]
-        valid_sample_ballots.extend([(county, b) for b in ballots_to_use])
+        ballots_to_use = data['ballots'][:n_to_use]
+        data['n_used'] = n_to_use
+        data['ballot_ids'] = [b['iid'] for b in ballots_to_use]
+        valid_sample.extend(ballots_to_use)
     
     if show_work:
-        print(f"\nStep 5: Downsample to minimum contest-ballot rate")
-        for county, info in county_info.items():
-            marker = " (minimum - use ALL)" if county == min_county else ""
-            print(f"  {county}: {info['n_to_use']} contest ballots{marker}")
-            print(f"    Ballot IDs: {', '.join(info['ballot_ids_used'])}")
-        print(f"  Total valid sample: {len(valid_sample_ballots)} contest ballots")
+        print(f"\nStep 4: Downsample to minimum rate")
+        for county, data in county_data.items():
+            marker = " (minimum - use ALL)" if county == min_county else f" (downsample: {data['manifest_count']:,} × {min_rate:.8f})"
+            print(f"  {county}: {data['n_used']} ballots{marker}")
+            if data['n_used'] <= 10:
+                print(f"    IDs: {', '.join(data['ballot_ids'])}")
+            else:
+                print(f"    IDs: {', '.join(data['ballot_ids'][:5])} ... (+{data['n_used']-5} more)")
+        print(f"  Total valid sample: {len(valid_sample)} ballots with contest")
     
-    # Step 6: Count discrepancies
-    discrepancy_count = 0
-    for county, ballot in valid_sample_ballots:
-        if has_discrepancy(ballot):
-            discrepancy_count += 1
+    # Step 5: Count discrepancies
+    discrepancies = sum(1 for b in valid_sample if has_discrepancy(b))
     
     if show_work:
-        print(f"\nStep 6: Discrepancies in valid sample")
-        print(f"  Total: {discrepancy_count}")
+        print(f"\nStep 5: Discrepancies")
+        print(f"  Total: {discrepancies}")
     
-    # Step 7: Risk calculation
-    try:
-        min_margin = int(contest_data['min_margin'])
-        contest_universe = int(contest_data['contest_ballot_card_count'])
-        diluted_margin = min_margin / contest_universe
-    except:
-        return {'error': 'Missing margin data'}
-    
-    n = len(valid_sample_ballots)
-    o1 = discrepancy_count  # Conservative
+    # Step 6: Calculate risk
+    n = len(valid_sample)
+    diluted_margin = min_margin / contest_ballot_card_count
+    o1 = discrepancies
     o2 = u1 = u2 = 0
     
     risk = rlacalc.KM_P_value(n=n, gamma=GAMMA, margin=diluted_margin,
                                o1=o1, o2=o2, u1=u1, u2=u2)
     
     if show_work:
-        print(f"\nStep 7: Risk calculation")
-        print(f"  n (valid contest-ballot sample): {n}")
+        print(f"\nStep 6: Risk calculation")
+        print(f"  n (valid sample): {n}")
         print(f"  min_margin: {min_margin:,}")
-        print(f"  contest_ballot_card_count: {contest_universe:,}")
-        print(f"  diluted_margin: {min_margin}/{contest_universe} = {diluted_margin:.6f}")
-        print(f"  discrepancies (as o1): {o1}")
+        print(f"  contest_ballot_card_count: {contest_ballot_card_count:,}")
+        print(f"  diluted_margin: {min_margin:,} / {contest_ballot_card_count:,} = {diluted_margin:.6f}")
+        print(f"  discrepancies (o1): {discrepancies}")
         risk_str = f"{risk:.8e}" if risk < 0.0001 else f"{risk:.8f}"
         print(f"  Risk: {risk_str}")
-        result_str = '✓ Below' if risk <= RISK_LIMIT else '✗ Above'
-        print(f"  {result_str} risk limit ({RISK_LIMIT})")
+        status = "✓ PASS" if risk <= RISK_LIMIT else "✗ FAIL"
+        print(f"  {status} (risk limit = {RISK_LIMIT})")
     
     return {
         'n': n,
         'min_margin': min_margin,
-        'contest_universe': contest_universe,
+        'contest_ballot_card_count': contest_ballot_card_count,
         'diluted_margin': diluted_margin,
-        'discrepancies': discrepancy_count,
-        'o1': o1, 'o2': o2, 'u1': u1, 'u2': u2,
+        'discrepancies': discrepancies,
         'risk': risk,
-        'counties': len(county_info),
+        'counties': len(county_data),
         'min_rate': min_rate,
-        'min_county': min_county,
     }
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description='Calculate opportunistic risks - v4 CORRECTED')
+    parser = argparse.ArgumentParser(description='Calculate opportunistic and targeted contest risks')
     parser.add_argument('--round', type=int, default=3)
-    parser.add_argument('--contest', type=str, required=True, help='Contest name')
+    parser.add_argument('--contest', type=str, help='Specific contest (if omitted, does all)')
     parser.add_argument('--show-work', action='store_true', help='Show detailed calculation')
+    parser.add_argument('--targeted-only', action='store_true', help='Only process targeted contests')
+    parser.add_argument('--opportunistic-only', action='store_true', help='Only process opportunistic contests')
     args = parser.parse_args()
     
-    print(f"Loading data for round {args.round}...")
-    contest_ballots_data, all_examined_per_county = load_comparison_data(args.round)
-    contest_metadata = load_contest_data(args.round)
-    counties_by_contest = load_counties_by_contest(args.round)
+    # Load all data once
+    manifest_counts, contest_metadata, counties_by_contest, contest_ballots = load_all_data(args.round)
+    print(f"Loaded data for {len(contest_metadata)} contests")
+    print()
     
-    if args.contest not in contest_metadata:
-        print(f"Contest '{args.contest}' not found")
-        return 1
+    # Filter contests
+    contests_to_process = []
+    for name, data in contest_metadata.items():
+        if args.contest and name != args.contest:
+            continue
+        
+        audit_reason = data.get('audit_reason', '')
+        
+        if args.targeted_only and audit_reason not in ['county_wide_contest', 'state_wide_contest']:
+            continue
+        if args.opportunistic_only and audit_reason != 'opportunistic_benefits':
+            continue
+        
+        # Skip if no examined ballots
+        if name not in contest_ballots:
+            continue
+        
+        contests_to_process.append((name, data, audit_reason))
     
-    contest_data = contest_metadata[args.contest]
-    counties = counties_by_contest.get(args.contest, set())
-    contest_ballots_per_county = contest_ballots_data.get(args.contest, {})
+    print(f"Processing {len(contests_to_process)} contests...")
+    print()
     
-    if not args.show_work:
-        print(f"\nContest: {args.contest}")
-        print(f"Counties: {len(counties)}")
-    
-    result = calculate_multicounty_risk(args.contest, contest_data, counties,
-                                         contest_ballots_per_county, all_examined_per_county,
+    # Process each contest
+    results = []
+    for contest_name, contest_data, audit_reason in contests_to_process:
+        counties = counties_by_contest.get(contest_name, set())
+        contest_ballots_per_county = contest_ballots.get(contest_name, {})
+        
+        result = calculate_contest_risk(contest_name, contest_data, counties, 
+                                         contest_ballots_per_county, manifest_counts,
                                          show_work=args.show_work)
+        
+        if 'error' in result:
+            if args.show_work:
+                print(f"ERROR: {result['error']}")
+            continue
+        
+        result['audit_reason'] = audit_reason
+        results.append((contest_name, result))
+        
+        if not args.show_work:
+            status = "✓" if result['risk'] <= RISK_LIMIT else "✗"
+            risk_str = f"{result['risk']:.6e}" if result['risk'] < 0.0001 else f"{result['risk']:.6f}"
+            print(f"{status} {contest_name[:60]:60s} n={result['n']:4d} risk={risk_str}")
     
-    if 'error' in result:
-        print(f"ERROR: {result['error']}")
-        return 1
+    # Summary
+    print()
+    print("="*80)
+    print("SUMMARY")
+    print("="*80)
     
-    if not args.show_work:
-        print(f"Valid sample: {result['n']} contest ballots")
-        print(f"Diluted margin: {result['diluted_margin']:.6f}")
-        risk_str = f"{result['risk']:.8e}" if result['risk'] < 0.0001 else f"{result['risk']:.8f}"
-        print(f"Risk: {risk_str}")
-        result_str = '✓ Below' if result['risk'] <= RISK_LIMIT else '✗ Above'
-        print(f"{result_str} risk limit")
+    targeted = [r for r in results if r[1]['audit_reason'] in ['county_wide_contest', 'state_wide_contest']]
+    opportunistic = [r for r in results if r[1]['audit_reason'] == 'opportunistic_benefits']
+    
+    if targeted:
+        targeted_pass = sum(1 for _, r in targeted if r['risk'] <= RISK_LIMIT)
+        print(f"Targeted contests: {len(targeted)}")
+        print(f"  Achieved risk limit: {targeted_pass}/{len(targeted)}")
+        if targeted_pass < len(targeted):
+            print(f"  FAILED:")
+            for name, r in targeted:
+                if r['risk'] > RISK_LIMIT:
+                    print(f"    {name}: risk={r['risk']:.6f}")
+    
+    if opportunistic:
+        opp_pass = sum(1 for _, r in opportunistic if r['risk'] <= RISK_LIMIT)
+        print(f"Opportunistic contests: {len(opportunistic)}")
+        print(f"  Below risk limit: {opp_pass}/{len(opportunistic)}")
     
     return 0
 
