@@ -66,6 +66,8 @@ def load_all_data(round_num=3):
     
     # Track contest ballots per county with discrepancy info
     contest_ballots = defaultdict(lambda: defaultdict(list))
+    # Track total examined ballots per county (unique imprinted_id)
+    examined_per_county = defaultdict(set)
     
     with open(comparison_file, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
@@ -80,8 +82,14 @@ def load_all_data(round_num=3):
                 'audit': row.get('audit_board_selection', ''),
                 'consensus': row.get('consensus', 'YES'),
             })
+            
+            # Track unique ballots per county
+            examined_per_county[county].add(iid)
     
-    return manifest_counts, contest_metadata, dict(counties_by_contest), dict(contest_ballots)
+    # Convert sets to counts
+    examined_counts = {county: len(ballots) for county, ballots in examined_per_county.items()}
+    
+    return manifest_counts, contest_metadata, dict(counties_by_contest), dict(contest_ballots), examined_counts
 
 def has_discrepancy(ballot):
     """Check if a ballot has a discrepancy."""
@@ -92,7 +100,7 @@ def has_discrepancy(ballot):
     return cvr != audit and cvr != '' and audit != ''
 
 def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots_per_county, 
-                            manifest_counts, show_work=False):
+                            manifest_counts, examined_counts, show_work=False):
     """Calculate risk for one contest."""
     
     if show_work:
@@ -169,9 +177,14 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
             print(f"    ESTIMATION: Allows calculation but increases uncertainty")
         for county, data in county_data.items():
             fake_marker = " (FAKE - using 1)" if data.get('is_fake', False) else ""
+            total_examined = examined_counts.get(county, 0)
             print(f"  {county}:")
             print(f"    ballot_card_count (manifest): {data['manifest_count']:,}")
+            print(f"    Total examined ballots: {total_examined}")
             print(f"    Observed with contest: {data['observed_count']}{fake_marker}")
+            if total_examined > 0:
+                pct = 100.0 * data['observed_count'] / total_examined
+                print(f"    Percentage: {pct:.1f}%")
         print(f"  Total observed: {total_observed}")
     
     # Step 2: Calculate sampling rates (observed with contest / manifest)
@@ -269,7 +282,7 @@ def main():
     args = parser.parse_args()
     
     # Load all data once
-    manifest_counts, contest_metadata, counties_by_contest, contest_ballots = load_all_data(args.round)
+    manifest_counts, contest_metadata, counties_by_contest, contest_ballots, examined_counts = load_all_data(args.round)
     print(f"Loaded data for {len(contest_metadata)} contests")
     print()
     
@@ -306,7 +319,7 @@ def main():
         
         result = calculate_contest_risk(contest_name, contest_data, counties, 
                                          contest_ballots_per_county, manifest_counts,
-                                         show_work=args.show_work)
+                                         examined_counts, show_work=args.show_work)
         
         if 'error' in result:
             error_key = result['error']
