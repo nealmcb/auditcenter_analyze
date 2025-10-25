@@ -23,7 +23,7 @@ def load_all_data(round_num=3):
     data_dir = Path(__file__).parent / "neal_ignore" / "auditcenter-2024g"
     
     # 1. Load manifest counts per county
-    print("Loading manifests...")
+    print("Step 1: Loading manifests...")
     manifest_counts = {}
     for manifest_file in (data_dir / "ballotManifests").glob("*BallotManifest.csv"):
         county_no_space = manifest_file.stem.replace("BallotManifest", "")
@@ -41,17 +41,25 @@ def load_all_data(round_num=3):
         
         manifest_counts[county_no_space] = total
     
+    total_cards = sum(manifest_counts.values())
+    print(f"  Loaded {len(manifest_counts)} county manifests")
+    print(f"  Total ballot cards statewide: {total_cards:,}")
+    print()
+    
     # 2. Load contest metadata
-    print("Loading contest metadata...")
+    print("Step 2: Loading contest metadata...")
     contest_file = data_dir / f"round{round_num}" / "contest.csv"
     contest_metadata = {}
+    contest_by_type = defaultdict(int)
     with open(contest_file, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         for row in reader:
             contest_metadata[row['contest_name']] = row
+            audit_reason = row.get('audit_reason', 'unknown')
+            contest_by_type[audit_reason] += 1
     
     # 3. Load which counties have which contests
-    print("Loading contest-county mappings...")
+    print("Step 3: Loading contest-county mappings...")
     counties_file = data_dir / "contestsByCounty.csv"
     counties_by_contest = defaultdict(set)
     with open(counties_file, 'r', encoding='utf-8-sig') as f:
@@ -61,7 +69,7 @@ def load_all_data(round_num=3):
             counties_by_contest[row['contest_name']].add(county)
     
     # 4. Load all examined ballots (one pass through contestComparison.csv)
-    print("Loading examined ballots...")
+    print("Step 4: Loading examined ballots...")
     comparison_file = data_dir / f"round{round_num}" / "contestComparison.csv"
     
     # Track contest ballots per county with discrepancy info
@@ -89,7 +97,24 @@ def load_all_data(round_num=3):
     # Convert sets to counts
     examined_counts = {county: len(ballots) for county, ballots in examined_per_county.items()}
     
-    return manifest_counts, contest_metadata, dict(counties_by_contest), dict(contest_ballots), examined_counts
+    print(f"  Loaded {sum(examined_counts.values()):,} total examined ballots across {len(examined_counts)} counties")
+    print()
+    print("Sample sizes by county:")
+    for county in sorted(examined_counts.keys()):
+        manifest_count = manifest_counts.get(county, 0)
+        examined_count = examined_counts[county]
+        pct = 100.0 * examined_count / manifest_count if manifest_count > 0 else 0
+        print(f"  {county:15s}: {examined_count:4d} examined / {manifest_count:7,d} ballot cards ({pct:5.2f}%)")
+    print()
+    
+    print("Contest metadata summary:")
+    print(f"  Total contests in contest.csv: {len(contest_metadata)}")
+    print(f"  By audit_reason:")
+    for reason in sorted(contest_by_type.keys()):
+        print(f"    {reason}: {contest_by_type[reason]}")
+    print()
+    
+    return manifest_counts, contest_metadata, dict(counties_by_contest), dict(contest_ballots), examined_counts, dict(contest_by_type)
 
 def has_discrepancy(ballot):
     """Check if a ballot has a discrepancy."""
@@ -230,7 +255,7 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
                 print(f"    IDs: {', '.join(data['ballot_ids'])}")
             else:
                 print(f"    IDs: {', '.join(data['ballot_ids'][:5])} ... (+{data['n_used']-5} more)")
-        print(f"  Total valid sample: {len(valid_sample)} ballots with contest")
+        print(f"  Total uniformly random sample: {len(valid_sample)} ballots with contest")
     
     # Step 5: Count discrepancies
     discrepancies = sum(1 for b in valid_sample if has_discrepancy(b))
@@ -250,10 +275,10 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
     
     if show_work:
         print(f"\nStep 6: Risk calculation")
-        print(f"  n (valid sample): {n}")
-        print(f"  min_margin: {min_margin:,}")
         print(f"  contest_ballot_card_count: {contest_ballot_card_count:,}")
+        print(f"  min_margin: {min_margin:,}")
         print(f"  diluted_margin: {min_margin:,} / {contest_ballot_card_count:,} = {diluted_margin:.6f}")
+        print(f"  n (uniformly random sample): {n}")
         print(f"  discrepancies (o1): {discrepancies}")
         risk_str = f"{risk:.8e}" if risk < 0.0001 else f"{risk:.8f}"
         print(f"  Risk: {risk_str}")
@@ -282,38 +307,76 @@ def main():
     args = parser.parse_args()
     
     # Load all data once
-    manifest_counts, contest_metadata, counties_by_contest, contest_ballots, examined_counts = load_all_data(args.round)
-    print(f"Loaded data for {len(contest_metadata)} contests")
-    print()
+    manifest_counts, contest_metadata, counties_by_contest, contest_ballots, examined_counts, contest_by_type = load_all_data(args.round)
     
-    # Filter contests
-    contests_to_process = []
+    # Filter contests and organize by type
+    contests_by_reason = {
+        'state_wide_contest': [],
+        'county_wide_contest': [],
+        'opportunistic_benefits': [],
+    }
+    skipped_filter = 0
+    
     for name, data in contest_metadata.items():
         if args.contest and name != args.contest:
+            skipped_filter += 1
             continue
         
         audit_reason = data.get('audit_reason', '')
         
         if args.targeted_only and audit_reason not in ['county_wide_contest', 'state_wide_contest']:
+            skipped_filter += 1
             continue
         if args.opportunistic_only and audit_reason != 'opportunistic_benefits':
+            skipped_filter += 1
             continue
         
-        # Skip if no examined ballots
-        if name not in contest_ballots:
-            continue
-        
-        contests_to_process.append((name, data, audit_reason))
+        # Add to appropriate category (even if no examined ballots)
+        if audit_reason in contests_by_reason:
+            contests_by_reason[audit_reason].append((name, data, audit_reason))
     
-    print(f"Processing {len(contests_to_process)} contests...")
+    # Build ordered list: state, county, opportunistic
+    contests_to_process = (
+        contests_by_reason['state_wide_contest'] +
+        contests_by_reason['county_wide_contest'] +
+        contests_by_reason['opportunistic_benefits']
+    )
+    
+    total_contests = len(contests_to_process)
+    print(f"Processing {total_contests} contests by type:")
+    print(f"  State-wide targeted: {len(contests_by_reason['state_wide_contest'])}")
+    print(f"  County-wide targeted: {len(contests_by_reason['county_wide_contest'])}")
+    print(f"  Opportunistic: {len(contests_by_reason['opportunistic_benefits'])}")
+    if skipped_filter > 0:
+        print(f"  (Filtered out: {skipped_filter})")
     if not args.show_work:
         print()
     
-    # Process each contest
+    # Process each contest with section headers
     results = []
-    errors = defaultdict(int)
+    errors = []
+    current_section = None
     
     for contest_name, contest_data, audit_reason in contests_to_process:
+        # Print section header when type changes
+        if current_section != audit_reason and not args.show_work:
+            if current_section is not None:
+                print()  # Blank line between sections
+            
+            if audit_reason == 'state_wide_contest':
+                print("=" * 80)
+                print(f"STATE-WIDE TARGETED CONTESTS ({len(contests_by_reason['state_wide_contest'])})")
+                print("=" * 80)
+            elif audit_reason == 'county_wide_contest':
+                print("=" * 80)
+                print(f"COUNTY-WIDE TARGETED CONTESTS ({len(contests_by_reason['county_wide_contest'])})")
+                print("=" * 80)
+            elif audit_reason == 'opportunistic_benefits':
+                print("=" * 80)
+                print(f"OPPORTUNISTIC CONTESTS ({len(contests_by_reason['opportunistic_benefits'])})")
+                print("=" * 80)
+            current_section = audit_reason
+        
         counties = counties_by_contest.get(contest_name, set())
         contest_ballots_per_county = contest_ballots.get(contest_name, {})
         
@@ -322,14 +385,26 @@ def main():
                                          examined_counts, show_work=args.show_work)
         
         if 'error' in result:
-            error_key = result['error']
-            errors[error_key] += 1
+            error_info = {
+                'name': contest_name,
+                'audit_reason': audit_reason,
+                'error': result['error'],
+                'details': result.get('details', ''),
+                'reason': result.get('reason', ''),
+                'contest_data': contest_data,
+                'counties': list(counties),
+            }
+            errors.append(error_info)
+            
             if args.show_work:
                 print(f"ERROR for {contest_name}: {result['error']}")
                 if 'details' in result:
                     print(f"  Details: {result['details']}")
                 if 'reason' in result:
                     print(f"  Reason: {result['reason']}")
+            else:
+                # Show error in compact form
+                print(f"⊗ {contest_name[:60]:60s} ERROR: {result['error'][:30]}")
             continue
         
         result['audit_reason'] = audit_reason
@@ -365,22 +440,43 @@ def main():
         print(f"  Below risk limit: {opp_pass}/{len(opportunistic)}")
     
     if errors:
-        print(f"\nErrors encountered:")
-        for error, count in errors.items():
-            print(f"  {error}: {count} contests")
+        print()
+        print("=" * 80)
+        print(f"SKIPPED CONTESTS ({len(errors)})")
+        print("=" * 80)
         
-        # Show detailed breakdown for common errors
-        if any("zero examined ballots" in error for error in errors.keys()):
-            print(f"\nDetailed breakdown:")
-            print(f"  Contests with zero examined ballots:")
-            print(f"    - These contests appear in county manifests but were not found on any sampled ballot")
-            print(f"    - This can happen if the contest name doesn't match exactly between files")
-            print(f"    - Or if the contest was on ballots that weren't selected for audit")
+        # Group errors by type
+        errors_by_type = defaultdict(list)
+        for error_info in errors:
+            errors_by_type[error_info['error']].append(error_info)
         
-        if any("not found in any county manifest" in error for error in errors.keys()):
-            print(f"  Contests not in manifests:")
-            print(f"    - These contests are in contest.csv but not found in any county ballot manifest")
-            print(f"    - May be misnamed or not applicable to any county in this election")
+        for error_type, error_list in errors_by_type.items():
+            print(f"\n{error_type}: {len(error_list)} contests")
+            print()
+            
+            for err in error_list:
+                print(f"  {err['name']}")
+                print(f"    Audit reason: {err['audit_reason']}")
+                
+                # Show available data
+                contest_data = err['contest_data']
+                if contest_data.get('min_margin'):
+                    print(f"    min_margin: {contest_data['min_margin']}")
+                if contest_data.get('contest_ballot_card_count'):
+                    print(f"    contest_ballot_card_count: {contest_data['contest_ballot_card_count']}")
+                
+                counties_list = err['counties']
+                if counties_list:
+                    print(f"    Counties: {', '.join(counties_list[:5])}", end="")
+                    if len(counties_list) > 5:
+                        print(f" ... (+{len(counties_list)-5} more)", end="")
+                    print()
+                
+                if err.get('details'):
+                    print(f"    {err['details']}")
+                if err.get('reason'):
+                    print(f"    → {err['reason']}")
+                print()
     
     return 0
 
