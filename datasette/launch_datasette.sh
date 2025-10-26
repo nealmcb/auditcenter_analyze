@@ -8,5 +8,5 @@ if [ ! -d "datasette-env" ]; then
 fi
 
 source datasette-env/bin/activate
-datasette colorado_rla.db --metadata datasette-metadata.json
+datasette ../output/colorado_rla.db --metadata metadata.json
 

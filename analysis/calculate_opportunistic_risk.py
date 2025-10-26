@@ -13,7 +13,7 @@ from pathlib import Path
 from collections import defaultdict
 from datetime import datetime
 
-script_dir = Path(__file__).parent / "server" / "eclipse-project" / "script" / "rla_export" / "rla_export"
+script_dir = Path(__file__).parent.parent / "rlacalc"
 sys.path.insert(0, str(script_dir))
 
 import rlacalc
@@ -23,7 +23,7 @@ RISK_LIMIT = 0.03
 
 def load_all_data(round_num=3):
     """Load all data efficiently in one pass."""
-    data_dir = Path(__file__).parent / "neal_ignore" / "auditcenter-2024g"
+    data_dir = Path(__file__).parent.parent / "data" / "2024" / "general"
     
     # 1. Load manifest counts per county
     print("Step 1: Loading manifests...")
