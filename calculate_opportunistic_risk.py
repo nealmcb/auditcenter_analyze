@@ -7,8 +7,11 @@ Sampling rate = (observed ballots with contest) / (manifest ballot_card_count)
 
 import csv
 import sys
+import sqlite3
+import json
 from pathlib import Path
 from collections import defaultdict
+from datetime import datetime
 
 script_dir = Path(__file__).parent / "server" / "eclipse-project" / "script" / "rla_export" / "rla_export"
 sys.path.insert(0, str(script_dir))
@@ -294,7 +297,130 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
         'risk': risk,
         'counties': len(county_data),
         'min_rate': min_rate,
+        'min_rate_county': min_county,
+        'county_data': county_data,
     }
+
+def create_database(db_path):
+    """Create SQLite database with schema for audit analysis."""
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    
+    # Contest risk analysis results
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS contest_risk_analysis (
+            contest_name TEXT PRIMARY KEY,
+            audit_reason TEXT,
+            min_margin INTEGER,
+            contest_ballot_card_count INTEGER,
+            diluted_margin REAL,
+            sample_size INTEGER,
+            discrepancies INTEGER,
+            risk_value REAL,
+            min_sampling_rate REAL,
+            min_rate_county TEXT,
+            counties_involved INTEGER,
+            achieved_risk_limit BOOLEAN,
+            analysis_timestamp TEXT,
+            round INTEGER
+        )
+    ''')
+    
+    # County sampling details
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS county_sampling_details (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            contest_name TEXT,
+            county_name TEXT,
+            manifest_count INTEGER,
+            observed_count INTEGER,
+            examined_total INTEGER,
+            sampling_rate REAL,
+            ballots_used INTEGER,
+            had_fake_ballot BOOLEAN,
+            ballot_ids TEXT,
+            UNIQUE(contest_name, county_name)
+        )
+    ''')
+    
+    # Audit metadata
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS audit_metadata (
+            key TEXT PRIMARY KEY,
+            value TEXT
+        )
+    ''')
+    
+    conn.commit()
+    return conn
+
+def save_to_database(conn, results, errors, manifest_counts, examined_counts, round_num):
+    """Save analysis results to SQLite database."""
+    c = conn.cursor()
+    timestamp = datetime.utcnow().isoformat()
+    
+    # Save audit metadata
+    c.execute('INSERT OR REPLACE INTO audit_metadata VALUES (?, ?)', 
+              ('last_analysis_timestamp', timestamp))
+    c.execute('INSERT OR REPLACE INTO audit_metadata VALUES (?, ?)', 
+              ('risk_limit', str(RISK_LIMIT)))
+    c.execute('INSERT OR REPLACE INTO audit_metadata VALUES (?, ?)', 
+              ('gamma', str(GAMMA)))
+    c.execute('INSERT OR REPLACE INTO audit_metadata VALUES (?, ?)', 
+              ('round', str(round_num)))
+    
+    # Clear old data for this round
+    c.execute('DELETE FROM contest_risk_analysis WHERE round = ?', (round_num,))
+    c.execute('DELETE FROM county_sampling_details')
+    
+    # Save contest results and county details
+    county_detail_count = 0
+    for contest_name, result in results:
+        c.execute('''
+            INSERT INTO contest_risk_analysis VALUES 
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            contest_name,
+            result['audit_reason'],
+            result['min_margin'],
+            result['contest_ballot_card_count'],
+            result['diluted_margin'],
+            result['n'],
+            result['discrepancies'],
+            result['risk'],
+            result['min_rate'],
+            result.get('min_rate_county', ''),
+            result['counties'],
+            result['risk'] <= RISK_LIMIT,
+            timestamp,
+            round_num
+        ))
+        
+        # Save county details for this contest
+        if 'county_data' in result:
+            for county, data in result['county_data'].items():
+                ballot_ids_json = json.dumps(data.get('ballot_ids', []))
+                c.execute('''
+                    INSERT INTO county_sampling_details 
+                    (contest_name, county_name, manifest_count, observed_count, 
+                     examined_total, sampling_rate, ballots_used, had_fake_ballot, ballot_ids)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (
+                    contest_name,
+                    county,
+                    data['manifest_count'],
+                    data['observed_count'],
+                    examined_counts.get(county, 0),
+                    data['sampling_rate'],
+                    data.get('n_used', 0),
+                    data.get('is_fake', False),
+                    ballot_ids_json
+                ))
+                county_detail_count += 1
+    
+    conn.commit()
+    print(f"\n✓ Saved {len(results)} contests to database")
+    print(f"✓ Saved {county_detail_count} county-contest details to database")
 
 def main():
     import argparse
@@ -304,7 +430,16 @@ def main():
     parser.add_argument('--show-work', action='store_true', help='Show detailed calculation')
     parser.add_argument('--targeted-only', action='store_true', help='Only process targeted contests')
     parser.add_argument('--opportunistic-only', action='store_true', help='Only process opportunistic contests')
+    parser.add_argument('--db', type=str, default='colorado_rla.db', help='SQLite database path')
+    parser.add_argument('--no-db', action='store_true', help='Skip database save')
     args = parser.parse_args()
+    
+    # Initialize database if needed
+    db_conn = None
+    if not args.no_db:
+        print(f"Initializing database: {args.db}")
+        db_conn = create_database(args.db)
+        print()
     
     # Load all data once
     manifest_counts, contest_metadata, counties_by_contest, contest_ballots, examined_counts, contest_by_type = load_all_data(args.round)
@@ -477,6 +612,12 @@ def main():
                 if err.get('reason'):
                     print(f"    → {err['reason']}")
                 print()
+    
+    # Save results to database
+    if db_conn:
+        save_to_database(db_conn, results, errors, manifest_counts, examined_counts, args.round)
+        db_conn.close()
+        print(f"✓ Database saved: {args.db}")
     
     return 0
 

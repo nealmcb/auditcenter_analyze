@@ -1,0 +1,53 @@
+{
+  "title": "Colorado 2024 General Election RLA Analysis",
+  "description": "Risk-limiting audit analysis for 662 contests across 64 counties",
+  "databases": {
+    "colorado_rla": {
+      "tables": {
+        "contest_risk_analysis": {
+          "title": "Contest Risk Analysis",
+          "description": "Risk calculations for all targeted and opportunistic contests",
+          "sort_desc": "risk_value",
+          "facets": ["audit_reason", "achieved_risk_limit", "min_rate_county"],
+          "columns": {
+            "contest_name": "Contest name from ballot",
+            "audit_reason": "state_wide_contest | county_wide_contest | opportunistic_benefits",
+            "min_margin": "Winner's margin in votes",
+            "contest_ballot_card_count": "Total ballot cards containing this contest",
+            "diluted_margin": "min_margin / contest_ballot_card_count",
+            "sample_size": "Ballots in uniform sample after downsampling",
+            "discrepancies": "CVR vs. audit mismatches",
+            "risk_value": "Kaplan-Markov p-value (lower is better)",
+            "min_sampling_rate": "Minimum rate across counties",
+            "min_rate_county": "County with minimum sampling rate",
+            "counties_involved": "Number of counties",
+            "achieved_risk_limit": "TRUE if risk_value <= 0.03",
+            "analysis_timestamp": "When analysis was run",
+            "round": "Audit round number"
+          }
+        },
+        "county_sampling_details": {
+          "title": "County Sampling Breakdown",
+          "description": "Per-county sampling details for each contest",
+          "facets": ["county_name", "had_fake_ballot"],
+          "columns": {
+            "contest_name": "Contest being audited",
+            "county_name": "County name",
+            "manifest_count": "Total ballot cards in county",
+            "observed_count": "Ballots with this contest examined",
+            "examined_total": "Total ballots examined in county (all contests)",
+            "sampling_rate": "observed_count / manifest_count",
+            "ballots_used": "Ballots used after downsampling",
+            "had_fake_ballot": "TRUE if contest appears but zero observed",
+            "ballot_ids": "JSON array of ballot imprinted_ids used"
+          }
+        },
+        "audit_metadata": {
+          "title": "Audit Configuration",
+          "description": "Risk limit, gamma, and analysis metadata"
+        }
+      }
+    }
+  }
+}
+
