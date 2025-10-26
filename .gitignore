@@ -6,3 +6,11 @@
 __pycache__
 *.pyc
 *.pyo
+
+# Audit analysis specific
+datasette-env/
+output/*.db
+*.db
+__pycache__/
+*.pyc
+*.pyo
