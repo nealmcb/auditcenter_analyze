@@ -1,8 +1,15 @@
-# Vote-Based Estimation: Implementation Plan
+# Contest Sampling Factor: Implementation Plan
 
 ## Summary
 
-Replace arbitrary "fake ballot" approach with vote-based estimation using `tabulateCounty.csv` data. This improves accuracy from ~2000% error to ~5% error for contests with zero observed ballots.
+Replace arbitrary "fake ballot" approach with **contest sampling factor** calculation using vote totals from `tabulateCounty.csv` combined with overall sampling rates. This accounts for BOTH contest prevalence AND sampling intensity.
+
+**Key Formula:**
+```
+contest_sampling_factor = (votes / manifest_count) × (examined_total / manifest_count)
+```
+
+This improves accuracy from ~2000% error to ~5% error for contests with zero observed ballots, AND correctly handles different overall sampling rates across counties.
 
 ---
 
@@ -60,20 +67,16 @@ def calculate_contest_risk(contest_name, contest_data, counties,
                           show_work=False):
 ```
 
-**Replace Step 1 (Count observed ballots):**
+**Replace Step 1 (Count observed ballots) & Step 2 (Calculate sampling rates):**
 
 **OLD:**
 ```python
 # Step 1: Count observed ballots per county
 for county in counties:
-    if county not in manifest_counts:
-        continue
-    
     ballots = contest_ballots_per_county.get(county, [])
     observed_count = len(ballots)
     
     if observed_count == 0:
-        counties_with_zero_observed.append(county)
         # Use 1 fake ballot
         county_data[county] = {
             'manifest_count': manifest_count,
@@ -81,57 +84,7 @@ for county in counties:
             'ballots': [{'iid': 'NONE', ...}],  # FAKE
             'is_fake': True,
         }
-```
 
-**NEW:**
-```python
-# Step 1: Estimate contest ballot cards per county
-for county in counties:
-    if county not in manifest_counts:
-        continue
-    
-    manifest_count = manifest_counts[county]
-    if manifest_count == 0:
-        continue
-    
-    ballots = contest_ballots_per_county.get(county, [])
-    observed_count = len(ballots)
-    
-    # Get vote-based estimate
-    vote_total = 0
-    if county in vote_totals and contest_name in vote_totals[county]:
-        vote_total = vote_totals[county][contest_name]
-    
-    # Determine estimation method
-    if observed_count > 0:
-        # Normal case: use observed
-        estimated_contest_cards = observed_count
-        estimation_method = 'observed'
-    elif vote_total > 0:
-        # Zero observed, but have votes: use vote-based estimate
-        estimated_contest_cards = vote_total
-        estimation_method = 'vote_based'
-        counties_with_vote_estimation.append(county)
-    else:
-        # No observations AND no votes: minimal placeholder
-        estimated_contest_cards = 0.1
-        estimation_method = 'placeholder'
-        counties_with_placeholder.append(county)
-    
-    county_data[county] = {
-        'manifest_count': manifest_count,
-        'observed_count': observed_count,
-        'estimated_contest_cards': estimated_contest_cards,
-        'vote_total': vote_total,
-        'ballots': ballots,
-        'estimation_method': estimation_method,
-    }
-```
-
-**Replace Step 2 (Calculate sampling rates):**
-
-**OLD:**
-```python
 # Step 2: Calculate sampling rates
 for county, data in county_data.items():
     data['sampling_rate'] = data['observed_count'] / data['manifest_count']
@@ -139,24 +92,83 @@ for county, data in county_data.items():
 
 **NEW:**
 ```python
-# Step 2: Calculate sampling rates (using estimates)
-for county, data in county_data.items():
-    data['sampling_rate'] = data['estimated_contest_cards'] / data['manifest_count']
+# Step 1: Calculate contest sampling factor per county
+for county in counties:
+    if county not in manifest_counts:
+        continue
+    
+    manifest_count = manifest_counts[county]
+    examined_total = examined_counts.get(county, 0)
+    if manifest_count == 0 or examined_total == 0:
+        continue
+    
+    ballots = contest_ballots_per_county.get(county, [])
+    observed_count = len(ballots)
+    
+    # Get vote total for this contest in this county
+    vote_total = 0
+    if county in vote_totals and contest_name in vote_totals[county]:
+        vote_total = vote_totals[county][contest_name]
+    
+    # Calculate contest_sampling_factor
+    # = (contest_prevalence) × (overall_sampling_rate)
+    # = (votes / manifest) × (examined_total / manifest)
+    
+    if observed_count > 0:
+        # Normal case: use observed count for contest prevalence
+        contest_prevalence = observed_count / manifest_count
+        estimation_method = 'observed'
+    elif vote_total > 0:
+        # Zero observed: use votes as proxy for contest prevalence
+        contest_prevalence = vote_total / manifest_count
+        estimation_method = 'vote_based'
+    else:
+        # No observations AND no votes: minimal placeholder
+        contest_prevalence = 0.1 / manifest_count
+        estimation_method = 'placeholder'
+    
+    overall_sampling_rate = examined_total / manifest_count
+    contest_sampling_factor = contest_prevalence × overall_sampling_rate
+    
+    county_data[county] = {
+        'manifest_count': manifest_count,
+        'examined_total': examined_total,
+        'observed_count': observed_count,
+        'vote_total': vote_total,
+        'contest_prevalence': contest_prevalence,
+        'overall_sampling_rate': overall_sampling_rate,
+        'contest_sampling_factor': contest_sampling_factor,
+        'ballots': ballots,
+        'estimation_method': estimation_method,
+    }
+
+# Step 2: Find minimum contest_sampling_factor
+min_factor = min(data['contest_sampling_factor'] for data in county_data.values())
+min_county = min(county_data.items(), 
+                 key=lambda x: x[1]['contest_sampling_factor'])[0]
 ```
 
-**Update Step 4 (Downsampling):**
+**Update Step 3 & 4 (Downsampling):**
 
 **Constraint:** Can't use more ballots than we observed!
 
 ```python
-# Step 4: Downsample to minimum rate
+# Step 3: Display minimum contest_sampling_factor
+if show_work:
+    print(f"\nStep 3: Minimum contest_sampling_factor")
+    print(f"  {min_factor:.10f} ({min_county})")
+
+# Step 4: Downsample to minimum factor
 for county, data in county_data.items():
     if county == min_county:
-        # Use ALL observed ballots from minimum-rate county
+        # Use ALL observed ballots from minimum-factor county
         n_to_use = data['observed_count']
     else:
-        # Downsample: manifest × min_rate, but limited by observations
-        target = int(data['manifest_count'] * min_rate)
+        # Downsample by factor ratio
+        # ratio = min_factor / this_county_factor
+        # n_to_use = observed_count × ratio
+        ratio = min_factor / data['contest_sampling_factor']
+        target = int(data['observed_count'] * ratio)
         n_to_use = min(target, data['observed_count'])
     
     ballots_to_use = data['ballots'][:n_to_use]
@@ -169,28 +181,25 @@ for county, data in county_data.items():
 
 ```python
 if show_work:
-    print("Step 1: Estimate contest ballot cards per county")
-    print(f"  Using vote totals from tabulateCounty.csv where available")
+    print("Step 1: Calculate contest sampling factor per county")
+    print(f"  Formula: (contest_prevalence) × (overall_sampling_rate)")
+    print(f"         = (votes or observed / manifest) × (examined_total / manifest)")
+    print()
     
     for county, data in county_data.items():
         method = data['estimation_method']
         print(f"  {county}:")
-        print(f"    ballot_card_count (manifest): {data['manifest_count']:,}")
-        print(f"    Total examined ballots: {examined_counts.get(county, 0)}")
+        print(f"    manifest_count: {data['manifest_count']:,}")
+        print(f"    examined_total: {data['examined_total']}")
+        print(f"    observed_with_contest: {data['observed_count']}")
         
-        if method == 'observed':
-            print(f"    Observed with contest: {data['observed_count']}")
-            print(f"    Estimation: OBSERVED (actual count)")
-        elif method == 'vote_based':
-            print(f"    Observed with contest: 0")
-            print(f"    Vote total: {data['vote_total']:,}")
-            print(f"    Estimation: VOTE-BASED (from tabulateCounty.csv)")
-        else:  # placeholder
-            print(f"    Observed with contest: 0")
-            print(f"    Vote total: 0")
-            print(f"    Estimation: PLACEHOLDER (no data available)")
+        if method == 'vote_based':
+            print(f"    vote_total: {data['vote_total']:,}")
+            print(f"    Estimation: VOTE-BASED")
         
-        print(f"    Estimated contest cards: {data['estimated_contest_cards']:.1f}")
+        print(f"    contest_prevalence: {data['contest_prevalence']:.8f}")
+        print(f"    overall_sampling_rate: {data['overall_sampling_rate']:.8f}")
+        print(f"    contest_sampling_factor: {data['contest_sampling_factor']:.10f}")
 ```
 
 ### 4. Update Database Schema
@@ -207,7 +216,9 @@ estimation_method TEXT  -- 'observed', 'vote_based', 'placeholder'
 **Add columns:**
 ```sql
 ALTER TABLE county_sampling_details ADD COLUMN vote_total INTEGER;
-ALTER TABLE county_sampling_details ADD COLUMN estimated_contest_cards REAL;
+ALTER TABLE county_sampling_details ADD COLUMN contest_prevalence REAL;
+ALTER TABLE county_sampling_details ADD COLUMN overall_sampling_rate REAL;
+ALTER TABLE county_sampling_details ADD COLUMN contest_sampling_factor REAL;
 ```
 
 **Updated schema:**
@@ -274,6 +285,100 @@ result = calculate_contest_risk(
     show_work=args.show_work
 )
 ```
+
+---
+
+## Detailed Worked Example
+
+### BRUSH RURAL FIRE PROTECTION DISTRICT BALLOT ISSUE 7A
+
+**Counties:** Morgan, Washington
+
+#### Input Data
+
+**Morgan County:**
+- manifest_count: 13,669
+- examined_total: 39 ballots
+- observed_with_contest: 2 ballots
+- vote_total: 452 + 555 = 1,007 votes
+
+**Washington County:**
+- manifest_count: 2,838
+- examined_total: 31 ballots
+- observed_with_contest: 0 ballots
+- vote_total: 10 + 11 = 21 votes
+
+#### Step 1: Calculate contest_sampling_factor
+
+**Morgan (has observations):**
+```
+contest_prevalence = observed / manifest
+                   = 2 / 13,669
+                   = 0.00014632
+
+overall_sampling_rate = examined_total / manifest
+                      = 39 / 13,669
+                      = 0.00285285
+
+contest_sampling_factor = 0.00014632 × 0.00285285
+                        = 0.0000004174
+```
+
+**Washington (zero observed - use votes):**
+```
+contest_prevalence = votes / manifest
+                   = 21 / 2,838
+                   = 0.00740028
+
+overall_sampling_rate = examined_total / manifest
+                      = 31 / 2,838
+                      = 0.01092323
+
+contest_sampling_factor = 0.00740028 × 0.01092323
+                        = 0.0000808386
+```
+
+#### Step 2: Find Minimum
+
+```
+min_factor = 0.0000004174 (Morgan)  ← Morgan is minimum!
+```
+
+**Why Morgan?** Even though Morgan has higher contest prevalence (0.146% vs 0.74%), Morgan's lower overall sampling rate (0.285% vs 1.09%) makes the combined factor smaller.
+
+#### Step 3: Downsample
+
+**Morgan (minimum - use all):**
+```
+Use ALL 2 observed ballots
+```
+
+**Washington (downsample):**
+```
+ratio = min_factor / factor_Washington
+      = 0.0000004174 / 0.0000808386
+      = 0.00516
+
+target = observed × ratio
+       = 0 × 0.00516
+       = 0 ballots (can't use what we didn't observe!)
+```
+
+#### Final Sample
+
+```
+Total uniform sample: 2 ballots (both from Morgan)
+Washington contribution: 0 (correctly - examined none)
+```
+
+### Key Insight
+
+**The contest_sampling_factor correctly identified Morgan as the constraint** because:
+- Morgan's overall sampling was less intensive (39/13,669 vs 31/2,838)
+- Even though the contest was MORE common in Morgan (2/13,669 vs 0/2,838 observed)
+- The **product** of both factors determines the effective sampling
+
+This is much more accurate than the fake ballot method which would have incorrectly identified Washington as minimum!
 
 ---
 
