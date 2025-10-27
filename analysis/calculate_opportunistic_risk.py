@@ -57,7 +57,14 @@ def load_all_data(round_num=3):
     with open(contest_file, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            contest_metadata[row['contest_name']] = row
+            # Store the row, ensuring discrepancy counts are integers
+            contest_metadata[row['contest_name']] = {
+                **row,
+                'two_vote_over_count': int(row.get('two_vote_over_count', 0)),
+                'one_vote_over_count': int(row.get('one_vote_over_count', 0)),
+                'one_vote_under_count': int(row.get('one_vote_under_count', 0)),
+                'two_vote_under_count': int(row.get('two_vote_under_count', 0)),
+            }
             audit_reason = row.get('audit_reason', 'unknown')
             contest_by_type[audit_reason] += 1
     
@@ -260,18 +267,26 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
                 print(f"    IDs: {', '.join(data['ballot_ids'][:5])} ... (+{data['n_used']-5} more)")
         print(f"  Total uniformly random sample: {len(valid_sample)} ballots with contest")
     
-    # Step 5: Count discrepancies
-    discrepancies = sum(1 for b in valid_sample if has_discrepancy(b))
+    # Step 5: Get discrepancy counts from contest metadata
+    # ColoradoRLA has already classified these correctly
+    o2 = contest_data.get('two_vote_over_count', 0)
+    o1 = contest_data.get('one_vote_over_count', 0) 
+    u1 = contest_data.get('one_vote_under_count', 0)
+    u2 = contest_data.get('two_vote_under_count', 0)
+    
+    total_discrepancies = o1 + o2 + u1 + u2
     
     if show_work:
-        print(f"\nStep 5: Discrepancies")
-        print(f"  Total: {discrepancies}")
+        print(f"\nStep 5: Discrepancies (from ColoradoRLA classifications)")
+        print(f"  Two-vote overstatements: {o2}")
+        print(f"  One-vote overstatements: {o1}")
+        print(f"  One-vote understatements: {u1}")
+        print(f"  Two-vote understatements: {u2}")
+        print(f"  Total: {total_discrepancies}")
     
     # Step 6: Calculate risk
     n = len(valid_sample)
     diluted_margin = min_margin / contest_ballot_card_count
-    o1 = discrepancies
-    o2 = u1 = u2 = 0
     
     risk = rlacalc.KM_P_value(n=n, gamma=GAMMA, margin=diluted_margin,
                                o1=o1, o2=o2, u1=u1, u2=u2)
@@ -282,7 +297,11 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
         print(f"  min_margin: {min_margin:,}")
         print(f"  diluted_margin: {min_margin:,} / {contest_ballot_card_count:,} = {diluted_margin:.6f}")
         print(f"  n (uniformly random sample): {n}")
-        print(f"  discrepancies (o1): {discrepancies}")
+        print(f"  Kaplan-Markov parameters:")
+        print(f"    o2 (two-vote over): {o2}")
+        print(f"    o1 (one-vote over): {o1}")
+        print(f"    u1 (one-vote under): {u1}")
+        print(f"    u2 (two-vote under): {u2}")
         risk_str = f"{risk:.8e}" if risk < 0.0001 else f"{risk:.8f}"
         print(f"  Risk: {risk_str}")
         status = "✓ PASS" if risk <= RISK_LIMIT else "✗ FAIL"
@@ -293,7 +312,11 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
         'min_margin': min_margin,
         'contest_ballot_card_count': contest_ballot_card_count,
         'diluted_margin': diluted_margin,
-        'discrepancies': discrepancies,
+        'discrepancies': total_discrepancies,
+        'o1': o1,
+        'o2': o2,
+        'u1': u1,
+        'u2': u2,
         'risk': risk,
         'counties': len(county_data),
         'min_rate': min_rate,
