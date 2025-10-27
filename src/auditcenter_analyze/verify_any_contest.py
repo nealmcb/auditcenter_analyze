@@ -12,6 +12,7 @@ import hashlib
 import csv
 import sys
 import argparse
+from pathlib import Path
 from typing import List, Tuple, Optional
 
 
@@ -132,7 +133,7 @@ def load_actual_selections(comparison_file: str, contest_name: str) -> List[str]
 
 
 def verify_contest(contest_name: str, county: Optional[str] = None, 
-                  base_path: str = "/srv/s/electionaudits/colorado-rla-2018/neal_ignore/auditcenter-2024g") -> bool:
+                  base_path = None) -> bool:
     """
     Verify random ballot selection for a given contest.
     
@@ -144,6 +145,10 @@ def verify_contest(contest_name: str, county: Optional[str] = None,
     Returns:
         True if verification successful, False otherwise
     """
+    
+    # Set default path if not provided
+    if base_path is None:
+        base_path = Path(__file__).parent.parent.parent / "data" / "2024" / "general"
     
     SEED = "53417960661093690826"
     
@@ -591,7 +596,8 @@ def main():
     
     args = parser.parse_args()
     
-    base_path = "/srv/s/electionaudits/colorado-rla-2018/neal_ignore/auditcenter-2024g"
+    # Use data symlink relative to this file location
+    base_path = Path(__file__).parent.parent.parent / "data" / "2024" / "general"
     
     # Handle listing options
     if args.list_contests:

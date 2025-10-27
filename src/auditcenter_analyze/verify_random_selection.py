@@ -10,6 +10,7 @@ Test case: Bent County Commissioner-District 1
 
 import hashlib
 import csv
+from pathlib import Path
 from typing import List, Tuple
 
 
@@ -118,8 +119,10 @@ def main():
     BALLOT_CARD_COUNT = 2221
     SAMPLE_SIZE = 32  # Changed to 32 to match actual audit (went to round 2)
     
-    MANIFEST_FILE = "/srv/s/electionaudits/colorado-rla-2018/neal_ignore/auditcenter-2024g/BentBallotManifest.csv"
-    COMPARISON_FILE = "/srv/s/electionaudits/colorado-rla-2018/neal_ignore/auditcenter-2024g/round2/contestComparison.csv"
+    # Use data symlink relative to this file location
+    data_dir = Path(__file__).parent.parent.parent / "data" / "2024" / "general"
+    MANIFEST_FILE = data_dir / "BentBallotManifest.csv"
+    COMPARISON_FILE = data_dir / "round2" / "contestComparison.csv"
     
     print("=" * 80)
     print("RANDOM BALLOT SELECTION VERIFICATION")

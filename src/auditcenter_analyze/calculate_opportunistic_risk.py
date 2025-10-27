@@ -13,9 +13,6 @@ from pathlib import Path
 from collections import defaultdict
 from datetime import datetime
 
-script_dir = Path(__file__).parent.parent / "rlacalc"
-sys.path.insert(0, str(script_dir))
-
 import rlacalc
 
 GAMMA = 1.03905
@@ -23,7 +20,8 @@ RISK_LIMIT = 0.03
 
 def load_all_data(round_num=3):
     """Load all data efficiently in one pass."""
-    data_dir = Path(__file__).parent.parent / "data" / "2024" / "general"
+    # Go from src/auditcenter_analyze/ to repo root
+    data_dir = Path(__file__).parent.parent.parent / "data" / "2024" / "general"
     
     # 1. Load manifest counts per county
     print("Step 1: Loading manifests...")

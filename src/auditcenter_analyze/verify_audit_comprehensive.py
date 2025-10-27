@@ -16,6 +16,7 @@ This approach is efficient - loads manifests once, processes all contests.
 import hashlib
 import csv
 import json
+from pathlib import Path
 from typing import Dict, Set, List, Tuple
 from collections import defaultdict
 
@@ -39,7 +40,8 @@ COUNTY_IDS = {
 COUNTY_NAME_TO_ID = {name: cid for cid, name in COUNTY_IDS.items()}
 
 SEED = "53417960661093690826"
-BASE_PATH = "/srv/s/electionaudits/colorado-rla-2018/neal_ignore/auditcenter-2024g"
+# Use data symlink relative to this file location
+BASE_PATH = Path(__file__).parent.parent.parent / "data" / "2024" / "general"
 
 
 def generate_random_numbers(seed: str, count: int, domain_size: int) -> List[int]:

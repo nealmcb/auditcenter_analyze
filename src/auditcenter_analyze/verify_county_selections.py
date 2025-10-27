@@ -7,6 +7,7 @@ This verifies the UNION of all selections for targeted contests in a county.
 
 import hashlib
 import csv
+from pathlib import Path
 from typing import List, Set, Dict
 
 # County ID mapping (from county_ids.properties)
@@ -30,7 +31,8 @@ COUNTY_IDS = {
 COUNTY_NAME_TO_ID = {name: id for id, name in COUNTY_IDS.items()}
 
 SEED = "53417960661093690826"
-BASE_PATH = "/srv/s/electionaudits/colorado-rla-2018/neal_ignore/auditcenter-2024g"
+# Use data symlink relative to this file location
+BASE_PATH = Path(__file__).parent.parent.parent / "data" / "2024" / "general"
 
 
 def generate_random_numbers(seed: str, count: int, domain_size: int) -> List[int]:
@@ -122,7 +124,7 @@ def get_targeted_contests_for_county(county: str, round_num: int = 3) -> List[Di
     contests_in_county = set()
     
     try:
-        with open(f"{BASE_PATH}/contestsByCounty.csv", 'r', encoding='utf-8-sig') as f:
+        with open(BASE_PATH / "contestsByCounty.csv", 'r', encoding='utf-8-sig') as f:
             reader = csv.DictReader(f)
             for row in reader:
                 if int(row['county_id']) == county_id:
@@ -131,7 +133,7 @@ def get_targeted_contests_for_county(county: str, round_num: int = 3) -> List[Di
         pass
     
     # Now check which of those are targeted for RLA
-    contest_file = f"{BASE_PATH}/round{round_num}/contest.csv"
+    contest_file = BASE_PATH / f"round{round_num}" / "contest.csv"
     try:
         with open(contest_file, 'r', encoding='utf-8-sig') as f:
             reader = csv.DictReader(f)
@@ -158,7 +160,7 @@ def get_counties_for_contest(contest_name: str) -> List[int]:
     Uses contestsByCounty.csv to find ALL counties with the contest,
     not just counties with examined ballots.
     """
-    counties_file = f"{BASE_PATH}/contestsByCounty.csv"
+    counties_file = BASE_PATH / "contestsByCounty.csv"
     county_ids = []
     
     with open(counties_file, 'r', encoding='utf-8-sig') as f:
@@ -193,7 +195,7 @@ def verify_county(county: str, round_num: int = 3):
     print()
     
     # Get all ballots examined in this county
-    comparison_file = f"{BASE_PATH}/round{round_num}/contestComparison.csv"
+    comparison_file = BASE_PATH / f"round{round_num}" / "contestComparison.csv"
     examined_ballots = set()
     
     with open(comparison_file, 'r', encoding='utf-8-sig') as f:
@@ -216,7 +218,7 @@ def verify_county(county: str, round_num: int = 3):
     
     # Load county manifest
     county_file_name = county.replace(' ', '')
-    manifest_file = f"{BASE_PATH}/{county_file_name}BallotManifest.csv"
+    manifest_file = BASE_PATH / f"{county_file_name}BallotManifest.csv"
     manifest = load_ballot_manifest(manifest_file)
     print(f"Loaded {county} County manifest: {len(manifest):,} ballot cards")
     print()
@@ -260,7 +262,7 @@ def verify_county(county: str, round_num: int = 3):
                 county_name = COUNTY_IDS[cid]
                 # Remove spaces from county name for file path
                 county_file_name = county_name.replace(' ', '')
-                county_manifest_file = f"{BASE_PATH}/{county_file_name}BallotManifest.csv"
+                county_manifest_file = BASE_PATH / f"{county_file_name}BallotManifest.csv"
                 try:
                     county_ballots = load_ballot_manifest(county_manifest_file)
                     start = current_pos + 1

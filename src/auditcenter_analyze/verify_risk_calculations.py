@@ -6,10 +6,13 @@ Uses rlacalc.py to independently calculate risk and compare to reported values.
 """
 
 import csv
-import rlacalc
+from pathlib import Path
 from typing import Dict, List
 
-BASE_PATH = "/srv/s/electionaudits/colorado-rla-2018/neal_ignore/auditcenter-2024g"
+import rlacalc
+
+# Use data symlink relative to this file location
+BASE_PATH = Path(__file__).parent.parent.parent / "data" / "2024" / "general"
 
 
 def verify_contest_risk(contest_data: Dict, round_num: int) -> Dict:

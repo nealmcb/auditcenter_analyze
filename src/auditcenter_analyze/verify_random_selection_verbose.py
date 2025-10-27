@@ -7,6 +7,7 @@ This script shows the complete SHA-256 hashing process for transparency.
 
 import hashlib
 import csv
+from pathlib import Path
 from typing import List, Tuple
 
 
@@ -97,7 +98,9 @@ def main():
     BALLOT_CARD_COUNT = 2221
     SAMPLE_SIZE = 5  # Just show first 5 for verbose output
     
-    MANIFEST_FILE = "/srv/s/electionaudits/colorado-rla-2018/neal_ignore/auditcenter-2024g/BentBallotManifest.csv"
+    # Use data symlink relative to this file location
+    data_dir = Path(__file__).parent.parent.parent / "data" / "2024" / "general"
+    MANIFEST_FILE = data_dir / "BentBallotManifest.csv"
     
     print("=" * 100)
     print("CRYPTOGRAPHIC VERIFICATION OF RANDOM BALLOT SELECTION")

@@ -6,9 +6,11 @@ Find out why they were examined but not in our generated selections.
 
 import hashlib
 import csv
+from pathlib import Path
 
 SEED = "53417960661093690826"
-BASE_PATH = "/srv/s/electionaudits/colorado-rla-2018/neal_ignore/auditcenter-2024g"
+# Use data symlink relative to this file location
+BASE_PATH = Path(__file__).parent.parent.parent / "data" / "2024" / "general"
 
 # Generate selections
 def generate_random_numbers(seed, count, domain_size):
