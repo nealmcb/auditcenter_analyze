@@ -31,10 +31,10 @@ typecheck: ## Run mypy type checker
 	uv run mypy src/
 
 test: ## Run pytest tests
-	uv run pytest tests/ -v
+	uv run pytest tests/ -v -s
 
 test-v: ## Run pytest tests with extra verbose output
-	uv run pytest tests/ -vv --tb=short
+	uv run pytest tests/ -vv -s --tb=short
 
 test-quiet: ## Run pytest tests quietly
 	uv run pytest tests/ -q

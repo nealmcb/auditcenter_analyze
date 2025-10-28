@@ -1,0 +1,867 @@
+Step 1: Loading manifests...
+  Loaded 63 county manifests
+  Total ballot cards statewide: 4,740,167
+
+Step 2: Loading contest metadata...
+Step 3: Loading contest-county mappings...
+Step 4: Loading examined ballots...
+  Loaded 4,897 total examined ballots across 63 counties
+
+Sample sizes by county:
+  Adams          :  231 examined / 468,858 ballot cards ( 0.05%)
+  Alamosa        :   66 examined /  15,216 ballot cards ( 0.43%)
+  Arapahoe       :   69 examined / 330,888 ballot cards ( 0.02%)
+  Archuleta      :   38 examined /   9,489 ballot cards ( 0.40%)
+  Baca           :   91 examined /   2,165 ballot cards ( 4.20%)
+  Bent           :   32 examined /   2,221 ballot cards ( 1.44%)
+  Boulder        :  135 examined / 396,121 ballot cards ( 0.03%)
+  Broomfield     :   56 examined /  47,543 ballot cards ( 0.12%)
+  Chaffee        :   89 examined /  14,627 ballot cards ( 0.61%)
+  Cheyenne       :   20 examined /   1,064 ballot cards ( 1.88%)
+  ClearCreek     :   73 examined /   6,180 ballot cards ( 1.18%)
+  Conejos        :   75 examined /   4,196 ballot cards ( 1.79%)
+  Costilla       :   47 examined /   2,149 ballot cards ( 2.19%)
+  Crowley        :   15 examined /   1,729 ballot cards ( 0.87%)
+  Custer         :   34 examined /   3,932 ballot cards ( 0.86%)
+  Delta          :   83 examined /  19,786 ballot cards ( 0.42%)
+  Denver         :  280 examined / 1,104,271 ballot cards ( 0.03%)
+  Dolores        :  146 examined /   1,453 ballot cards (10.05%)
+  Douglas        :   73 examined / 248,173 ballot cards ( 0.03%)
+  Eagle          :   49 examined /  28,988 ballot cards ( 0.17%)
+  ElPaso         :  160 examined / 387,297 ballot cards ( 0.04%)
+  Elbert         :   23 examined /  20,652 ballot cards ( 0.11%)
+  Fremont        :   22 examined /  26,051 ballot cards ( 0.08%)
+  Garfield       :  117 examined /  30,750 ballot cards ( 0.38%)
+  Gilpin         :  140 examined /   4,183 ballot cards ( 3.35%)
+  Grand          :   57 examined /  10,236 ballot cards ( 0.56%)
+  Gunnison       :   49 examined /  11,126 ballot cards ( 0.44%)
+  Hinsdale       :   81 examined /     618 ballot cards (13.11%)
+  Huerfano       :   54 examined /   4,511 ballot cards ( 1.20%)
+  Jackson        :   57 examined /     845 ballot cards ( 6.75%)
+  Jefferson      :   90 examined / 367,779 ballot cards ( 0.02%)
+  Kiowa          :   57 examined /   1,060 ballot cards ( 5.38%)
+  KitCarson      :  109 examined /   3,807 ballot cards ( 2.86%)
+  LaPlata        :   65 examined /  36,150 ballot cards ( 0.18%)
+  Lake           :  116 examined /   3,973 ballot cards ( 2.92%)
+  Larimer        :  131 examined / 458,224 ballot cards ( 0.03%)
+  LasAnimas      :   40 examined /   7,886 ballot cards ( 0.51%)
+  Lincoln        :   25 examined /   2,595 ballot cards ( 0.96%)
+  Logan          :   64 examined /  10,274 ballot cards ( 0.62%)
+  Mesa           :   64 examined /  92,921 ballot cards ( 0.07%)
+  Mineral        :   18 examined /     766 ballot cards ( 2.35%)
+  Moffat         :   47 examined /       0 ballot cards ( 0.00%)
+  Montezuma      :   57 examined /  15,436 ballot cards ( 0.37%)
+  Montrose       :   33 examined /  26,005 ballot cards ( 0.13%)
+  Morgan         :   39 examined /  13,669 ballot cards ( 0.29%)
+  Otero          :   37 examined /   9,039 ballot cards ( 0.41%)
+  Ouray          :   75 examined /   4,157 ballot cards ( 1.80%)
+  Park           :   56 examined /  13,392 ballot cards ( 0.42%)
+  Phillips       :   68 examined /   2,384 ballot cards ( 2.85%)
+  Pitkin         :   41 examined /  11,348 ballot cards ( 0.36%)
+  Prowers        :   18 examined /   5,209 ballot cards ( 0.35%)
+  Pueblo         :  385 examined / 170,790 ballot cards ( 0.23%)
+  RioBlanco      :   58 examined /   3,728 ballot cards ( 1.56%)
+  RioGrande      :   35 examined /   6,286 ballot cards ( 0.56%)
+  Routt          :  175 examined /  33,261 ballot cards ( 0.53%)
+  Saguache       :  119 examined /   3,446 ballot cards ( 3.45%)
+  SanMiguel      :   39 examined /   5,008 ballot cards ( 0.78%)
+  Sedgwick       :   84 examined /   1,371 ballot cards ( 6.13%)
+  Summit         :   61 examined /  17,819 ballot cards ( 0.34%)
+  Teller         :   77 examined /  17,112 ballot cards ( 0.45%)
+  Washington     :   31 examined /   2,838 ballot cards ( 1.09%)
+  Weld           :  102 examined / 182,397 ballot cards ( 0.06%)
+  Yuma           :   19 examined /   4,719 ballot cards ( 0.40%)
+
+Contest metadata summary:
+  Total contests in contest.csv: 725
+  By audit_reason:
+    county_wide_contest: 63
+    opportunistic_benefits: 660
+    state_wide_contest: 2
+
+TODO: determine winners, losers, and proper discrepancy types rather than defaulting to o1
+
+Processing 725 contests by type:
+  State-wide targeted: 2
+  County-wide targeted: 63
+  Opportunistic: 660
+
+================================================================================
+STATE-WIDE TARGETED CONTESTS (2)
+================================================================================
+✓ Presidential Electors                                        n= 372 risk=2.323412e-09
+✓ Regent of the University of Colorado - At Large              n= 372 risk=0.001635
+
+================================================================================
+COUNTY-WIDE TARGETED CONTESTS (63)
+================================================================================
+✓ Adams County Commissioner - District 5                       n= 119 risk=0.012612
+✓ Alamosa County Commissioner - District 1                     n=  33 risk=0.021201
+✓ Amendment 80 (CONSTITUTIONAL) - Rio Blanco                   n=  58 risk=0.025685
+✓ Archuleta County Commissioner - District 1                   n=  38 risk=0.022300
+✓ Bent County Commissioner-District 1                          n=  32 risk=0.019098
+✓ Broomfield Ballot Question 2G                                n=  56 risk=0.018664
+✓ Chaffee County Commissioner - District 2                     n=  89 risk=0.026100
+✓ City of Colorado Springs Ballot Question 300                 n= 102 risk=0.012265
+⊗ City of Craig Ballot Question 2A                             ERROR: Contest not found in any count
+✓ City of Fort Morgan Ballot Question 2A                       n=  16 risk=0.002412
+✓ City of Holyoke Mayor                                        n=  28 risk=0.023051
+✓ Clear Creek County Commissioner - District 3                 n=  73 risk=0.023810
+✓ Conejos County Commissioner District 3                       n=  75 risk=0.012797
+✓ Costilla County Commissioner District 3                      n=  47 risk=0.024190
+✓ County Commissioner - District 2                             n= 117 risk=0.026978
+✓ County Court Judge - Cheyenne                                n=  20 risk=0.008933
+✓ Crowley County Commissioner - District 3                     n=  15 risk=0.009070
+✓ Custer County Board of County Commissioners - District 2     n=  34 risk=0.023771
+✓ Delta County Court - Zeerip                                  n=  83 risk=0.023157
+✓ Denver Ballot Issue 2Q                                       n=  99 risk=0.006111
+✓ District Attorney - 18th Judicial District                   n=  73 risk=0.008039
+✓ District Court Judge - 19th Judicial District - Crowther     n= 101 risk=0.014181
+✓ Douglas County Commissioner - District 2                     n=  73 risk=0.013023
+✗ Dove Creek Ambulance District Ballot Issue 6A                n= 117 risk=0.047079
+✓ Eagle County Commissioner - District 1                       n=  48 risk=0.019207
+✓ Elbert County Question 1A                                    n=  23 risk=0.003306
+✓ Fremont County Board of County Commissioners - District 3    n=  21 risk=0.014443
+✓ Gilpin County Commissioner - District 1                      n= 140 risk=0.029035
+✓ Grand County Commissioner - District 2                       n=  57 risk=0.022519
+✓ Gunnison County Library District Ballot Issue 6A             n=  49 risk=0.024643
+✓ Hinsdale County Commissioner District 1                      n=  81 risk=0.007392
+✓ Huerfano County Commissioner - District 1                    n=  54 risk=0.023649
+✓ Jefferson County Commissioner - District 2                   n=  89 risk=0.006988
+✓ Kiowa County Hospital District Ballot Question 6A            n=  57 risk=0.026450
+✓ Lake County School District R-1 Ballot Issue 4A              n= 116 risk=0.027841
+✓ La Plata County Commissioner District 3                      n=  65 risk=0.024138
+✓ Larimer County Clerk and Recorder                            n=  62 risk=0.012002
+✓ Las Animas County Commissioner District 2                    n=  40 risk=0.022322
+✓ Lincoln County Commissioner - District 3                     n=  25 risk=0.018250
+✓ Logan County Court Judge - Brammer                           n=  64 risk=0.024670
+✓ Mesa County Ballot Issue 1A                                  n=  64 risk=0.019767
+✓ Mineral County Commissioner - District 3                     n=  18 risk=0.014423
+✓ Montezuma County Ballot Issue 1-A                            n=  57 risk=0.022415
+✓ Montrose County Commissioner - District 3                    n=  33 risk=0.018875
+✓ NORTH PARK SCHOOL DISTRICT R-1 BALLOT ISSUE 4A               n=  57 risk=0.028753
+✓ Otero County Ballot Question 1A                              n=  37 risk=0.008782
+✓ Ouray County Commissioner - District 1                       n=  75 risk=0.025837
+✓ Park County Commissioner District 1                          n=  50 risk=0.024542
+✓ Pitkin County Ballot Issue 1A: Affordable and Workforce Hous n=  41 risk=0.022220
+✓ Proposition 130 (STATUTORY) - Kit Carson                     n= 106 risk=0.028689
+✓ Prowers County Ballot Issue 1A                               n=  18 risk=0.011854
+✓ Pueblo County Commissioner - District 2                      n= 193 risk=0.027732
+✓ Rio Grande County Court - Stenger                            n=  35 risk=0.019966
+✗ Routt County Commissioner - District 1                       n=  77 risk=0.041393
+✓ Saguache County Commissioner District 1                      n= 119 risk=0.029968
+✓ San Miguel County Ballot Question 1A                         n=  39 risk=0.017559
+✗ Sedgwick County Commissioner - District 3                    n=  84 risk=0.030451
+✓ State Representative - District 10                           n=  11 risk=0.020849
+✓ Summit School District RE-1 Ballot Issue 4A                  n=  61 risk=0.020320
+✓ Teller County Ballot Question 1A                             n=  76 risk=0.020374
+✓ Town of Springfield Ballot Issue 2A                          n=  32 risk=0.018570
+✓ Washington County Commissioner - District 2                  n=  31 risk=0.019905
+✓ Yuma County Court - Jones                                    n=  19 risk=0.009512
+
+================================================================================
+OPPORTUNISTIC CONTESTS (660)
+================================================================================
+✓ 17th Judicial District Ballot Question 7B                    n= 123 risk=0.000269
+✗ Adams 12 Five Star Schools Ballot Issue 5D                   n=  51 risk=0.066024
+✗ Adams 12 Five Star Schools Ballot Issue 5E                   n=  51 risk=0.105777
+✗ Adams-Arapahoe School District 28J Ballot Issue 5A           n=  23 risk=0.042286
+✓ Adams-Arapahoe School District 28J Ballot Issue 5B           n=  23 risk=0.003139
+✓ Adams County Ballot Issue 1A                                 n= 112 risk=3.105660e-10
+✗ Adams County Commissioner - District 1                       n= 119 risk=0.040514
+✓ Adams County Commissioner - District 2                       n= 119 risk=1.327850e-05
+✓ Adams County Court Judge - Dinnel                            n= 119 risk=1.536498e-07
+✓ Adams County Court Judge - Flaum                             n= 119 risk=5.052907e-06
+✓ Adams County Court Judge - Ivey                              n= 119 risk=3.472704e-06
+✓ Adams County Court Judge - Jean                              n= 119 risk=8.680850e-07
+✓ Adams County Court Judge - Kirby                             n= 119 risk=1.811818e-07
+✓ Adams County Court Judge - Nowak                             n= 119 risk=6.148492e-07
+✗ Adams County School District 14 Ballot Issue 4A              n=   7 risk=0.926012
+✗ Adams County School District 14 Ballot Issue 4B              n=   7 risk=0.965932
+✓ Affordable Housing 0.5% Sales Tax Increase                   n=  80 risk=0.000192
+✗ Alamosa County Commissioner - District 3                     n=  33 risk=1.000000
+✗ Alamosa School District RE-11J Ballot Issue 5A               n=   4 risk=0.909955
+✓ Amendment 79 (CONSTITUTIONAL)                                n= 372 risk=2.672192e-19
+✗ Amendment 80 (CONSTITUTIONAL)                                n= 372 risk=0.186925
+✓ Amendment G (CONSTITUTIONAL)                                 n= 372 risk=2.377432e-38
+✓ Amendment H (CONSTITUTIONAL)                                 n= 372 risk=8.573286e-37
+✓ Amendment I (CONSTITUTIONAL)                                 n= 372 risk=2.233477e-29
+✓ Amendment J (CONSTITUTIONAL)                                 n= 372 risk=2.019808e-23
+✓ Amendment K (CONSTITUTIONAL)                                 n= 372 risk=9.660826e-08
+✗ Approval of Multiple Year Financial Obligation with Gilpin C n=   3 risk=0.450665
+✓ Arapahoe County Ballot Issue 1A                              n=  69 risk=7.004802e-07
+✗ Arapahoe County Commissioner - District 1                    n=  19 risk=0.259571
+✗ Arapahoe County Commissioner - District 3                    n=  21 risk=0.778818
+✗ Arapahoe County Commissioner - District 5                    n=   6 risk=0.360132
+✓ Arapahoe County Court - Hernandez                            n=  69 risk=3.456131e-05
+✓ Arapahoe County Court - Williford                            n=  69 risk=2.530442e-05
+✗ Archuleta County Commissioner - District 2                   n=  38 risk=1.000000
+✗ Archuleta County Coroner                                     n=  38 risk=1.000000
+✗ Arvada Fire Protection District Ballot Question 6A           n=   2 risk=0.574825
+✗ Ault Fire Protection District Ballot Issue 6A                n=   1 risk=0.912126
+✗ Ault Fire Protection District Ballot Issue 6B                n=   1 risk=0.920823
+✗ Baca County Commissioner - District 1                        n=  88 risk=1.000000
+✗ Baca County Commissioner - District 3                        n=  88 risk=1.000000
+✗ Baca County Coroner                                          n=  88 risk=1.000000
+✗ Baca County Court Judge - Lishchuk                           n=  88 risk=0.534296
+✗ Bannock Ballot Issue 6A                                      n=   1 risk=0.895389
+✗ Bent County Commissioner-District 3                          n=  32 risk=1.000000
+✓ Bent County Court - Clark                                    n=  32 risk=0.003489
+✗ BNC Metropolitan District No 2 Ballot Issue 6N               n=   1 risk=0.852551
+✗ BNC Metropolitan District No 2 Ballot Question 6M            n=   1 risk=0.895986
+✓ Boulder County Commissioner - District 1                     n=  63 risk=2.435889e-12
+✓ Boulder County Commissioner - District 2                     n=  63 risk=1.382964e-07
+✗ Boulder County Coroner                                       n=  63 risk=1.000000
+✓ Boulder County Court - Martin                                n=  63 risk=7.480923e-07
+✓ Broomfield Ballot Question 2A                                n=  56 risk=0.007626
+✓ Broomfield Ballot Question 2B                                n=  56 risk=1.538270e-05
+✗ Broomfield Ballot Question 2C                                n=  56 risk=0.768267
+✓ Broomfield Ballot Question 2D                                n=  56 risk=0.001640
+✓ Broomfield Ballot Question 2E                                n=  56 risk=0.002551
+✓ Broomfield Ballot Question 2F                                n=  56 risk=2.145444e-05
+✓ Broomfield County Court - DeWick                             n=  56 risk=5.254610e-06
+✗ BRUSH RURAL FIRE PROTECTION DISTRICT BALLOT ISSUE 7A         n=   2 risk=0.908477
+✗ Byers School District No. 32J Ballot Issue 5C                n=   1 risk=0.925314
+✗ Calhan School District No. RJ1 Ballot Question 5B            n=   1 risk=0.786607
+✗ Calhan School District RJ1 Question 5B                       n=   1 risk=0.751240
+✗ CANON CITY AREA METROPOLITAN RECREATION AND PARK DISTRICT IS n=  14 risk=0.785756
+✗ CANON CITY AREA METROPOLITAN RECREATION AND PARK DISTRICT IS n=  14 risk=0.961455
+✗ Carbon Valley Parks and Recreation District Ballot Issue 6C  n=  14 risk=0.287043
+✓ Chaffee County Commissioner - District 1                     n=  89 risk=0.003536
+✓ Chaffee County Court - Bull                                  n=  89 risk=2.448231e-08
+✗ Cherry Creek School District No. 5 Ballot Issue 4A           n=  31 risk=0.147732
+✗ Cherry Creek School District No. 5 Ballot Issue 4B           n=  31 risk=0.213514
+✗ Cheyenne County Commissioner - District 1                    n=  20 risk=1.000000
+✗ Cheyenne County Commissioner - District 3                    n=  20 risk=1.000000
+✗ Cheyenne County Coroner                                      n=  20 risk=1.000000
+✗ Cimarron Hills Fire Protection District Ballot Issue 6A      n=   4 risk=0.865299
+✗ City Council Member                                          n=  28 risk=0.199236
+✗ City of Alamosa Ballot Issue 2A                              n=  16 risk=0.457278
+✗ City of Alamosa Ballot Issue 2B                              n=  16 risk=0.412647
+✗ City of Aspen Ballot Issue 2A: Extension of Real Estate Tran n=  12 risk=0.174736
+✗ City of Aspen Ballot Issue 2B: Extension of Existing 0.45% S n=  12 risk=0.077900
+✓ City of Aspen Ballot Issue 2C: Imposition of a Use Tax on Mo n=  12 risk=0.013212
+✗ City of Aurora Question 3A                                   n=   7 risk=0.644045
+✗ City of Boulder Ballot Question 2C                           n=  21 risk=0.194082
+✗ City of Boulder Ballot Question 2D                           n=  21 risk=0.312527
+✗ City of Boulder Ballot Question 2E                           n=  21 risk=0.988720
+✗ CITY OF CANON CITY ISSUE #2A SALES AND USE TAX INCREASE FOR  n=   8 risk=0.769613
+✗ City of Central Alderman/City Council                        n=  16 risk=0.243498
+✗ City of Cherry Hills Village Ballot Question 2A              n=   1 risk=0.965512
+✗ City of Cherry Hills Village Ballot Question 300             n=   1 risk=0.745785
+✗ City of Cherry Hills Village Balot Question 2B               n=   1 risk=0.716611
+✗ City of Cherry Hills Village Councilmember District 1        n=   1 risk=1.000000
+✗ City of Cherry Hills Village Councilmember District 3        n=   1 risk=1.000000
+✗ City of Cherry Hills Village Councilmember District 5        n=   1 risk=1.000000
+✗ City of Cherry Hills Village Mayor                           n=   1 risk=1.000000
+✓ City of Colorado Springs Ballot Issue 2C                     n= 102 risk=3.440537e-11
+✗ City of Colorado Springs Ballot Question 2D                  n= 102 risk=0.589798
+✗ City of Dacono Ballot Question 2G                            n=   3 risk=0.738095
+✗ City of Dacono Ballot Question 2H                            n=   3 risk=0.783755
+✗ City of Dacono Ballot Question 2I                            n=   3 risk=0.933727
+✗ City of Dacono Ballot Question 2J                            n=   3 risk=0.430078
+✗ City of Dacono Council Members                               n=   3 risk=1.000000
+✗ City of Dacono Mayor                                         n=   3 risk=0.539880
+✗ City of Englewood Ballot Issue 2C                            n=   4 risk=0.972345
+✗ City of Englewood Ballot Question 301                        n=   4 risk=0.281290
+✗ City of Englewood Ballot Question  302                       n=   4 risk=0.523754
+✗ City of Evans Mayor                                          n=   6 risk=0.569810
+✗ City of Evans Ward 1 Council Member                          n=   1 risk=1.000000
+✗ City of Evans Ward 2 Council Member                          n=   2 risk=1.000000
+✗ City of Evans Ward 3 Council Member                          n=   4 risk=1.000000
+✓ City of Fort Collins Ballot Issue 2A                         n=  23 risk=0.001425
+✗ City of Fort Collins Ballot Question 2B                      n=  23 risk=0.037519
+✗ City of Fort Collins Ballot Question 2C                      n=  23 risk=0.056837
+✗ City of Fort Collins Ballot Question 2D                      n=  23 risk=0.055534
+✗ City of Fort Lupton Ballot Issue 2B                          n=   3 risk=0.746816
+✗ City of Fort Lupton Ballot Issue 2D                          n=   3 risk=0.798454
+✗ City of Fort Lupton Ballot Question 2C                       n=   3 risk=0.458906
+✗ City of Fort Lupton Ballot Question 2E                       n=   3 risk=0.871638
+✗ City of Greeley Ballot Issue 2L                              n=  18 risk=0.108198
+✗ City of Greeley Ballot Issue 2M                              n=  18 risk=0.054998
+✗ City of Greeley Ballot Question 2N                           n=  18 risk=0.172294
+✗ City of Greeley Ballot Question 2O                           n=  18 risk=0.291218
+✗ City of Idaho Springs Ballot Question 2A                     n=   6 risk=0.440232
+✗ City of Lafayette Ballot Question 2A                         n=   6 risk=0.544412
+✗ City of Lakewood Ballot Issue 2A                             n=  24 risk=0.068035
+✗ City of Leadville Ballot Issue 2B                            n=  35 risk=0.408381
+✗ City of Leadville Ballot Question 2A                         n=  35 risk=0.072771
+✗ City of Littleton Ballot Issue 3B                            n=   1 risk=0.993523
+✗ City of Longmont Ballot Issue 3A                             n=   3 risk=0.464662
+✗ City of Louisville City Council Ward 1                       n=   1 risk=0.997853
+✗ City of Loveland Ballot Issue 2E                             n=  17 risk=0.039640
+✗ City of Loveland Ballot Issue 2F                             n=  17 risk=0.074547
+✗ City of Loveland Ballot Issue 2G                             n=  17 risk=0.131294
+✗ City of Loveland Ballot Question 2H                          n=  17 risk=0.171887
+✗ City of Loveland Ballot Question 2I                          n=  17 risk=0.215079
+✗ City of Loveland Ballot Question 2J                          n=  17 risk=0.210629
+✗ City of Montrose Ballot Issue 2A                             n=  15 risk=0.868124
+✗ City of Pueblo Ballot Question 2A - Charter Amendment - Muni n= 118 risk=0.497740
+✗ City of Pueblo Ballot Question 2B - Charter Amendment - Mode n= 118 risk=0.815038
+✗ City of Pueblo Ballot Question 2C - Charter Amendment - Grea n= 118 risk=0.101842
+✓ City of Pueblo Ballot Question 2D - Charter Amendment - Muni n= 118 risk=0.001181
+✗ City of Sterling Referred Ballot Issue 2T                    n=  33 risk=0.629119
+✓ City of Thornton Question 2A                                 n=  32 risk=0.000363
+✗ CITY OF TRINIDAD BALLOT ISSUE 2A                             n=  15 risk=0.293201
+✓ City of Walsenburg Ballot Question 300 - Walsenburg Trash In n=  22 risk=0.024708
+✗ City of Westminster Ballot Issue 3C                          n=  25 risk=0.504697
+✗ City of Westminster Ballot Question 3D                       n=  25 risk=0.389765
+✗ City of Wheat Ridge Ballot Question 2B                       n=   2 risk=0.584105
+✗ City of Wheat Ridge Ballot Question 2C                       n=   2 risk=0.725851
+✗ City of Woodland Park Ballot Question 2A                     n=  24 risk=0.171471
+✗ City of Yuma Ballot Issue 2A - Levying a Lodging Tax in the  n=   3 risk=0.942743
+✓ CLEAR CREEK COUNTY BALLOT ISSUE 1A                           n=  73 risk=1.409897e-10
+✓ Clear Creek County Commissioner - District 2                 n=  73 risk=0.020871
+✓ Clear Creek County Court - Jones                             n=  73 risk=1.596993e-06
+✓ CLEAR CREEK COUNTY LIBRARY DISTRICT BALLOT ISSUE 6A          n=  73 risk=8.068060e-06
+✗ Clear Creek County Sheriff                                   n=  73 risk=1.000000
+✓ Colorado Court of Appeals Judge - Dunn                       n= 372 risk=7.790363e-24
+✓ Colorado Court of Appeals Judge - Jones                      n= 372 risk=5.205348e-13
+✓ Colorado Court of Appeals Judge - Kuhn                       n= 372 risk=1.321050e-21
+✓ Colorado Court of Appeals Judge - Roman                      n= 372 risk=7.089885e-22
+✓ Colorado Court of Appeals Judge - Schutz                     n= 372 risk=1.660982e-18
+✓ Colorado Supreme Court Justice - Berkenkotter                n= 372 risk=3.588390e-22
+✓ Colorado Supreme Court Justice - Boatright                   n= 372 risk=1.322430e-16
+✓ Colorado Supreme Court Justice - Marquez                     n= 372 risk=1.117350e-18
+✓ Conejos County Commissioner District 1                       n=  75 risk=0.005119
+✓ Conejos County Court - Kelly                                 n=  75 risk=2.343884e-08
+✗ Cortez Fire Protection District Ballot Issue 6-A             n=  24 risk=0.372887
+✓ Costilla County Commissioner District 1                      n=  47 risk=0.004832
+✗ Councilmember                                                n=   8 risk=0.902908
+✗ County Commissioner - District 3                             n= 117 risk=0.241208
+✓ County Court Judge - Denver Blackett                         n=  92 risk=2.780933e-08
+✓ County Court Judge - Denver Cherry                           n=  92 risk=1.201664e-08
+✓ County Court Judge - Denver Faragher                         n=  92 risk=1.612989e-08
+✓ County Court Judge - Denver Goble                            n=  92 risk=2.135305e-08
+✓ County Court Judge - Denver Pallares                         n=  92 risk=3.242275e-08
+✓ County Court Judge - Denver Rodarte                          n=  92 risk=1.964763e-08
+✓ County Court Judge - Denver Rudolph                          n=  92 risk=1.230431e-07
+✓ County Court Judge - Denver Schwartz                         n=  92 risk=4.634234e-08
+✓ County Court Judge - Denver Simonet                          n=  92 risk=1.465939e-08
+✓ County Court Judge - Denver Spahn                            n=  92 risk=1.335473e-08
+✓ County Court Judge - Gunnison                                n=  49 risk=1.818351e-05
+✓ County Court Judge - Routt                                   n=  77 risk=1.342098e-07
+✗ Crawford Water Conservancy District Ballot Issue 7B          n=   1 risk=0.743566
+✗ Crowley County Commissioner - District 2                     n=  15 risk=1.000000
+✗ Crystal Lakes Fire Protection District Ballot Issue 6F       n=   1 risk=0.672762
+✓ Custer County Board of County Commissioners - District 3     n=  34 risk=0.003787
+✗ Delta County Commissioner - District 2                       n=  83 risk=1.000000
+✓ Delta County Commissioner - District 3                       n=  83 risk=6.820855e-06
+✗ Denver Ballot Issue 2R                                       n=  99 risk=0.618377
+✗ Denver Downtown Development Authority Ballot Issue 6A        n=   1 risk=0.766901
+✓ Denver Initiated Ordinance 308                               n=  89 risk=0.002223
+✓ Denver Initiated Ordinance 309                               n=  89 risk=1.162597e-05
+✓ Denver Public Schools Ballot Issue 4A                        n=  89 risk=1.808980e-10
+✓ Denver Referred Question 2S                                  n=  99 risk=1.466009e-06
+✗ Denver Referred Question 2T                                  n=  99 risk=0.551992
+✓ Denver Referred Question 2U                                  n=  99 risk=3.080137e-06
+✓ Denver Referred Question 2V                                  n=  99 risk=2.218628e-06
+✓ Denver Referred Question 2W                                  n=  89 risk=0.000223
+✓ District Attorney - 10th Judicial District                   n= 193 risk=1.229085e-05
+✗ District Attorney - 11th Judicial District                   n=  45 risk=1.000000
+✗ District Attorney - 12th Judicial District                   n=  67 risk=1.000000
+✗ District Attorney - 13th Judicial District                   n= 108 risk=1.000000
+✗ District Attorney - 14th Judicial District                   n= 100 risk=1.000000
+✗ District Attorney - 15th Judicial District                   n=  31 risk=1.000000
+✗ District Attorney - 16th Judicial District                   n=  53 risk=1.000000
+✗ District Attorney - 17th Judicial District                   n= 131 risk=1.000000
+✗ District Attorney - 19th Judicial District                   n= 101 risk=1.000000
+✗ District Attorney - 1st Judicial District                    n=  90 risk=1.000000
+✗ District Attorney - 20th Judicial District                   n=  63 risk=1.000000
+✗ District Attorney - 21st Judicial District                   n=  64 risk=1.000000
+✓ District Attorney - 22nd Judicial District                   n=  62 risk=3.545256e-05
+✓ District Attorney - 23rd Judicial District                   n=  79 risk=0.000155
+✗ District Attorney - 2nd Judicial District                    n=  92 risk=1.000000
+✗ District Attorney - 3rd Judicial District                    n=  62 risk=1.000000
+✓ District Attorney - 4th Judicial District                    n= 167 risk=2.247869e-08
+✗ District Attorney - 5th Judicial District                    n=  93 risk=1.000000
+✗ District Attorney - 6th Judicial District                    n=  82 risk=1.000000
+✗ District Attorney - 7th Judicial District                    n=  83 risk=1.000000
+✗ District Attorney - 8th Judicial District                    n=  62 risk=0.740913
+✗ District Attorney - 9th Judicial District                    n= 165 risk=1.000000
+✓ District Court Judge - 10th Judicial District - O'Shea       n= 193 risk=1.982221e-09
+✗ District Court Judge - 11th Judicial District - Turner       n=  45 risk=0.093266
+✓ District Court Judge - 12th Judicial District - Cortez       n=  67 risk=1.046141e-05
+✓ District Court Judge - 13th Judicial District - Haenlein     n= 108 risk=0.003604
+✓ District Court Judge - 13th Judicial District - James        n= 108 risk=0.004165
+✓ District Court Judge - 13th Judicial District - McGuire      n= 108 risk=0.000180
+✓ District Court Judge - 15th Judicial District - Davidson     n=  31 risk=0.015809
+✓ District Court Judge - 16th Judicial District - Vigil        n=  53 risk=7.081935e-05
+✓ District Court Judge - 17th Judicial District - Holbrook     n= 131 risk=1.200779e-07
+✓ District Court Judge - 17th Judicial District - Martin       n= 131 risk=1.478208e-06
+✓ District Court Judge - 17th Judicial District - Vasquez      n= 131 risk=5.436744e-08
+✓ District Court Judge - 18th Judicial District - Figa         n= 124 risk=1.640411e-06
+✓ District Court Judge - 18th Judicial District - Leutwyler    n= 124 risk=2.406246e-06
+✓ District Court Judge - 18th Judicial District - Lung         n= 124 risk=1.526040e-07
+✓ District Court Judge - 18th Judicial District - McLean       n= 124 risk=1.592639e-08
+✓ District Court Judge - 18th Judicial District - Toussaint    n= 124 risk=2.693868e-07
+✓ District Court Judge - 18th Judicial District - Whitaker     n= 124 risk=7.438773e-08
+✓ District Court Judge - 18th Judicial District - Whitfield    n= 124 risk=0.001881
+✓ District Court Judge - 19th Judicial District - Esser        n= 101 risk=6.511127e-05
+✓ District Court Judge - 19th Judicial District - Taylor       n= 101 risk=2.729127e-05
+✓ District Court Judge - 1st Judicial District - Carrithers    n=  90 risk=1.089657e-05
+✓ District Court Judge - 1st Judicial District - Hunt          n=  90 risk=2.726196e-06
+✓ District Court Judge - 20th Judicial District - Collins      n=  63 risk=1.465993e-06
+✓ District Court Judge - 20th Judicial District - Gunning      n=  63 risk=1.118272e-06
+✓ District Court Judge - 20th Judicial District - Lindsey      n=  63 risk=2.004837e-06
+✓ District Court Judge - 20th Judicial District - Mulvahill    n=  63 risk=6.367440e-06
+✓ District Court Judge - 22nd Judicial District - Plewe        n=  62 risk=1.143060e-05
+✓ District Court Judge - 2nd Judicial District Bailey          n=  92 risk=1.767731e-08
+✓ District Court Judge - 2nd Judicial District Espinosa        n=  92 risk=1.078604e-08
+✓ District Court Judge - 2nd Judicial District Grant           n=  92 risk=1.141456e-07
+✓ District Court Judge - 2nd Judicial District Moses           n=  92 risk=5.919754e-09
+✓ District Court Judge - 2nd Judicial District Myers           n=  92 risk=1.217569e-08
+✓ District Court Judge - 2nd Judicial District Schutte         n=  92 risk=6.133437e-09
+✓ District Court Judge - 2nd Judicial District Scoville        n=  92 risk=2.262087e-08
+✓ District Court Judge - 2nd Judicial District Trujillo        n=  92 risk=1.433823e-08
+✓ District Court Judge - 4th Judicial District - Bentley       n= 167 risk=5.435590e-07
+✓ District Court Judge - 4th Judicial District - Billings-Vela n= 167 risk=8.969577e-07
+✓ District Court Judge - 4th Judicial District - Brady         n= 167 risk=1.833263e-08
+✓ District Court Judge - 4th Judicial District - Evig          n= 167 risk=1.809597e-06
+✓ District Court Judge - 4th Judicial District - Findorff      n= 167 risk=7.237355e-06
+✓ District Court Judge - 4th Judicial District - May           n= 167 risk=1.444541e-07
+✓ District Court Judge - 4th Judicial District - Moller        n= 167 risk=4.194677e-07
+✓ District Court Judge - 4th Judicial District - Shakes        n= 167 risk=1.543960e-09
+✓ District Court Judge - 5th Judicial District - Olguin-Fresqu n=  93 risk=1.728553e-07
+✓ District Court Judge - 6th Judicial District - Shropshire    n=  82 risk=2.831491e-06
+✓ District Court Judge - 7th Judicial District - Schultz       n=  83 risk=0.000189
+✓ District Court Judge - 7th Judicial District - Yoder         n=  83 risk=9.561175e-05
+✓ District Court Judge - 8th Judicial District - Cure          n=  62 risk=0.000195
+✓ District Court Judge - 8th Judicial District - Findley       n=  62 risk=0.000184
+✓ District Court Judge - 9th Judicial District - Norrdin       n= 165 risk=5.147126e-14
+✓ Dolores County Commissioner District 2                       n= 143 risk=2.624133e-07
+✓ Dolores County Commissioner District 3                       n= 143 risk=1.460170e-12
+✗ Dolores School District RE-4A Ballot Issue 4-A               n=  10 risk=0.162955
+✓ Douglas County Commissioner - District 3                     n=  73 risk=0.005847
+✓ Douglas County Court - Waidler                               n=  73 risk=3.922825e-05
+✓ Douglas County School District RE-1 Ballot Issue 5A          n=  65 risk=0.003151
+✓ Durango School District 9-R Ballot Issue 4A                  n=  49 risk=0.005661
+✗ Eagle County Commissioner - District 2                       n=  48 risk=1.000000
+✗ Eagle River Fire Protection District Ballot Issue 6A         n=  17 risk=0.089367
+✗ Elbert County Commissioner - District 1                      n=  23 risk=1.000000
+✗ Elbert County Commissioner - District 3                      n=  23 risk=1.000000
+✗ Eldorado Springs Public Improvement District Ballot Question n=   1 risk=0.630891
+✗ Elizabeth Mayor                                              n=   1 risk=0.985776
+✗ Elizabeth Trustee Ward 1                                     n=   1 risk=0.955566
+✗ Elizabeth Trustee Ward 3                                     n=   1 risk=0.991558
+✓ El Paso County Commissioner - District 2                     n=  39 risk=0.003625
+✗ El Paso County Commissioner - District 3                     n=  33 risk=0.275629
+✗ El Paso County Commissioner - District 4                     n=  28 risk=0.091073
+✓ El Paso County Court - Ankeny                                n= 160 risk=8.059311e-09
+✓ El Paso County Court - Fennick                               n= 160 risk=6.096168e-07
+✓ El Paso County Court - Gerhart                               n= 160 risk=1.739269e-09
+✓ El Paso County Court - Katzman                               n= 160 risk=2.323772e-05
+✓ El Paso County Court - McKedy                                n= 160 risk=1.965931e-08
+✗ El Paso County School District No. 20 (Academy) Ballot Issue n=  35 risk=0.080237
+✗ Fairmount Fire Protection District Ballot Issue 6B           n=   2 risk=0.671239
+✗ Fairmount Fire Protection District Ballot Question 6C        n=   2 risk=0.567119
+✗ Flagler Rural Fire Protection District Ballot Issue 6C       n=  16 risk=0.351521
+✗ Flying Horse Metropolitan District No. 2 Ballot Question 6C  n=   1 risk=0.750139
+✗ Flying Horse Metropolitan District No. 3 Ballot Question 6D  n=   1 risk=0.750359
+✓ Foothills Park & Recreation District Ballot Issue 6D         n=  20 risk=0.005074
+✗ Fremont County Board of County Commissioners - District 1    n=  21 risk=1.000000
+✗ Fremont County Surveyor                                      n=  21 risk=1.000000
+✗ Frenchman School District No. RE-3 Referred Ballot Issue 4D  n=   3 risk=0.869620
+✗ Funding Poncha Springs Law Enforcement And Parks And Recreat n=   9 risk=0.842576
+✗ Garfield County Court - Roff                                 n= 117 risk=0.476138
+✗ Gilpin County Commissioner - District 3                      n= 140 risk=0.176580
+✗ Glenwood Springs Ballot Issue 2A  Tax increase for Streets   n=  23 risk=0.811539
+✗ Granby Ranch Metropolitan District Ballot Issue 6A - Repeal  n=   1 risk=0.657011
+✓ Grand County Ballot Issue 1A - Lodging Tax Increase          n=  57 risk=0.005835
+✓ Grand County Commissioner - District 1                       n=  57 risk=0.016376
+✓ Gunnison County Commissioner - District 1                    n=  49 risk=0.002160
+✓ Gunnison County Commissioner - District 2                    n=  49 risk=0.021121
+✗ Harrison School District No. 2 Ballot Issue 4A               n=   9 risk=0.535452
+✗ Hartsel Fire Protection District Ballot Issue 6A - Mill Levy n=   7 risk=0.651966
+✗ Hinsdale County Commissioner District 3                      n=  81 risk=1.000000
+✗ Hinsdale County Coroner                                      n=  81 risk=1.000000
+✓ Hinsdale County Sheriff                                      n=  81 risk=2.086127e-05
+✗ Holyoke School District RE-1J Ballot Issue 5K - Bonds        n=   1 risk=0.978490
+✗ Homestead Public Improvement District of Boulder County Ball n=   1 risk=0.907135
+✗ Huerfano County Commissioner - District 2                    n=  54 risk=0.793811
+✗ Hyland Hills Park and Recreation District Ballot Issue No. 6 n=  22 risk=0.181528
+✗ Increase in City Lodging Tax                                 n=   3 risk=0.561546
+✗ Jackson County Commissioner Dist 2                           n=  57 risk=1.000000
+✗ Jackson County Commissioner Dist 3                           n=  57 risk=1.000000
+✓ Jefferson County Ballot Issue 1A                             n=  89 risk=0.001602
+✓ Jefferson County Commissioner - District 1                   n=  89 risk=0.005355
+✓ Jefferson County Court- Burback                              n=  89 risk=1.252933e-06
+✓ Jefferson County Court-Carpenter                             n=  89 risk=1.212744e-06
+✓ Jefferson County Court-Goman                                 n=  89 risk=2.542067e-06
+✓ Jefferson County Court-Peper                                 n=  89 risk=1.572744e-06
+✓ Jefferson County Court-Wheeler                               n=  89 risk=9.389038e-07
+✗ Ken-Caryl Metropolitan District Ballot Issue 6F              n=   1 risk=0.859135
+✗ Kiowa County Ballot Issue 1A                                 n=  48 risk=0.065141
+✗ Kiowa County Ballot Issue 1B - Lodging Tax                   n=  48 risk=0.068905
+✗ Kiowa County Commissioner - District 1                       n=  48 risk=1.000000
+✗ Kiowa County Commissioner - District 3                       n=  48 risk=1.000000
+✓ Kiowa County Public Library District Ballot Question 6B      n=  48 risk=5.942818e-06
+✗ Kiowa Mayor                                                  n=   1 risk=1.000000
+✗ Kiowa School District C-2 Issue 4A                           n=   4 risk=0.925738
+✗ Kit Carson County Commissioner - District 1                  n= 106 risk=1.000000
+✗ Kit Carson County Commissioner - District 3                  n= 106 risk=1.000000
+✗ Lafayette Downtown Development Authority Ballot Issue 6B     n=   1 risk=0.757188
+✗ Lafayette Downtown Development Authority Ballot Question 6A  n=   1 risk=0.733643
+✗ Lake County Assessor                                         n= 116 risk=1.000000
+✓ Lake County Commissioner District 1                          n= 116 risk=5.719685e-06
+✓ Lake County Commissioner District 2                          n= 116 risk=0.015125
+✓ Lake County Commissioner District 3                          n= 116 risk=0.018275
+✓ La Plata County Ballot Issue 1A                              n=  46 risk=0.000166
+✗ La Plata County Commissioner District 2                      n=  65 risk=1.000000
+✓ La Plata County Treasurer                                    n=  65 risk=1.994771e-10
+✗ Larimer County Ballot Issue 1A                               n=  69 risk=0.323868
+✗ Larimer County Commissioner - District 2                     n=  62 risk=0.041020
+✗ Larimer County Commissioner - District 3                     n=  62 risk=0.066259
+✓ Larimer County Court Judge - Ecton                           n=  62 risk=0.001390
+✓ Larimer County Court Judge - Lehman                          n=  62 risk=1.001215e-05
+✗ Larimer County Fox Ridge Estates Public Improvement District n=   1 risk=0.679194
+✗ Larimer County Grayhawk Knolls Public Improvement District N n=   1 risk=0.830686
+✗ Larimer County Poudre Overlook Public Improvement District N n=   1 risk=0.751550
+✗ Larimer County Tanager Public Improvement District No. 72 Ba n=   1 risk=0.664612
+✗ Larimer County Vine Drive Public Improvement District No. 29 n=   1 risk=0.793768
+✗ Las Animas County Commissioner District 1                    n=  40 risk=1.000000
+✓ Leadville Lake County Regional Housing Authority Ballot Issu n= 116 risk=3.715965e-05
+✓ Lincoln County Commissioner - District 2                     n=  25 risk=0.005602
+✗ Logan County Commissioner - District 1                       n=  64 risk=1.000000
+✗ Logan County Commissioner - District 2                       n=  64 risk=1.000000
+✓ Mesa County Ballot Issue 1B                                  n=  64 risk=0.019767
+✓ Mesa County Commissioner - District 1                        n=  64 risk=3.756289e-05
+✗ Mesa County Commissioner - District 3                        n=  64 risk=1.000000
+✓ Mesa County Court Judge - Grattan III                        n=  64 risk=4.428238e-05
+✓ Mesa County Valley School District 51 Ballot Issue 4A        n=  62 risk=0.002045
+✓ Mesa County Valley School District 51 Ballot Issue 4B        n=  62 risk=0.006685
+✗ Mineral County Commissioner - District 2                     n=  18 risk=1.000000
+⊗ Moffat County Commissioner District 1                        ERROR: Contest not found in any count
+⊗ Moffat County Commissioner District 2                        ERROR: Contest not found in any count
+✗ Montezuma Cortez RE-1 Ballot Issue 4-B                       n=  35 risk=0.313944
+✗ Montezuma County Commissioner District 2                     n=  57 risk=1.000000
+✗ Montezuma County Commissioner District 3                     n=  57 risk=1.000000
+✗ Montrose County Commissioner - District 1                    n=  33 risk=1.000000
+✓ Montrose County Court - Beckenhauer                          n=  33 risk=0.016114
+✗ Montrose County Court - Harvell                              n=  33 risk=0.038327
+✗ Montrose School District RE-1J Ballot Issue 5A               n=   3 risk=0.481692
+✓ Morgan County Commissioner District 1                        n=  39 risk=6.185491e-05
+✓ Morgan County Commissioner District 3                        n=  39 risk=7.472929e-06
+✗ Mountain Shadows Metropolitan District Ballot Issue 6E       n=   1 risk=0.899095
+✗ Mt Crested Butte Town Council                                n=   1 risk=0.977308
+✗ North Range Metropolitan District No 2 Ballot Question 6I    n=   1 risk=0.798893
+✗ North Range Metropolitan District No 2 Ballot Question 6J    n=   1 risk=0.797386
+✗ North Range Metropolitan District No 2 Ballot Question 6K    n=   1 risk=0.778692
+✗ North Range Metropolitan District No 2 Ballot Question 6L    n=   1 risk=0.799195
+✗ Norwood Fire Protection District Ballot Issue 7A             n=   1 risk=0.769805
+✗ Norwood School District R-2J Issue 5B                        n=   1 risk=0.963520
+✗ Otero County Commissioner District 1                         n=  37 risk=1.000000
+✗ Otero County Commissioner District 3                         n=  37 risk=1.000000
+✗ Ouray County Commissioner - District 3                       n=  75 risk=1.000000
+✓ Ouray County Court - Thomasson                               n=  75 risk=6.325728e-08
+✗ Parachute Ballot Issue 2B Increase sales and use tax streets n=   1 risk=0.910545
+✓ Park County Commissioner District 2                          n=  50 risk=0.021517
+✗ Phillips County Commissioner - District 2                    n=  68 risk=1.000000
+✗ Phillips County Commissioner - District 3                    n=  68 risk=1.000000
+✓ Phillips County Court Judge - Killin                         n=  68 risk=1.447805e-11
+✗ Phillips County Sheriff                                      n=  68 risk=1.000000
+✓ Pitkin County Ballot Issue 1B: County Solid Waste Center Bon n=  41 risk=1.037363e-06
+✓ Pitkin County Ballot Question 1C: BOCC Referred Home Rule Ch n=  41 risk=0.001353
+✓ Pitkin County Ballot Question 200: Citizen Initiated Home Ru n=  41 risk=0.022952
+✗ Pitkin County Commissioner - District 3                      n=  41 risk=1.000000
+✗ Pitkin County Commissioner - District 4                      n=  41 risk=1.000000
+✓ Pitkin County Commissioner - District 5                      n=  41 risk=0.000572
+✓ Pitkin County Court - Andrews                                n=  41 risk=1.181204e-05
+✗ Polo Reserve Metropolitan District Ballot Issue 6A           n=   1 risk=0.906432
+✗ Poudre School District R-1 Ballot Issue 4A                   n=  35 risk=0.101614
+✓ Proposition 127 (STATUTORY)                                  n= 400 risk=2.231653e-08
+✓ Proposition 128 (STATUTORY)                                  n= 400 risk=1.205243e-20
+✓ Proposition 129 (STATUTORY)                                  n= 400 risk=4.971889e-05
+✓ Proposition 130 (STATUTORY)                                  n= 400 risk=3.995357e-05
+✓ Proposition 131 (STATUTORY)                                  n= 400 risk=3.005264e-06
+✓ Proposition JJ (STATUTORY)                                   n= 400 risk=1.677392e-48
+✓ Proposition KK (STATUTORY)                                   n= 400 risk=8.377692e-08
+✗ Prowers County Commissioner - District 1                     n=  18 risk=1.000000
+✗ Prowers County Commissioner - District 3                     n=  18 risk=1.000000
+✗ Pueblo County Commissioner - District 1                      n= 193 risk=0.184596
+✓ Pueblo County Court - Silva                                  n= 193 risk=2.545639e-08
+✓ Pueblo County Court - Vellar                                 n= 193 risk=1.466735e-06
+✗ Pueblo County Rural 70 School District Ballot Issue 4A       n=  74 risk=0.153326
+✗ Rangely School District RE-4 Ballot Issue 4A                 n=  18 risk=0.378021
+✓ Regent of the University of Colorado - Congressional Distric n= 135 risk=0.000169
+✓ Regent of the University of Colorado - Congressional Distric n= 159 risk=2.809119e-06
+✓ Regional Transportation District Ballot Issue 7A             n= 101 risk=8.500132e-10
+✗ Regional Transportation District Ballot Question 7B          n=   1 risk=0.985204
+✗ Regional Transportation District Director - District A       n=   4 risk=0.763707
+✗ Regional Transportation District Director - District D       n=  14 risk=0.673560
+✗ Regional Transportation District Director - District E       n=   7 risk=0.259315
+✗ Regional Transportation District Director - District F       n=  19 risk=0.678829
+✗ Regional Transportation District Director - District G       n=  12 risk=1.000000
+✗ Regional Transportation District Director - District H       n=  22 risk=1.000000
+✗ Regional Transportation District Director - District I       n=   1 risk=1.000000
+✓ Regional Transportation District Director - District M       n=  31 risk=2.887534e-05
+✗ Representative to the 119th United States Congress - Distric n=   4 risk=0.323916
+✗ Representative to the 119th United States Congress - Distric n=   3 risk=0.550532
+✗ Representative to the 119th United States Congress - Distric n= 135 risk=0.041128
+✗ Representative to the 119th United States Congress - Distric n=   3 risk=0.848257
+✓ Representative to the 119th United States Congress - Distric n= 159 risk=3.195760e-05
+✗ Representative to the 119th United States Congress - Distric n=   2 risk=0.823283
+✗ Representative to the 119th United States Congress - Distric n=   1 risk=0.935784
+✗ Representative to the 119th United States Congress - Distric n=   9 risk=0.970038
+✓ Retain Revenue For Affordable Housing                        n=  80 risk=0.001125
+✓ Rico Fire Protection District Ballot Question 6B             n=  25 risk=5.683559e-06
+✗ Rio Blanco County Commissioner District 2                    n=  58 risk=1.000000
+✗ Rio Blanco County Commissioner District 3                    n=  58 risk=1.000000
+✓ Rio Grande County Commissioner District 1                    n=  35 risk=4.813763e-05
+✗ Rio Grande County Commissioner District 3                    n=  35 risk=1.000000
+✓ Routt County Commissioner - District 2                       n=  77 risk=0.000183
+✗ Saguache County Commissioner District 2                      n= 119 risk=0.063485
+✓ Saguache County Court - Schuenemann                          n= 119 risk=1.937306e-09
+✗ San Miguel Authority for Regional Transportation (SMART) Bal n=  46 risk=0.355696
+✓ San Miguel County Ballot Question 1B                         n=  39 risk=0.003700
+✗ San Miguel County Clerk and Recorder                         n=  39 risk=1.000000
+✗ San Miguel County Commissioner - District 1                  n=  39 risk=1.000000
+✓ San Miguel County Commissioner - District 3                  n=  39 risk=1.228861e-05
+✗ Second Creek Farm Metropolitan District No 2 Ballot Question n=   1 risk=0.814205
+✗ Second Creek Farm Metropolitan District No 2 Ballot Question n=   1 risk=0.934972
+✗ Second Creek Farm Metropolitan District No 2 Ballot Question n=   1 risk=0.994426
+✗ Second Creek Farm Metropolitan District No 2 Ballot Question n=   1 risk=0.990710
+✗ Second Creek Farm Metropolitan District No 2 Ballot Question n=   1 risk=0.940546
+✗ Second Creek Farm Metropolitan District No 2 Ballot Question n=   1 risk=0.817921
+✗ Sedgwick County Commissioner - District 2                    n=  84 risk=1.000000
+✓ Sedgwick County Court - Landry                               n=  84 risk=1.370342e-06
+✗ Sedgwick County Sheriff                                      n=  84 risk=1.000000
+✓ South Adams County Water and Sanitation District Ballot Issu n=  20 risk=0.007003
+✗ Spring Canyon Ballot Issue 6B                                n=   1 risk=0.899748
+✗ State Board of Education Member - Congressional District 2   n=   3 risk=0.305643
+✓ State Board of Education Member - Congressional District 3   n= 135 risk=0.000168
+✗ State Board of Education Member - Congressional District 4   n=   3 risk=0.743260
+✗ State Board of Education Member - Congressional District 8   n=   9 risk=0.817754
+✗ State Representative - District 1                            n=   1 risk=0.518791
+✗ State Representative - District 1                            n=   9 risk=0.293785
+✗ State Representative - District 11                           n=  17 risk=0.039413
+✓ State Representative - District 12                           n=  18 risk=0.007929
+✓ State Representative - District 13                           n= 206 risk=5.200000e-05
+✗ State Representative - District 14                           n=  27 risk=0.068101
+✗ State Representative - District 15                           n=  24 risk=0.169419
+✗ State Representative - District 16                           n=  17 risk=0.998706
+✗ State Representative - District 17                           n=   7 risk=0.690464
+✗ State Representative - District 18                           n=  17 risk=0.578770
+✗ State Representative - District 19                           n=  13 risk=0.987406
+✓ State Representative - District 2                            n=  16 risk=0.022221
+✓ State Representative - District 20                           n=  25 risk=0.004168
+✗ State Representative - District 21                           n=  14 risk=0.341869
+✗ State Representative - District 22                           n=  23 risk=0.145874
+✗ State Representative - District 23                           n=  11 risk=0.238593
+✗ State Representative - District 24                           n=   1 risk=0.940256
+✗ State Representative - District 25                           n=  12 risk=0.792178
+✓ State Representative - District 26                           n=  90 risk=0.003506
+✗ State Representative - District 27                           n=  14 risk=0.412487
+✗ State Representative - District 28                           n=  17 risk=0.645091
+✗ State Representative - District 29                           n=  16 risk=0.196771
+✗ State Representative - District 3                            n=   3 risk=0.671294
+✗ State Representative - District 30                           n=  13 risk=0.221434
+✗ State Representative - District 31                           n=  22 risk=0.317996
+✗ State Representative - District 32                           n=  18 risk=1.000000
+✗ State Representative - District 33                           n=   1 risk=0.923782
+✗ State Representative - District 34                           n=  21 risk=0.574191
+✗ State Representative - District 35                           n=   2 risk=0.762572
+✗ State Representative - District 36                           n=   9 risk=0.174507
+✗ State Representative - District 37                           n=  10 risk=0.037105
+✗ State Representative - District 38                           n=   5 risk=0.810382
+✗ State Representative - District 39                           n=  20 risk=0.188698
+✗ State Representative - District 4                            n=   9 risk=0.074575
+✗ State Representative - District 40                           n=   8 risk=0.540729
+✗ State Representative - District 41                           n=  12 risk=0.228443
+✗ State Representative - District 42                           n=   2 risk=1.000000
+✗ State Representative - District 43                           n=   8 risk=0.912574
+✗ State Representative - District 44                           n=  14 risk=0.327939
+✗ State Representative - District 45                           n=  29 risk=0.034753
+✗ State Representative - District 46                           n= 107 risk=0.103491
+✓ State Representative - District 47                           n=  32 risk=0.004226
+✗ State Representative - District 48                           n=  18 risk=1.000000
+✗ State Representative - District 49                           n=   9 risk=0.307815
+✓ State Representative - District 5                            n=  16 risk=0.008819
+✗ State Representative - District 50                           n=  11 risk=0.897545
+✗ State Representative - District 51                           n=  14 risk=0.715215
+✗ State Representative - District 52                           n=  13 risk=0.216577
+✓ State Representative - District 53                           n=  18 risk=0.015645
+✗ State Representative - District 54                           n=  43 risk=1.000000
+✗ State Representative - District 55                           n=  28 risk=1.000000
+✗ State Representative - District 56                           n=  12 risk=0.042444
+✗ State Representative - District 57                           n=  19 risk=0.359802
+✗ State Representative - District 58                           n=  65 risk=0.062288
+✗ State Representative - District 59                           n= 109 risk=0.345598
+✓ State Representative - District 6                            n=  11 risk=0.018156
+✓ State Representative - District 60                           n=  27 risk=0.004842
+✗ State Representative - District 61                           n=   4 risk=1.000000
+✗ State Representative - District 62                           n=  39 risk=0.257695
+✗ State Representative - District 63                           n=   8 risk=1.000000
+✗ State Representative - District 64                           n=   5 risk=0.527195
+✗ State Representative - District 65                           n=  11 risk=0.265201
+✗ State Representative - District 7                            n=   4 risk=0.379017
+✗ State Representative - District 8                            n=   9 risk=0.030968
+✗ State Representative - District 9                            n=   2 risk=0.616203
+✓ State Representative - District 9                            n=  15 risk=0.026632
+✗ State Senator - District 10                                  n=  40 risk=0.036556
+✗ State Senator - District 12                                  n=  23 risk=0.859033
+✗ State Senator - District 13                                  n=  15 risk=0.400530
+✓ State Senator - District 14                                  n=  32 risk=0.001727
+✗ State Senator - District 16                                  n=  20 risk=0.674929
+✓ State Senator - District 17                                  n=  22 risk=0.028025
+✓ State Senator - District 18                                  n=  28 risk=1.263718e-05
+✗ State Senator - District 19                                  n=   1 risk=0.933410
+✓ State Senator - District 2                                   n=  38 risk=0.013620
+✗ State Senator - District 21                                  n=   9 risk=0.916819
+✓ State Senator - District 23                                  n=  12 risk=0.010548
+✗ State Senator - District 26                                  n=   4 risk=0.606362
+✗ State Senator - District 28                                  n=  14 risk=0.166433
+✗ State Senator - District 29                                  n=  18 risk=1.000000
+✓ State Senator - District 31                                  n=  31 risk=2.134281e-05
+✓ State Senator - District 33                                  n=  11 risk=0.026684
+✗ State Senator - District 5                                   n=  25 risk=0.599928
+✗ State Senator - District 6                                   n=  10 risk=0.571706
+✗ Stratmoor Hills Fire Protection District Ballot Issue 6B     n=   1 risk=0.896130
+✗ St. Vrain and Left Hand Water Conservancy District Ballot Is n=   1 risk=0.697175
+✗ St. Vrain Valley School District RE-1J Ballot Issue 5C       n=   1 risk=0.787984
+✗ Summit County Clerk and Recorder                             n=  61 risk=1.000000
+✓ Summit County Commissioner - District 1                      n=  61 risk=0.000202
+✓ Summit County Commissioner - District 2                      n=  61 risk=0.003890
+✗ Summit County Commissioner - District 3                      n=  61 risk=1.000000
+✓ Teller County Ballot Question 1B                             n=  76 risk=0.003198
+✗ Teller County Commissioner District 1                        n=  76 risk=1.000000
+✗ Teller County Commissioner District 3                        n=  76 risk=1.000000
+✗ Teller County Treasurer                                      n=  76 risk=1.000000
+✗ Thompson School District R2-J Ballot Issue 5A                n=   2 risk=0.869527
+✗ Thompson School District R2-J Ballot Issue 5B                n=   2 risk=0.857608
+✗ Town Councilmember District 1                                n=   4 risk=0.480009
+✗ Town Councilmember District 2                                n=   3 risk=0.659387
+✗ Town Councilmember District 4                                n=   4 risk=0.830463
+✗ Town Councilmember District 6                                n=   9 risk=0.196754
+✗ Town of Avon Ballot Issue 2C: Use Tax on New Construction to n=   2 risk=0.944974
+✗ Town of Avon - Council Member                                n=   2 risk=0.867238
+✗ Town of Castle Rock Ballot Issue 2A                          n=  25 risk=0.281387
+✗ Town of Crook Referred Ballot Issue 2V                       n=   1 risk=0.964617
+✗ Town of De Beque Ballot Question 2B                          n=   1 risk=0.872245
+✗ Town of Elizabeth Question 2B                                n=   1 risk=0.973367
+✗ Town of Erie Ballot Issue 3C                                 n=   2 risk=0.936052
+✗ Town of Erie - Council Member District 1                     n=   4 risk=0.995706
+✗ Town of Erie - Council Member District 2                     n=   1 risk=0.988019
+✗ Town of Erie - Council Member District 3                     n=   7 risk=1.080262
+✗ Town of Erie Mayor                                           n=   7 risk=0.918645
+✗ Town of Fowler Ballot Issue 2A                               n=   1 risk=0.740088
+✗ Town of Fraser Ballot Question 2A                            n=   4 risk=0.540338
+✗ Town of Gilcrest Ballot Question 2P                          n=   1 risk=0.784816
+✗ Town of Gilcrest Mayor                                       n=   1 risk=1.000000
+✗ Town of Gilcrest Trustee                                     n=   1 risk=1.000000
+✗ Town of Granby Board of Trustees                             n=   6 risk=0.990655
+✗ Town of Granby Mayor                                         n=   6 risk=0.415885
+✗ Town of Gypsum Ballot Issue 2A                               n=   6 risk=0.751167
+✗ Town of Hayden Councilmember                                 n=   2 risk=0.917561
+✗ Town of Hayden Mayor                                         n=   2 risk=1.000000
+✗ Town of Hot Sulphur Springs Ballot Issue 2B - Use Tax on Con n=   3 risk=0.358459
+✗ Town of Hot Sulphur Springs Ballot Issue 2C - Town Lodging T n=   3 risk=0.962840
+✗ Town of Hot Sulphur Springs Trustee                          n=   3 risk=0.832452
+✗ Town of Hudson Ballot Issue 2F                               n=   1 risk=0.854853
+✗ Town of Hudson Town Council                                  n=   1 risk=0.997385
+✗ Town of Keenesburg Board of Trustees                         n=   1 risk=0.983199
+✗ Town of Kersey Mayor                                         n=   1 risk=1.000000
+✗ Town of Kersey Trustee                                       n=   1 risk=0.986472
+✗ Town of Keystone Ballot Issue 2A                             n=   2 risk=0.676531
+✗ Town of Keystone Ballot Issue 2B                             n=   2 risk=0.544862
+✗ Town of Kiowa Issue 2A                                       n=   1 risk=0.854215
+✗ Town of LaSalle Ballot Question 2K                           n=   1 risk=0.748311
+✗ Town of LaSalle Mayor                                        n=   1 risk=0.887848
+✗ Town of LaSalle Trustee                                      n=   1 risk=0.971745
+✗ Town of Log Lane Village Mayor                               n=   1 risk=0.935748
+✗ Town of Log Lane Village Trustee                             n=   1 risk=1.927558
+✗ Town of Lyons Ballot Question 2B                             n=   1 risk=0.728320
+✗ Town of Mead Ballot Issue 2Q                                 n=   1 risk=0.977714
+✗ Town of Mead Ballot Question 2R                              n=   1 risk=0.913805
+✗ Town of Mead Trustee                                         n=   1 risk=0.995166
+✗ Town of Merino Referred Ballot Issue 2U                      n=   1 risk=0.877510
+✗ Town of Minturn Ballot Issue 2B: Excise Tax Increase on Shor n=   1 risk=0.794220
+✗ Town of Monument Ballot Issue 2A                             n=   4 risk=0.911345
+✗ Town of Monument Ballot Question 2B                          n=   4 risk=0.433613
+✗ Town of Monument Councilmember At-Large - 4 Year Term        n=   4 risk=0.927558
+✗ Town of Monument Councilmember Residential District 1 - 4 Ye n=   1 risk=1.000000
+✗ Town of Monument Councilmember Residential District 2 - 4 Ye n=   3 risk=1.000000
+✗ Town of Morrison Ballot Question 2F                          n=   1 risk=0.774220
+✗ Town of Morrison Trustee                                     n=   1 risk=0.956668
+✗ Town of Mountain View Ballot Question 2D                     n=   1 risk=0.937415
+✗ Town of Mountain View Ballot Question 2E                     n=   1 risk=0.848405
+✗ Town of Mt Crested Butte Ballot Issue 2A                     n=   1 risk=0.827139
+✗ Town of Oak Creek Ballot Question 2A                         n=   2 risk=0.621185
+✗ Town of Olathe Ballot Issue 2B: Public Safety Tax            n=   1 risk=0.882896
+✗ Town of Palisade Ballot Issue 2A                             n=   1 risk=0.879853
+✗ Town of Palmer Lake - Mayor                                  n=   1 risk=0.988772
+✗ Town of Palmer Lake - Trustee                                n=   1 risk=0.964444
+✗ Town of Paonia Ballot Issue 2A                               n=   3 risk=0.752931
+✗ Town of Parker Mayor                                         n=   8 risk=0.952139
+✗ Town of Rockvale - Board of Trustees                         n=   1 risk=1.000000
+✗ Town of Rockvale - Mayor                                     n=   1 risk=0.824340
+✗ Town of Severance Ballot Issue 2A                            n=   5 risk=0.370965
+✗ Town of Snowmass Village Ballot Question 2D: Approve Workfor n=   6 risk=0.537482
+✗ Town of Snowmass Village - Mayor                             n=   6 risk=0.841898
+✗ Town of Snowmass Village - Town Council                      n=   6 risk=0.829610
+✗ Town of Superior Ballot Issue 3B                             n=   4 risk=0.871632
+✗ Town of Superior - Trustee                                   n=   2 risk=0.998246
+✗ Town of Wellington Ballot Question 2K                        n=   4 risk=0.705493
+✗ Town of Wiggins Mayor                                        n=   3 risk=1.000000
+✗ Town of Wiggins Trustee                                      n=   3 risk=0.998508
+✗ Ute Pass Regional Health Service District Ballot Issue 7A1   n=   1 risk=0.919947
+✗ Walsh Hospital District Ballot Issue 6A                      n=  29 risk=0.104777
+✗ Washington County Commissioner - District 3                  n=  31 risk=1.000000
+✗ Weld County Commissioner - At-Large                          n= 101 risk=1.000000
+✗ Weld County Commissioner - District 1                        n=  36 risk=1.000000
+✗ Weld County Commissioner - District 3                        n=  33 risk=1.000000
+✗ Weld County Council - District 1                             n=  36 risk=0.051238
+✗ Weld County School District No. RE-7 Ballot Issue 4A Mill Le n=   1 risk=0.871102
+✗ Weld County School District No. RE-7 Ballot Issue 4B Bonds   n=   1 risk=0.873041
+✗ Weld County School District No. RE-9 Ballot Issue 4C Bonds   n=   4 risk=0.977204
+✗ Weld County School District RE-10J Ballot Issue 5D Bonds     n=   1 risk=0.997370
+✗ Weld County School District RE-3J Ballot Issue 5F Override   n=   1 risk=0.957403
+✗ Weld County School District RE-8 Ballot Issue 5G Override    n=   4 risk=0.884779
+✗ Weld County School District RE-8 Ballot Issue 5H Bonds       n=   4 risk=0.858807
+✗ Westminster Public Schools Ballot Issue 4C                   n=   8 risk=0.196857
+✗ West Routt Fire District Ballot Issue 6A                     n=  16 risk=0.602762
+✗ Yuma County Commissioner - District 2                        n=  19 risk=1.000000
+✗ Yuma County Commissioner - District 3                        n=  19 risk=1.000000
+
+================================================================================
+SUMMARY
+================================================================================
+Targeted contests: 64
+  Achieved risk limit: 61/64
+  FAILED:
+    Dove Creek Ambulance District Ballot Issue 6A: risk=0.047079
+    Routt County Commissioner - District 1: risk=0.041393
+    Sedgwick County Commissioner - District 3: risk=0.030451
+Opportunistic contests: 658
+  Below risk limit: 223/658
+
+================================================================================
+SKIPPED CONTESTS (3)
+================================================================================
+
+Contest not found in any county manifest: 3 contests
+
+  City of Craig Ballot Question 2A
+    Audit reason: county_wide_contest
+    min_margin: 1073
+    contest_ballot_card_count: 4071
+    Counties: Moffat
+    No counties have this contest in their ballot manifests
+    → Contest may be misnamed or not applicable to any county
+
+  Moffat County Commissioner District 1
+    Audit reason: opportunistic_benefits
+    min_margin: 3349
+    contest_ballot_card_count: 6699
+    Counties: Moffat
+    No counties have this contest in their ballot manifests
+    → Contest may be misnamed or not applicable to any county
+
+  Moffat County Commissioner District 2
+    Audit reason: opportunistic_benefits
+    min_margin: 0
+    contest_ballot_card_count: 6699
+    Counties: Moffat
+    No counties have this contest in their ballot manifests
+    → Contest may be misnamed or not applicable to any county
+

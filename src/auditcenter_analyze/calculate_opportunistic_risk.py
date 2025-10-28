@@ -265,22 +265,39 @@ def calculate_contest_risk(contest_name, contest_data, counties, contest_ballots
                 print(f"    IDs: {', '.join(data['ballot_ids'][:5])} ... (+{data['n_used']-5} more)")
         print(f"  Total uniformly random sample: {len(valid_sample)} ballots with contest")
     
-    # Step 5: Get discrepancy counts from contest metadata
-    # ColoradoRLA has already classified these correctly
-    o2 = contest_data.get('two_vote_over_count', 0)
-    o1 = contest_data.get('one_vote_over_count', 0) 
-    u1 = contest_data.get('one_vote_under_count', 0)
-    u2 = contest_data.get('two_vote_under_count', 0)
-    
-    total_discrepancies = o1 + o2 + u1 + u2
+    # Step 5: Discrepancies
+    # FIXME: determine winners, losers, and proper discrepancy type
+    # - For now, with opportunistic contests, interpret all discrepancies in uniformly sampled ballots as o1
+    # - For targeted contests, use counts from contest.csv, skippinug extra samples
+    audit_reason_for_contest = contest_data.get('audit_reason', '')
+    if audit_reason_for_contest == 'opportunistic_benefits':
+        # Count discrepancies from the actual sampled ballots
+        discrepancies = sum(1 for b in valid_sample if has_discrepancy(b))
+        o1 = discrepancies
+        o2 = 0
+        u1 = 0
+        u2 = 0
+        total_discrepancies = discrepancies
+    else:
+        # Targeted contests: use provided ColoradoRLA classifications
+        o2 = contest_data.get('two_vote_over_count', 0)
+        o1 = contest_data.get('one_vote_over_count', 0)
+        u1 = contest_data.get('one_vote_under_count', 0)
+        u2 = contest_data.get('two_vote_under_count', 0)
+        total_discrepancies = o1 + o2 + u1 + u2
     
     if show_work:
-        print(f"\nStep 5: Discrepancies (from ColoradoRLA classifications)")
-        print(f"  Two-vote overstatements: {o2}")
-        print(f"  One-vote overstatements: {o1}")
-        print(f"  One-vote understatements: {u1}")
-        print(f"  Two-vote understatements: {u2}")
-        print(f"  Total: {total_discrepancies}")
+        if audit_reason_for_contest == 'opportunistic_benefits':
+            print(f"\nStep 5: Discrepancies in uniformly sampled ballots, all treated as o1")
+            print(f"  discrepancies (o1): {o1}")
+            print(f"  o2=u1=u2 breakdown not yet computed")
+        else:
+            print(f"\nStep 5: Discrepancies in targeted samples as reported")
+            print(f"  Two-vote overstatements: {o2}")
+            print(f"  One-vote overstatements: {o1}")
+            print(f"  One-vote understatements: {u1}")
+            print(f"  Two-vote understatements: {u2}")
+            print(f"  Total: {total_discrepancies}")
     
     # Step 6: Calculate risk
     n = len(valid_sample)
@@ -464,6 +481,9 @@ def main():
     
     # Load all data once
     manifest_counts, contest_metadata, counties_by_contest, contest_ballots, examined_counts, contest_by_type = load_all_data(args.round)
+    
+    print("TODO: determine winners, losers, and proper discrepancy types rather than defaulting to o1")
+    print()
     
     # Filter contests and organize by type
     contests_by_reason = {

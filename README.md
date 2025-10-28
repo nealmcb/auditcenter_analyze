@@ -2,36 +2,65 @@
 
 Independent verification and analysis tools for Colorado RLA audit center data.
 
-Extracted from [ColoradoRLA](https://github.com/FreeAndFair/ColoradoRLA) verify branch.
+Extracted from [ColoradoRLA](https://github.com/FreeAndFair/ColoradoRLA) verify branch and modernized.
 
 ## What This Does
 
-1. **Calculate Risk** for targeted and opportunistic contests
+1. **Calculate Risk** for targeted and opportunistic contests using Kaplan-Markov risk-limiting audit statistics
 2. **Verify Random Selection** using SHA-256 PRNG
 3. **Explore Results** via Datasette web interface
+4. **Test-Driven Development** with comprehensive pytest test suite
 
 ## Quick Start
 
-### Run Analysis
+### Prerequisites
+- Python 3.12+
+- `uv` package manager
+
+### Setup
 ```bash
-python3 analysis/calculate_opportunistic_risk.py
+# Install dependencies
+make install-dev
+
+# Run all checks
+make check
 ```
 
-Analyzes 700+ contests and generates `output/colorado_rla.db`
+### Run Analysis
+```bash
+# Process all contests
+python3 src/auditcenter_analyze/calculate_opportunistic_risk.py
+
+# Process only opportunistic contests
+python3 src/auditcenter_analyze/calculate_opportunistic_risk.py --opportunistic-only
+
+# Show detailed work for one contest
+python3 src/auditcenter_analyze/calculate_opportunistic_risk.py --contest "Amendment 80 (CONSTITUTIONAL)" --show-work
+```
+
+### Run Tests
+```bash
+# Run all tests
+make test
+
+# Run with verbose output
+make test-v
+
+# Run quietly
+make test-quiet
+```
 
 ### Explore with Datasette
 ```bash
+# Setup (one-time)
 cd datasette
-bash setup_datasette_env.sh  # one-time
+bash setup_datasette_env.sh
+
+# Launch
 bash launch_datasette.sh
 ```
 
 Open: http://localhost:8001
-
-### Verify Random Selection
-```bash
-python3 analysis/verify_random_selection.py
-```
 
 ## Data Access
 
@@ -46,27 +75,55 @@ Current example dataset: `data/2024/general/`
 
 ```
 auditcenter_analyze/
-├── analysis/          Python analysis scripts
-├── datasette/         Web exploration tools
-├── docs/              Analysis documentation
-├── output/            Generated databases
-├── data/              -> /srv/voting/audit/corla/scrapy/mirror/
-└── rlacalc/           -> ../colorado-rla-2018/.../rlacalc/
+├── src/
+│   └── auditcenter_analyze/    Main analysis scripts
+├── tests/                       Test suite
+├── docs/                        Analysis documentation
+├── output/                      Generated databases
+├── data/                        -> /srv/voting/audit/corla/scrapy/mirror/
+├── datasette/                   Web exploration tools
+├── Makefile                     Development commands
+└── pyproject.toml               Project configuration
+```
+
+## Development
+
+See `AGENTS.md` for development standards:
+- Python 3.12 required
+- `uv` for virtual environment management
+- `black` for code formatting (line length 100)
+- `ruff` for linting
+- `mypy --strict` for type checking
+- `pytest` for testing
+
+### Available Commands
+
+```bash
+make help        # Show all available commands
+make format      # Format code with black
+make lint        # Run ruff linting
+make typecheck   # Run mypy type checking
+make test        # Run pytest tests (verbose)
+make check       # Run all checks (format, lint, typecheck, test)
+make install     # Install production dependencies
+make install-dev # Install development dependencies
 ```
 
 ## Documentation
 
 See `docs/` for detailed documentation:
+- `AGENTS.md` - Development standards and project approach
+- `HANDOFF_DOCUMENT.md` - Project history and status
+- `BASELINE_OPPORTUNISTIC_COMPARISON.md` - Comparison with historical baseline
 - `DATASETTE_QUICKSTART.md` - How to explore data
 - `VERIFICATION_TOOLS_README.md` - Random selection verification
-- `OPPORTUNISTIC_RISK_FINAL.md` - Risk calculation methodology
 
 ## Dependencies
 
-- Python 3.10+
-- rlacalc module (from colorado-rla-2018, accessed via symlink)
-- Standard library only (no pip packages needed for analysis)
-- Datasette (optional, for exploration - uses isolated venv)
+- Python 3.12+
+- `rlacalc` - Risk-Limiting Audit calculations (Kaplan-Markov)
+- `datasette` - Web interface for exploring data
+- Development tools: `pytest`, `black`, `ruff`, `mypy`
 
 ## History
 
