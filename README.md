@@ -29,13 +29,13 @@ make check
 ### Run Analysis
 ```bash
 # Process all contests
-python3 src/auditcenter_analyze/calculate_opportunistic_risk.py
+./src/auditcenter_analyze/calculate_opportunistic_risk.py
 
 # Process only opportunistic contests
-python3 src/auditcenter_analyze/calculate_opportunistic_risk.py --opportunistic-only
+./src/auditcenter_analyze/calculate_opportunistic_risk.py --opportunistic-only
 
 # Show detailed work for one contest
-python3 src/auditcenter_analyze/calculate_opportunistic_risk.py --contest "Amendment 80 (CONSTITUTIONAL)" --show-work
+./src/auditcenter_analyze/calculate_opportunistic_risk.py --contest "Amendment 80 (CONSTITUTIONAL)" --show-work
 ```
 
 ### Run Tests
@@ -52,15 +52,13 @@ make test-quiet
 
 ### Explore with Datasette
 ```bash
-# Setup (one-time)
-cd datasette
-bash setup_datasette_env.sh
-
-# Launch
-bash launch_datasette.sh
+# Launch datasette
+./src/auditcenter_analyze/view_database.py
 ```
 
 Open: http://localhost:8001
+
+See `docs/DATASETTE_QUICKSTART.md` for more details.
 
 ## Data Access
 

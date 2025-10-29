@@ -3,12 +3,12 @@
 ## Step 1: Run the analysis and create database
 
 ```bash
-python3 calculate_opportunistic_risk.py
+./src/auditcenter_analyze/calculate_opportunistic_risk.py
 ```
 
 This will:
 - Analyze all 662 contests
-- Save results to `colorado_rla.db` (SQLite)
+- Save results to `output/colorado_rla.db` (SQLite)
 - Print summary to console
 
 Options:
@@ -16,34 +16,24 @@ Options:
 - `--no-db` - skip database save (console only)
 - `--round 2` - analyze different round
 
-## Step 2: Setup Datasette (one-time)
+## Step 2: Launch Datasette
 
-**Option A: Isolated Environment (RECOMMENDED)**
+All dependencies are managed by `uv`. Just run:
+
 ```bash
-# Creates virtual environment to avoid package conflicts
-bash setup_datasette_env.sh
+./src/auditcenter_analyze/view_database.py
 ```
 
-This installs datasette in `datasette-env/` without touching your global packages.
+This will:
+- Launch datasette on http://localhost:8001
+- Load the database with pre-configured metadata
+- Provide a web interface to explore the audit results
 
-**Option B: Global Install (may have numpy conflicts)**
-```bash
-pip install datasette datasette-vega
-```
-
-## Step 3: Launch Datasette
-
-**If using isolated environment:**
-```bash
-bash launch_datasette.sh
-```
-
-**If using global install:**
-```bash
-datasette colorado_rla.db --metadata datasette-metadata.json
-```
-
-Then open: http://localhost:8001
+**Options:**
+- `--db custom.db` - specify different database file
+- `--metadata metadata.json` - specify different metadata file
+- `--port 8001` - change port (default: 8001)
+- `--host 0.0.0.0` - make accessible from other machines
 
 **To stop:** Press Ctrl+C
 
@@ -100,10 +90,10 @@ When new audit data arrives:
 
 ```bash
 # Re-run analysis
-python3 calculate_opportunistic_risk.py --round 3
+./src/auditcenter_analyze/calculate_opportunistic_risk.py --round 3
 
 # Restart datasette (auto-reloads database)
-datasette colorado_rla.db --metadata datasette-metadata.json
+./src/auditcenter_analyze/view_database.py
 ```
 
 The database is completely replaced each run, so you always see latest data.
