@@ -1,4 +1,4 @@
-.PHONY: help install install-dev check format lint typecheck test clean
+.PHONY: help install install-dev check format lint typecheck test clean setup-hooks
 
 help: ## Show this help message
 	@echo "Usage: make [target]"
@@ -6,6 +6,7 @@ help: ## Show this help message
 	@echo "Available targets:"
 	@echo "  install        Install production dependencies"
 	@echo "  install-dev    Install development dependencies"
+	@echo "  setup-hooks    Install git pre-commit hooks"
 	@echo "  check          Run all checks (format, lint, typecheck, test)"
 	@echo "  format         Format code with black"
 	@echo "  lint           Run ruff linter"
@@ -20,6 +21,16 @@ install: ## Install production dependencies
 
 install-dev: ## Install all dependencies including dev
 	uv sync
+
+setup-hooks: ## Install git pre-commit hooks from .hooks/
+	@echo "Installing git pre-commit hooks from .hooks/..."
+	@if [ ! -f .hooks/pre-commit ]; then \
+		echo "❌ .hooks/pre-commit not found"; \
+		exit 1; \
+	fi
+	@ln -sf ../../.hooks/pre-commit .git/hooks/pre-commit
+	@chmod +x .git/hooks/pre-commit
+	@echo "✅ Pre-commit hook symlinked from .hooks/pre-commit to .git/hooks/pre-commit"
 
 format: ## Format code with black
 	uv run black src/ tests/

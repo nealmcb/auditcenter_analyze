@@ -29,6 +29,11 @@
 
 ## Code Quality & Architecture
 
+- [x] **Set up git pre-commit hooks to run tests, formatting, and lint checks** ✅
+  - Hook stored in `.hooks/pre-commit` (version controlled)
+  - Symlinked via `make setup-hooks`
+  - See: docs/PRE_COMMIT_HOOK_OPTIONS.md
+
 - [ ] **write a clean spec based on rla_report and work to date**
   - Document current implementation
   - Reference rla_report specifications
@@ -43,6 +48,7 @@
   - Create tests for core calculations
   - Test edge cases and error handling
   - Ensure good coverage
+
 
 ## External Integration
 

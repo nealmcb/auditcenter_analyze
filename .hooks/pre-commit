@@ -1,0 +1,18 @@
+#!/bin/bash
+# Pre-commit hook: run quality checks before allowing commit
+
+# Run all checks (format, lint, typecheck, test)
+make check
+
+# Exit with error if any check failed
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "❌ Pre-commit checks failed. Please fix the issues above."
+    echo "   To skip hooks temporarily: git commit --no-verify"
+    exit 1
+fi
+
+echo ""
+echo "✅ All pre-commit checks passed"
+exit 0
+
