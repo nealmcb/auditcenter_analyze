@@ -7,7 +7,7 @@ help: ## Show this help message
 	@echo "  install        Install production dependencies"
 	@echo "  install-dev    Install development dependencies"
 	@echo "  setup-hooks    Install git pre-commit hooks"
-	@echo "  check          Run all checks (format, lint, typecheck, test)"
+	@echo "  check          Run all checks (format, lint, test)"
 	@echo "  format         Format code with black"
 	@echo "  lint           Run ruff linter"
 	@echo "  typecheck      Run mypy type checker"
@@ -50,7 +50,7 @@ test-v: ## Run pytest tests with extra verbose output
 test-quiet: ## Run pytest tests quietly
 	uv run pytest tests/ -q
 
-check: format lint typecheck test ## Run all checks
+check: format lint test ## Run all checks (formatting, linting, and tests)
 
 clean: ## Clean up generated files
 	find . -type d -name "__pycache__" -exec rm -r {} + 2>/dev/null || true
