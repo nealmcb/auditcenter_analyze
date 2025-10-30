@@ -15,6 +15,16 @@ from datetime import datetime
 
 import rlacalc
 
+try:
+    from auditcenter_analyze.normalize import normalized_county_key
+except ImportError:
+    # Fallback for when run as a script (not as a module)
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from auditcenter_analyze.normalize import normalized_county_key
+
 GAMMA = 1.03905
 RISK_LIMIT = 0.03
 
@@ -28,7 +38,8 @@ def load_all_data(round_num=3):
     print("Step 1: Loading manifests...")
     manifest_counts = {}
     for manifest_file in (data_dir / "ballotManifests").glob("*BallotManifest.csv"):
-        county_no_space = manifest_file.stem.replace("BallotManifest", "")
+        county_stem = manifest_file.stem.replace("BallotManifest", "")
+        county_no_space = normalized_county_key(county_stem)
         total = 0
         with open(manifest_file, "r", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
@@ -84,7 +95,7 @@ def load_all_data(round_num=3):
     with open(counties_file, "r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            county = row["county_name"].replace(" ", "")  # Normalize
+            county = normalized_county_key(row["county_name"])
             counties_by_contest[row["contest_name"]].add(county)
 
     # 4. Load all examined ballots (one pass through contestComparison.csv)
@@ -99,7 +110,7 @@ def load_all_data(round_num=3):
     with open(comparison_file, "r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            county = row["county_name"].replace(" ", "")  # Normalize: remove spaces
+            county = normalized_county_key(row["county_name"])
             contest = row["contest_name"]
             iid = row["imprinted_id"]
 

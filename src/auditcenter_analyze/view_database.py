@@ -85,6 +85,16 @@ def view(
             err=True,
         )
         raise typer.Exit(1)
+    except subprocess.CalledProcessError:
+        # Datasette failed to start - likely "address already in use"
+        # Note: We can't easily parse stderr here without suppressing output
+        # Just show a helpful message
+        typer.echo("\nCould not start datasette. Common causes:", err=True)
+        typer.echo(f"  - Datasette already running on port {port}")
+        typer.echo(f"  - Another process using port {port}")
+        typer.echo(f"\nIf datasette is already running, access it at: http://{host}:{port}")
+        typer.echo(f"\nOtherwise, try: lsof -ti:{port} | xargs kill")
+        raise typer.Exit(1)
 
 
 if __name__ == "__main__":

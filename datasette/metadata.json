@@ -1,6 +1,6 @@
 {
   "title": "Colorado 2024 General Election RLA Analysis",
-  "description": "Risk-limiting audit analysis for 662 contests across 64 counties",
+  "description": "Risk-limiting audit analysis for 662 contests across 63 counties",
   "databases": {
     "colorado_rla": {
       "tables": {
@@ -45,6 +45,41 @@
         "audit_metadata": {
           "title": "Audit Configuration",
           "description": "Risk limit, gamma, and analysis metadata"
+        },
+        "counties": {
+          "title": "Counties",
+          "description": "County information with ballot card counts",
+          "facets": ["normalized_name"]
+        },
+        "contests": {
+          "title": "Contests",
+          "description": "Contest definitions with metadata, margins, and discrepancy counts",
+          "facets": ["round", "audit_reason"],
+          "sort_desc": "name"
+        },
+        "contest_counties": {
+          "title": "Contest Counties",
+          "description": "Mapping of which counties participate in which contests"
+        },
+        "ballot_manifests": {
+          "title": "Ballot Manifests",
+          "description": "Batch-level manifest data for each county",
+          "facets": ["county_id"]
+        },
+        "ballot_comparisons": {
+          "title": "Ballot Comparisons",
+          "description": "CVR vs audit board interpretations",
+          "facets": ["round", "consensus"],
+          "sort_desc": "comparison_id"
+        },
+        "vote_totals": {
+          "title": "Vote Totals",
+          "description": "Election results by contest and county",
+          "facets": ["source"]
+        },
+        "audit_random_seed": {
+          "title": "Random Seed",
+          "description": "Cryptographic seed for random ballot selection"
         }
       }
     }

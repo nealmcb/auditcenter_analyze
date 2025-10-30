@@ -6,10 +6,11 @@ Extracted from [ColoradoRLA](https://github.com/FreeAndFair/ColoradoRLA) verify 
 
 ## What This Does
 
-1. **Calculate Risk** for targeted and opportunistic contests using Kaplan-Markov risk-limiting audit statistics
-2. **Verify Random Selection** using SHA-256 PRNG
-3. **Explore Results** via Datasette web interface
-4. **Test-Driven Development** with comprehensive pytest test suite
+1. **Import CSV Data** from auditcenter exports into normalized SQLite database
+2. **Calculate Risk** for targeted and opportunistic contests using Kaplan-Markov risk-limiting audit statistics
+3. **Verify Random Selection** using SHA-256 PRNG
+4. **Explore Results** via Datasette web interface with all auditcenter tables
+5. **Test-Driven Development** with comprehensive pytest test suite
 
 ## Quick Start
 
@@ -24,6 +25,18 @@ make install-dev
 
 # Run all checks
 make check
+```
+
+### Import CSV Data
+```bash
+# Scan available CSV files (dry-run)
+python3 src/auditcenter_analyze/import_csvs.py scan
+
+# Import all data into SQLite database
+python3 src/auditcenter_analyze/import_csvs.py import-all
+
+# Import specific rounds
+python3 src/auditcenter_analyze/import_csvs.py import-all --rounds 1,2,3
 ```
 
 ### Run Analysis
@@ -52,11 +65,16 @@ make test-quiet
 
 ### Explore with Datasette
 ```bash
-# Launch datasette
+# Launch datasette web interface
+python3 src/auditcenter_analyze/view_database.py
+
+# Or use the alias
 ./src/auditcenter_analyze/view_database.py
 ```
 
 Open: http://localhost:8001
+
+If port 8001 is already in use, the script will provide helpful instructions.
 
 See `docs/DATASETTE_QUICKSTART.md` for more details.
 
@@ -75,11 +93,17 @@ Current example dataset: `data/2024/general/`
 auditcenter_analyze/
 ├── src/
 │   └── auditcenter_analyze/    Main analysis scripts
+│       ├── import_csvs.py      CSV import to SQLite
+│       ├── csv_loaders.py      CSV loading functions
+│       ├── db_schema.py        Database schema definition
+│       ├── normalize.py        Data normalization utilities
+│       ├── calculate_opportunistic_risk.py  Risk calculations
+│       └── view_database.py    Datasette launcher
 ├── tests/                       Test suite
 ├── docs/                        Analysis documentation
 ├── output/                      Generated databases
 ├── data/                        -> /srv/voting/audit/corla/scrapy/mirror/
-├── datasette/                   Web exploration tools
+├── datasette/                   Web exploration tools & metadata
 ├── Makefile                     Development commands
 └── pyproject.toml               Project configuration
 ```
@@ -115,6 +139,8 @@ See `docs/` for detailed documentation:
 - `BASELINE_OPPORTUNISTIC_COMPARISON.md` - Comparison with historical baseline
 - `DATASETTE_QUICKSTART.md` - How to explore data
 - `VERIFICATION_TOOLS_README.md` - Random selection verification
+- `COUNTY_KEY_EXPLANATION.md` - Data normalization and county key concepts
+- `UNDERVOTE_QUERYING_CHALLENGES.md` - Undervote discrepancy analysis
 
 ## Dependencies
 
