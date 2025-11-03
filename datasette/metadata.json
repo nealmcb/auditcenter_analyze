@@ -1,12 +1,13 @@
 {
   "title": "Colorado 2024 General Election RLA Analysis",
-  "description": "Risk-limiting audit analysis for 662 contests across 63 counties",
+  "description": "Risk-limiting audit analysis for 725 contests across 63 counties",
   "databases": {
     "colorado_rla": {
+      "description_html": "This database contains both <strong>original auditcenter CSV data</strong> and <strong>computed analysis results</strong>.<br><br><strong>📍 Start here:</strong> <a href='/colorado_rla/contest_risk_analysis'>Contest Risk Analysis</a> to see audit results<br><strong>🔍 Find discrepancies:</strong> <a href='/colorado_rla?sql=SELECT+*+FROM+ballot_comparisons+WHERE+consensus+%3D+%27NO%27'>Ballots with consensus=NO</a>",
       "tables": {
         "contest_risk_analysis": {
-          "title": "Contest Risk Analysis",
-          "description": "Risk calculations for all targeted and opportunistic contests",
+          "title": "📊 Contest Risk Analysis (Analysis Results)",
+          "description": "✱ <strong>COMPUTED</strong> - Risk calculations for all targeted and opportunistic contests. Shows whether each contest met the 3% risk limit.",
           "sort_desc": "risk_value",
           "facets": ["audit_reason", "achieved_risk_limit", "min_rate_county"],
           "columns": {
@@ -21,14 +22,14 @@
             "min_sampling_rate": "Minimum rate across counties",
             "min_rate_county": "County with minimum sampling rate",
             "counties_involved": "Number of counties",
-            "achieved_risk_limit": "TRUE if risk_value <= 0.03",
+            "achieved_risk_limit": "1 if risk_value <= 0.03, 0 otherwise",
             "analysis_timestamp": "When analysis was run",
             "round": "Audit round number"
           }
         },
         "county_sampling_details": {
-          "title": "County Sampling Breakdown",
-          "description": "Per-county sampling details for each contest",
+          "title": "📋 County Sampling Breakdown (Analysis Results)",
+          "description": "✱ <strong>COMPUTED</strong> - Per-county sampling details for each contest",
           "facets": ["county_name", "had_fake_ballot"],
           "columns": {
             "contest_name": "Contest being audited",
@@ -38,51 +39,89 @@
             "examined_total": "Total ballots examined in county (all contests)",
             "sampling_rate": "observed_count / manifest_count",
             "ballots_used": "Ballots used after downsampling",
-            "had_fake_ballot": "TRUE if contest appears but zero observed",
+            "had_fake_ballot": "1 if contest appears but zero observed",
             "ballot_ids": "JSON array of ballot imprinted_ids used"
           }
         },
         "audit_metadata": {
-          "title": "Audit Configuration",
+          "title": "⚙️ Audit Configuration",
           "description": "Risk limit, gamma, and analysis metadata"
         },
-        "counties": {
-          "title": "Counties",
-          "description": "County information with ballot card counts",
-          "facets": ["normalized_name"]
-        },
-        "contests": {
-          "title": "Contests",
-          "description": "Contest definitions with metadata, margins, and discrepancy counts",
-          "facets": ["round", "audit_reason"],
-          "sort_desc": "name"
-        },
-        "contest_counties": {
-          "title": "Contest Counties",
-          "description": "Mapping of which counties participate in which contests"
-        },
-        "ballot_manifests": {
-          "title": "Ballot Manifests",
-          "description": "Batch-level manifest data for each county",
-          "facets": ["county_id"]
+        "vote_totals": {
+          "title": "🗳️ Election Results (Original Data)",
+          "description": "✱ <strong>ORIGINAL</strong> - Official election results by contest and county",
+          "facets": ["source"],
+          "sort_desc": "votes"
         },
         "ballot_comparisons": {
-          "title": "Ballot Comparisons",
-          "description": "CVR vs audit board interpretations",
+          "title": "🔍 Ballot Comparisons (Original Data)",
+          "description": "✱ <strong>ORIGINAL</strong> - Side-by-side CVR vs audit board interpretations. Filter by consensus=NO to see discrepancies.",
           "facets": ["round", "consensus"],
           "sort_desc": "comparison_id"
         },
-        "vote_totals": {
-          "title": "Vote Totals",
-          "description": "Election results by contest and county",
-          "facets": ["source"]
+        "contests": {
+          "title": "🏛️ Contests (Original Data)",
+          "description": "✱ <strong>ORIGINAL</strong> - Contest definitions with metadata, margins, and discrepancy counts from round data",
+          "facets": ["round", "audit_reason"],
+          "sort_desc": "name"
+        },
+        "counties": {
+          "title": "📍 Counties (Original Data)",
+          "description": "✱ <strong>ORIGINAL</strong> - County information with ballot card counts",
+          "facets": ["normalized_name"]
+        },
+        "ballot_manifests": {
+          "title": "📦 Ballot Manifests (Original Data)",
+          "description": "✱ <strong>ORIGINAL</strong> - Batch-level manifest data for each county. 47K batches across 63 counties totaling 4.7M ballots.",
+          "facets": ["county_id"]
+        },
+        "contest_counties": {
+          "title": "🔗 Contest Counties (Join Table)",
+          "description": "Mapping of which counties participate in which contests",
+          "hidden": true
         },
         "audit_random_seed": {
-          "title": "Random Seed",
-          "description": "Cryptographic seed for random ballot selection"
+          "title": "🎲 Random Seed",
+          "description": "✱ <strong>ORIGINAL</strong> - Cryptographic seed for random ballot selection. Critical for verifying audit was truly random."
+        }
+      },
+      "queries": {
+        "discrepancies": {
+          "title": "🔴 All Discrepancies (consensus=NO)",
+          "description": "Find all ballots where audit board disagreed with CVR interpretation",
+          "sql": "SELECT \n  bc.imprinted_id,\n  bc.round,\n  c.name as contest_name,\n  co.name as county_name,\n  bc.cvr_choice,\n  bc.audit_choice,\n  bc.consensus\nFROM ballot_comparisons bc\nJOIN contests c ON bc.contest_id = c.contest_id\nJOIN counties co ON bc.county_id = co.county_id\nWHERE bc.consensus = 'NO'\nORDER BY bc.round DESC, c.name"
+        },
+        "high_risk_contests": {
+          "title": "⚠️ High Risk Contests (risk_value > 0.03)",
+          "description": "Contests that failed to achieve the 3% risk limit. Excludes contests with margin=0 (uncontested or single-candidate wins risk=1.0).",
+          "sql": "SELECT \n  contest_name,\n  audit_reason,\n  risk_value,\n  discrepancies,\n  sample_size,\n  achieved_risk_limit\nFROM contest_risk_analysis\nWHERE achieved_risk_limit = 0\n  AND min_margin != 0\nORDER BY risk_value DESC"
+        },
+        "critical_risk": {
+          "title": "🚨 CRITICAL: Risk Level Above 1.00",
+          "description": "Contests where audit actually INCREASED risk! Risk > 1.0 means the evidence makes the outcome LESS certain than before the audit.",
+          "sql": "SELECT \n  contest_name,\n  audit_reason,\n  risk_value,\n  discrepancies,\n  sample_size,\n  two_vote_over_count,\n  one_vote_over_count\nFROM contest_risk_analysis\nWHERE risk_value > 1.0\nORDER BY risk_value DESC"
+        },
+        "opportunistic_passing": {
+          "title": "✅ Opportunistic Contests Passing (< 3% risk)",
+          "description": "Opportunistic contests that achieved the risk limit",
+          "sql": "SELECT \n  contest_name,\n  risk_value,\n  discrepancies,\n  sample_size,\n  counties_involved\nFROM contest_risk_analysis\nWHERE audit_reason = 'opportunistic_benefits'\n  AND achieved_risk_limit = 1\nORDER BY risk_value ASC"
+        },
+        "presidential_votes": {
+          "title": "🇺🇸 Presidential Election Results",
+          "description": "Vote totals for Presidential Electors contest",
+          "sql": "SELECT \n  choice,\n  SUM(CASE WHEN county_id IS NULL THEN votes ELSE 0 END) as state_votes,\n  SUM(CASE WHEN county_id IS NOT NULL THEN votes ELSE 0 END) as county_votes\nFROM vote_totals\nWHERE contest_id IN (SELECT contest_id FROM contests WHERE name = 'Presidential Electors')\nGROUP BY choice\nORDER BY state_votes DESC"
+        },
+        "multi_county_contests": {
+          "title": "🌍 Multi-County Contests",
+          "description": "Contests appearing in multiple counties",
+          "sql": "SELECT \n  c.name as contest_name,\n  COUNT(DISTINCT cc.county_id) as num_counties,\n  SUBSTR(GROUP_CONCAT(DISTINCT co.name), 1, 100) || CASE WHEN LENGTH(GROUP_CONCAT(DISTINCT co.name)) > 100 THEN '...' ELSE '' END as sample_counties\nFROM contests c\nJOIN contest_counties cc ON c.contest_id = cc.contest_id\nJOIN counties co ON cc.county_id = co.county_id\nGROUP BY c.name\nHAVING COUNT(DISTINCT cc.county_id) > 1\nORDER BY num_counties DESC"
+        },
+        "largest_discrepancies_by_contest": {
+          "title": "📊 Discrepancy Count by Contest",
+          "description": "Summary of discrepancies per contest from round metadata",
+          "sql": "SELECT \n  name as contest_name,\n  round,\n  (COALESCE(two_vote_over_count, 0) + COALESCE(one_vote_over_count, 0) + \n   COALESCE(one_vote_under_count, 0) + COALESCE(two_vote_under_count, 0)) as discrepancy_count,\n  two_vote_over_count,\n  one_vote_over_count,\n  one_vote_under_count,\n  two_vote_under_count\nFROM contests\nWHERE (COALESCE(two_vote_over_count, 0) + COALESCE(one_vote_over_count, 0) + \n       COALESCE(one_vote_under_count, 0) + COALESCE(two_vote_under_count, 0)) > 0\nORDER BY discrepancy_count DESC"
         }
       }
     }
   }
 }
-

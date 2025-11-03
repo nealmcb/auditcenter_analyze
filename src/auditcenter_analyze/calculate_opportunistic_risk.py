@@ -406,11 +406,17 @@ def create_database(db_path):
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
 
+    # Drop and recreate analysis tables to ensure schema is correct
+    c.execute("DROP TABLE IF EXISTS county_sampling_details")
+    c.execute("DROP TABLE IF EXISTS contest_risk_analysis")
+    # Note: Don't drop audit_metadata as it may have data from other processes
+
     # Contest risk analysis results
     c.execute(
         """
-        CREATE TABLE IF NOT EXISTS contest_risk_analysis (
-            contest_name TEXT PRIMARY KEY,
+        CREATE TABLE contest_risk_analysis (
+            contest_id INTEGER,
+            contest_name TEXT,
             audit_reason TEXT,
             min_margin INTEGER,
             contest_ballot_card_count INTEGER,
@@ -423,7 +429,9 @@ def create_database(db_path):
             counties_involved INTEGER,
             achieved_risk_limit BOOLEAN,
             analysis_timestamp TEXT,
-            round INTEGER
+            round INTEGER,
+            PRIMARY KEY (contest_id, round),
+            FOREIGN KEY (contest_id) REFERENCES contests(contest_id)
         )
     """
     )
@@ -431,9 +439,11 @@ def create_database(db_path):
     # County sampling details
     c.execute(
         """
-        CREATE TABLE IF NOT EXISTS county_sampling_details (
+        CREATE TABLE county_sampling_details (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            contest_id INTEGER,
             contest_name TEXT,
+            county_id INTEGER,
             county_name TEXT,
             manifest_count INTEGER,
             observed_count INTEGER,
@@ -442,7 +452,9 @@ def create_database(db_path):
             ballots_used INTEGER,
             had_fake_ballot BOOLEAN,
             ballot_ids TEXT,
-            UNIQUE(contest_name, county_name)
+            UNIQUE(contest_id, county_id),
+            FOREIGN KEY (contest_id) REFERENCES contests(contest_id),
+            FOREIGN KEY (county_id) REFERENCES counties(county_id)
         )
     """
     )
@@ -481,15 +493,32 @@ def save_to_database(conn, results, errors, manifest_counts, examined_counts, ro
     c.execute("DELETE FROM contest_risk_analysis WHERE round = ?", (round_num,))
     c.execute("DELETE FROM county_sampling_details")
 
+    # Build lookup maps for contest_id and county_id
+    # Note: county names in county_sampling_details use normalized keys (e.g., "Adams")
+    # but counties table has both name (display) and normalized_name
+    county_id_map = {}  # normalized_key -> county_id
+    c.execute("SELECT county_id, normalized_name FROM counties")
+    for county_id, normalized_name in c.fetchall():
+        county_id_map[normalized_name] = county_id
+
     # Save contest results and county details
     county_detail_count = 0
     for contest_name, result in results:
+        # Look up contest_id
+        c.execute("SELECT contest_id FROM contests WHERE name = ?", (contest_name,))
+        contest_row = c.fetchone()
+        if not contest_row:
+            print(f"Warning: No contest_id found for '{contest_name}', skipping database save")
+            continue
+        contest_id = contest_row[0]
+
         c.execute(
             """
             INSERT INTO contest_risk_analysis VALUES 
-            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
             (
+                contest_id,
                 contest_name,
                 result["audit_reason"],
                 result["min_margin"],
@@ -509,21 +538,31 @@ def save_to_database(conn, results, errors, manifest_counts, examined_counts, ro
 
         # Save county details for this contest
         if "county_data" in result:
-            for county, data in result["county_data"].items():
+            for county_name, data in result["county_data"].items():
+                # Look up county_id
+                county_id = county_id_map.get(county_name)
+                if not county_id:
+                    print(
+                        f"Warning: No county_id found for '{county_name}', skipping database save"
+                    )
+                    continue
+
                 ballot_ids_json = json.dumps(data.get("ballot_ids", []))
                 c.execute(
                     """
                     INSERT INTO county_sampling_details 
-                    (contest_name, county_name, manifest_count, observed_count, 
+                    (contest_id, contest_name, county_id, county_name, manifest_count, observed_count, 
                      examined_total, sampling_rate, ballots_used, had_fake_ballot, ballot_ids)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                     (
+                        contest_id,
                         contest_name,
-                        county,
+                        county_id,
+                        county_name,
                         data["manifest_count"],
                         data["observed_count"],
-                        examined_counts.get(county, 0),
+                        examined_counts.get(county_name, 0),
                         data["sampling_rate"],
                         data.get("n_used", 0),
                         data.get("is_fake", False),
@@ -552,7 +591,9 @@ def main():
     parser.add_argument(
         "--opportunistic-only", action="store_true", help="Only process opportunistic contests"
     )
-    parser.add_argument("--db", type=str, default="colorado_rla.db", help="SQLite database path")
+    parser.add_argument(
+        "--db", type=str, default="output/colorado_rla.db", help="SQLite database path"
+    )
     parser.add_argument("--no-db", action="store_true", help="Skip database save")
     args = parser.parse_args()
 

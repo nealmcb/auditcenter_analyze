@@ -23,6 +23,13 @@
   - Are risk calculations correct? (barely failing vs ColoradoRLA pass)
   - Trace through ColoradoRLA calculations to understand differences
 
+- [ ] **Investigate 722 vs 725 contest analysis discrepancy**
+  - 725 contests imported into contests table
+  - Only 722 contests have risk analysis results
+  - Missing 3 Moffat County contests: "City of Craig Ballot Question 2A", "Moffat County Commissioner District 1", "Moffat County Commissioner District 2"
+  - These contests appear in ballot_comparisons but not in contest_risk_analysis
+  - Determine why calculate_opportunistic_risk.py skipped them
+
 - [ ] **address FIXME to determine winners, losers, and proper discrepancy type**
   - Reference rla_report and related documentation
   - Implement proper winner/loser determination logic
@@ -64,6 +71,13 @@
   - Handle contest name variations (encoding, whitespace, prefixes/suffixes)
   - Link between analysis tables and source CSV data
   - See docs/HANDOFF_DOCUMENT.md section "Import All CSVs to Database"
+
+- [x] **Add proper foreign key columns to analysis tables** ✅
+  - Added INTEGER contest_id and county_id columns to both tables
+  - Kept TEXT columns for human-readable display in Datasette
+  - Added FOREIGN KEY constraints and lookups in save_to_database
+  - Datasette now auto-detects and creates clickable links
+  - Note: default DB path changed to output/colorado_rla.db
 
 - [ ] **Use Arlo to reanalyze Colorado audit center results**
   - Investigate Arlo library availability
