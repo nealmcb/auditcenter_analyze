@@ -48,41 +48,41 @@
           "description": "Risk limit, gamma, and analysis metadata"
         },
         "vote_totals": {
-          "title": "🗳️ Election Results (Original Data)",
-          "description": "✱ <strong>ORIGINAL</strong> - Official election results by contest and county",
+          "title": "🗳️ Reported Election Results (tabulate.csv, tabulateCounty.csv)",
+          "description": "✱ <strong>ORIGINAL</strong> - Reported election results by contest and county. Source: tabulate.csv (state-wide totals) and tabulateCounty.csv (county-level totals). These are the results being audited.",
           "facets": ["source"],
           "sort_desc": "votes"
         },
         "ballot_comparisons": {
-          "title": "🔍 Ballot Comparisons (Original Data)",
-          "description": "✱ <strong>ORIGINAL</strong> - Side-by-side CVR vs audit board interpretations. Filter by consensus=NO to see discrepancies.",
+          "title": "🔍 Ballot Comparisons (contestComparison.csv)",
+          "description": "✱ <strong>ORIGINAL</strong> - Side-by-side CVR vs audit board interpretations. Filter by consensus=NO to see discrepancies. Source: contestComparison.csv from each round.",
           "facets": ["round", "consensus"],
           "sort_desc": "comparison_id"
         },
         "contests": {
-          "title": "🏛️ Contests (Original Data)",
-          "description": "✱ <strong>ORIGINAL</strong> - Contest definitions with metadata, margins, and discrepancy counts from round data",
+          "title": "🏛️ Contests (contest.csv)",
+          "description": "✱ <strong>ORIGINAL</strong> - Contest definitions with metadata, margins, and discrepancy counts from round data. Source: contest.csv from each round.",
           "facets": ["round", "audit_reason"],
           "sort_desc": "name"
         },
         "counties": {
-          "title": "📍 Counties (Original Data)",
-          "description": "✱ <strong>ORIGINAL</strong> - County information with ballot card counts",
+          "title": "📍 Counties (from ballot manifests)",
+          "description": "✱ <strong>ORIGINAL</strong> - County information with ballot card counts. Derived from county manifest CSV files.",
           "facets": ["normalized_name"]
         },
         "ballot_manifests": {
-          "title": "📦 Ballot Manifests (Original Data)",
-          "description": "✱ <strong>ORIGINAL</strong> - Batch-level manifest data for each county. 47K batches across 63 counties totaling 4.7M ballots.",
+          "title": "📦 Ballot Manifests (county CSVs)",
+          "description": "✱ <strong>ORIGINAL</strong> - Batch-level manifest data for each county. 47K batches across 63 counties totaling 4.7M ballots. Source: *BallotManifest.csv files in ballotManifests/ directory.",
           "facets": ["county_id"]
         },
         "contest_counties": {
-          "title": "🔗 Contest Counties (Join Table)",
-          "description": "Mapping of which counties participate in which contests",
+          "title": "🔗 Contest Counties (contestsByCounty.csv)",
+          "description": "Mapping of which counties participate in which contests. Source: contestsByCounty.csv.",
           "hidden": true
         },
         "audit_random_seed": {
-          "title": "🎲 Random Seed",
-          "description": "✱ <strong>ORIGINAL</strong> - Cryptographic seed for random ballot selection. Critical for verifying audit was truly random."
+          "title": "🎲 Random Seed (seed.csv)",
+          "description": "✱ <strong>ORIGINAL</strong> - Cryptographic seed for random ballot selection. Critical for verifying audit was truly random. Source: seed.csv."
         }
       },
       "queries": {

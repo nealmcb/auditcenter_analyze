@@ -396,6 +396,22 @@ def import_round_data(
                 contest_id = contest_map[contest_name]
 
                 # Update contest with round-specific data
+                min_margin = int(row["min_margin"]) if row.get("min_margin") else None
+                contest_ballot_card_count = (
+                    int(row["contest_ballot_card_count"])
+                    if row.get("contest_ballot_card_count")
+                    else None
+                )
+
+                # Calculate diluted_margin if we have the necessary data
+                diluted_margin = None
+                if (
+                    min_margin is not None
+                    and contest_ballot_card_count is not None
+                    and contest_ballot_card_count > 0
+                ):
+                    diluted_margin = min_margin / contest_ballot_card_count
+
                 cursor.execute(
                     """
                     UPDATE contests SET 
@@ -417,13 +433,9 @@ def import_round_data(
                     (
                         round_num,
                         row.get("winners"),
-                        int(row["min_margin"]) if row.get("min_margin") else None,
-                        (
-                            int(row["contest_ballot_card_count"])
-                            if row.get("contest_ballot_card_count")
-                            else None
-                        ),
-                        float(row["diluted_margin"]) if row.get("diluted_margin") else None,
+                        min_margin,
+                        contest_ballot_card_count,
+                        diluted_margin,
                         row.get("audit_reason"),
                         int(row["two_vote_over_count"]) if row.get("two_vote_over_count") else None,
                         int(row["one_vote_over_count"]) if row.get("one_vote_over_count") else None,
