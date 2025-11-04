@@ -19,15 +19,6 @@ Create a comprehensive report showing how to verify a targeted RLA contest from 
 - Margin calculation
 - Contest metadata from database
 
-### Section 2: RLA Input Parameters
-Display the inputs needed for risk calculation:
-- Risk limit: 0.03 (3%)
-- Gamma: 1.03905
-- Diluted margin: min_margin / contest_ballot_card_count
-- Min margin: 967 votes
-- Contest ballot card count: 1729
-- Calculated diluted margin
-
 ### Section 3: Sample Size Calculation
 Show how sample size was determined:
 - Reference Kaplan-Markov calculation
@@ -68,6 +59,15 @@ Repeat for ballots 2-15 (can collapse/truncate after first few)
 - List all 15 imprinted_ids from database
 - Sort for comparison
 - Match against calculated selections
+
+### Section ?: RLA Input Parameters
+Display the inputs needed for risk calculation:
+- Risk limit: 0.03 (3%)
+- Gamma: 1.03905
+- Diluted margin: min_margin / contest_ballot_card_count
+- Min margin: 967 votes
+- Contest ballot card count: 1729
+- Calculated diluted margin
 
 ### Section 8: Verification Results
 - ✓ All 15 ballots match
