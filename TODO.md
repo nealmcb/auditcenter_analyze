@@ -123,6 +123,14 @@
   - Show winners and basic contest information
   - Make data accessible and understandable
 
+- [ ] **Create verification report for Crowley County Commissioner District 3**
+  - Show complete cryptographic verification chain
+  - Demonstrate seed → SHA-256 → ballot selection
+  - Display contest info, margins, vote totals
+  - Map random numbers to manifest positions
+  - Verify all 15 selected ballots
+  - See docs/VERIFICATION_REPORT_PLAN.md for spec
+
 ## Additional Notes
 
 ### Data Structure Challenges (from docs)
