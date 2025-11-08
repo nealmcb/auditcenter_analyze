@@ -12,6 +12,7 @@ import hashlib
 import csv
 import sys
 import argparse
+import re
 from pathlib import Path
 from typing import List, Tuple, Optional
 
@@ -38,79 +39,90 @@ def generate_random_numbers(seed: str, count: int, domain_size: int) -> List[int
 
 def load_ballot_manifest(manifest_file: str) -> List[Tuple[str, str, str, int]]:
     """Load ballot manifest and create index mapping."""
-    ballots = []
 
-    with open(manifest_file, "r", encoding="utf-8-sig") as f:  # utf-8-sig handles BOM
-        reader = csv.DictReader(f)
+    def normalize(name: str) -> str:
+        return re.sub(r"[^a-z0-9]", "", name.lower())
 
-        # Check first row to determine columns
-        first_row = None
-        for row in reader:
-            first_row = row
-            break
+    def find_column(columns: List[str], candidates: List[str]) -> Optional[str]:
+        normalized_map = {normalize(col): col for col in columns if col}
+        for candidate in candidates:
+            key = normalize(candidate)
+            if key in normalized_map:
+                return normalized_map[key]
+        return None
 
-        if not first_row:
-            return ballots
-
-        # Determine county column
-        county_col = None
-        for col in ["County", "county", "COUNTY"]:
-            if col in first_row:
-                county_col = col
-                break
-        if not county_col:
-            raise ValueError(
-                f"Could not find county column in manifest. Columns: {list(first_row.keys())}"
-            )
-
-        # Determine tabulator column
-        tabulator_col = None
-        for col in ["Tabulator ID", "Tabulator", "tabulator", "Scanner ID", "Scanner"]:
-            if col in first_row:
-                tabulator_col = col
-                break
-        if not tabulator_col:
-            raise ValueError(
-                f"Could not find tabulator column in manifest. Columns: {list(first_row.keys())}"
-            )
-
-        # Determine batch column
-        batch_col = None
-        for col in ["Batch", "Batch ", "batch", "BATCH"]:
-            if col in first_row:
-                batch_col = col
-                break
-        if not batch_col:
-            raise ValueError(
-                f"Could not find batch column in manifest. Columns: {list(first_row.keys())}"
-            )
-
-        # Determine ballot count column
-        count_col = None
-        for col in [
-            "# of Ballot Cards",
-            "# of Ballot",
-            "# of Ballots",
-            "Number of Ballots",
-            "Count",
-        ]:
-            if col in first_row:
-                count_col = col
-                break
-        if not count_col:
-            raise ValueError(
-                f"Could not find ballot count column in manifest. Columns: {list(first_row.keys())}"
-            )
-
-    # Now reopen and process all rows
     with open(manifest_file, "r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
+        fieldnames = reader.fieldnames or []
+        if not fieldnames:
+            return []
 
+    county_col = find_column(fieldnames, ["county"])
+    if not county_col:
+        raise ValueError(f"Could not find county column in manifest. Columns: {fieldnames}")
+
+    tabulator_col = find_column(
+        fieldnames,
+        [
+            "tabulator",
+            "tabulator id",
+            "scanner",
+            "scanner id",
+            "device id",
+            "device",
+        ],
+    )
+    if not tabulator_col:
+        raise ValueError(f"Could not find tabulator column in manifest. Columns: {fieldnames}")
+
+    batch_col = find_column(
+        fieldnames,
+        [
+            "batch",
+            "batch number",
+            "batch no",
+            "batch id",
+            "batch #",
+        ],
+    )
+    if not batch_col:
+        raise ValueError(f"Could not find batch column in manifest. Columns: {fieldnames}")
+
+    count_col = find_column(
+        fieldnames,
+        [
+            "# of ballot cards",
+            "# of ballots",
+            "# of ballot",
+            "number of ballots",
+            "count",
+            "# cards",
+            "# ballot cards",
+            "# ballots",
+            "# of cards",
+            "# in batch",
+            ". of ballots",
+            "#of ballot cards",
+            "# of ballot cards",
+            "# of ballots cards",
+            "# of ballots cards",
+        ],
+    )
+    if not count_col:
+        raise ValueError(f"Could not find ballot count column in manifest. Columns: {fieldnames}")
+
+    ballots: List[Tuple[str, str, str, int]] = []
+    with open(manifest_file, "r", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
         for row in reader:
-            county = row[county_col]
-            tabulator = row[tabulator_col]
-            batch = row[batch_col]
-            num_cards = int(row[count_col])
+            try:
+                num_cards = int(row[count_col])
+            except (TypeError, ValueError):
+                continue
+
+            county = row.get(county_col, "").strip()
+            tabulator = row.get(tabulator_col, "").strip()
+            batch = row.get(batch_col, "").strip()
 
             for position in range(1, num_cards + 1):
                 ballots.append((county, tabulator, batch, position))
@@ -121,6 +133,58 @@ def load_ballot_manifest(manifest_file: str) -> List[Tuple[str, str, str, int]]:
 def ballot_to_imprinted_id(county: str, tabulator: str, batch: str, position: int) -> str:
     """Convert ballot tuple to imprinted_id format."""
     return f"{tabulator}-{batch}-{position}"
+
+
+def get_contest_counties(contest_name: str, base_path: Path) -> List[str]:
+    """Return counties in which the contest appears."""
+    counties: List[str] = []
+    contests_by_county = base_path / "contestsByCounty.csv"
+
+    if contests_by_county.exists():
+        with open(contests_by_county, "r", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if row.get("contest_name") == contest_name and row.get("county_name"):
+                    counties.append(row["county_name"])
+
+    if counties:
+        return sorted(set(counties))
+
+    # Fallback to contestComparison data
+    for r in [3, 2, 1]:
+        comparison_file = base_path / f"round{r}" / "contestComparison.csv"
+        if not comparison_file.exists():
+            continue
+        with open(comparison_file, "r", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if row.get("contest_name") == contest_name and row.get("county_name"):
+                    counties.append(row["county_name"])
+        if counties:
+            break
+
+    return sorted(set(counties))
+
+
+def resolve_manifest_file(base_path: Path, county_name: str) -> Optional[Path]:
+    """Find the manifest file for a county, trying common naming patterns."""
+
+    candidates = [
+        f"{county_name}BallotManifest.csv",
+        f"{county_name.replace(' ', '')}BallotManifest.csv",
+        f"{county_name.replace(' ', '_')}BallotManifest.csv",
+        f"{county_name.replace(' ', '-') }BallotManifest.csv",
+    ]
+
+    search_roots = [base_path, base_path / "ballotManifests"]
+
+    for root in search_roots:
+        for candidate in candidates:
+            path = root / candidate
+            if path.exists():
+                return path
+
+    return None
 
 
 def find_contest(contest_name: str, contest_file: str) -> Optional[dict]:
@@ -280,31 +344,109 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
         print()
         return False
 
-    # Use contest_ballot_card_count for random selection domain
+    # Determine county coverage
+    contest_counties = get_contest_counties(contest_name, base_path)
+    multi_county = len(contest_counties) > 1
     domain_size = contest_ballot_card_count
 
-    # Infer county from contest name if not provided
-    if not county:
-        # Try to extract county from contest name
-        if contest_name.startswith("Adams County") or "Adams" in contest_name:
-            county = "Adams"
-        elif contest_name.startswith("Bent County"):
-            county = "Bent"
-        elif contest_name.startswith("Arapahoe County"):
-            county = "Arapahoe"
-        # Add more counties as needed
-        else:
-            print("✗ ERROR: Please specify --county parameter")
+    if multi_county:
+        print("ℹ Detected multi-county contest. Trying alphabetical manifest combination...")
+        print(f"  Counties involved ({len(contest_counties)}): {', '.join(contest_counties)}")
+
+        combined_manifest: List[Tuple[str, str, str, int]] = []
+        unresolved_counties: List[str] = []
+
+        for county_name in contest_counties:
+            manifest = resolve_manifest_file(base_path, county_name)
+            if not manifest:
+                unresolved_counties.append(county_name)
+                continue
+
+            try:
+                ballots = load_ballot_manifest(str(manifest))
+            except Exception as exc:
+                print(f"  ✗ Failed to load manifest for {county_name}: {exc}")
+                unresolved_counties.append(county_name)
+                continue
+
+            combined_manifest.extend(ballots)
+
+        if unresolved_counties:
+            print(
+                f"  ⚠ Could not load manifests for: {', '.join(unresolved_counties)}. Aborting verification."
+            )
             return False
 
-    # Load ballot manifest
-    manifest_file = f"{base_path}/{county}BallotManifest.csv"
+        print(f"  ✓ Combined manifest size: {len(combined_manifest):,} ballot cards")
+        if contest_ballot_card_count > len(combined_manifest):
+            print(
+                f"  ⚠ Contest ballot card count ({contest_ballot_card_count:,}) exceeds combined manifest size."
+            )
+
+        first_two = generate_random_numbers(SEED, 2, contest_ballot_card_count)
+        print(f"  First two selections (contest domain): {first_two}")
+
+        mapped = []
+        for pick in first_two:
+            if pick <= len(combined_manifest):
+                county_name, tabulator, batch, position = combined_manifest[pick - 1]
+                mapped.append(
+                    (county_name, ballot_to_imprinted_id(county_name, tabulator, batch, position))
+                )
+            else:
+                mapped.append(("OUT_OF_RANGE", f"index:{pick}"))
+
+        comparison_file = f"{base_path}/round{round_num}/contestComparison.csv"
+        try:
+            actual_imprinted_ids = set(load_actual_selections(comparison_file, contest_name))
+        except Exception:
+            actual_imprinted_ids = set()
+
+        for idx, (county_name, imprint) in enumerate(mapped, start=1):
+            if county_name == "OUT_OF_RANGE":
+                print(f"  ✗ Selection #{idx}: index {imprint} exceeds combined manifest size")
+            else:
+                status = "MATCH" if imprint in actual_imprinted_ids else "not found"
+                print(f"  Selection #{idx}: {county_name} -> {imprint} ({status})")
+
+        print()
+        print(
+            "✗ ERROR: Multi-county contest verification requires confirmed manifest ordering and contest presence per ballot."
+        )
+        print(
+            "  The alphabetical combination attempt above shows the assumed ordering does not currently reconcile with audited selections."
+        )
+        return False
+
+    # Single-county contests
+    if not county:
+        if contest_counties:
+            county = contest_counties[0]
+        else:
+            contest_lower = contest_name.lower()
+            if " county " in contest_lower:
+                parts = contest_name.split(" County ")
+                county = parts[0].split()[-1]
+            elif contest_lower.startswith("bent "):
+                county = "Bent"
+            elif contest_lower.startswith("adams "):
+                county = "Adams"
+
+    if not county:
+        print("✗ ERROR: Please specify --county parameter")
+        return False
+
+    manifest_path = resolve_manifest_file(base_path, county)
+    if not manifest_path:
+        print(f"✗ ERROR: Could not locate manifest file for {county} County")
+        return False
+
     try:
-        print(f"Loading manifest: {manifest_file}")
-        ballot_manifest = load_ballot_manifest(manifest_file)
+        print(f"Loading manifest: {manifest_path}")
+        ballot_manifest = load_ballot_manifest(str(manifest_path))
         print(f"✓ Loaded {len(ballot_manifest):,} ballot cards from manifest")
     except FileNotFoundError:
-        print(f"✗ ERROR: Could not find manifest file: {manifest_file}")
+        print(f"✗ ERROR: Could not find manifest file: {manifest_path}")
         return False
 
     if len(ballot_manifest) != ballot_card_count:
@@ -312,73 +454,22 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
             f"⚠ WARNING: Manifest has {len(ballot_manifest)} cards, county reports {ballot_card_count}"
         )
 
-    # Check if contest appears on all ballot cards or just a subset
     if contest_ballot_card_count != ballot_card_count:
-        # Check if multi-county or single-county district
-        counties_with_contest = []
-        for r in [3, 2, 1]:
-            comparison_file = f"{base_path}/round{r}/contestComparison.csv"
-            try:
-                with open(comparison_file, "r", encoding="utf-8-sig") as f:
-                    reader = csv.DictReader(f)
-                    counties_set = set()
-                    for row in reader:
-                        if row["contest_name"] == contest_name and "county_name" in row:
-                            counties_set.add(row["county_name"])
-                    counties_with_contest = sorted(counties_set)
-                break
-            except FileNotFoundError:
-                continue
-
-        if len(counties_with_contest) > 1:
-            # MULTI-COUNTY contest - can't verify without manifest ordering
-            print(
-                "✗ ERROR: Multi-county contest verification requires manifest ordering information."
-            )
-            print()
-            print(f"  Contest Ballot Card Count: {contest_ballot_card_count:,}")
-            print(f"  County Ballot Card Count:  {ballot_card_count:,}")
-            print()
-            print("  This is a MULTI-COUNTY contest.")
-            print(
-                f"  The contest appears in {len(counties_with_contest)} counties: {', '.join(counties_with_contest[:5])}"
-            )
-            if len(counties_with_contest) > 5:
-                print(f"  ... and {len(counties_with_contest) - 5} more counties")
-            print()
-            print("  The problem:")
-            print(f"    - Random selection uses domain [1, {contest_ballot_card_count:,}]")
-            print("      (contest-specific indices across ALL counties)")
-            print("    - Each county has its own manifest")
-            print("    - We need to know the ORDER in which county manifests are combined")
-            print()
-            print("  To verify, you would need:")
-            print(
-                f"    1. List of counties with this contest (we have: {len(counties_with_contest)} counties)"
-            )
-            print("    2. ORDER in which their manifests are combined for random selection")
-            print("       Example: Adams [1-X], Alamosa [X+1-Y], Arapahoe [Y+1-Z], etc.")
-            print("    3. Each county's manifest file")
-            print()
-            return False
-        else:
-            # SINGLE-COUNTY district - can verify by using full county ballot card count as domain
-            print(f"ℹ NOTE: This is a DISTRICT-LEVEL contest within {county} County.")
-            print(
-                f"  Contest appears on {contest_ballot_card_count:,} of {ballot_card_count:,} ballot cards."
-            )
-            print()
-            print(
-                "  For single-county contests, random selection uses the FULL county ballot card count"
-            )
-            print(
-                f"  as the domain [1, {ballot_card_count:,}], and some selected ballots will have this contest."
-            )
-            print()
-            print(f"  Proceeding with verification using domain [1, {ballot_card_count:,}]...")
-            print()
-            # Override domain_size to use full county ballot card count
-            domain_size = ballot_card_count
+        print(f"ℹ NOTE: This is a DISTRICT-LEVEL contest within {county} County.")
+        print(
+            f"  Contest appears on {contest_ballot_card_count:,} of {ballot_card_count:,} ballot cards."
+        )
+        print()
+        print(
+            "  For single-county contests, random selection uses the FULL county ballot card count"
+        )
+        print(
+            f"  as the domain [1, {ballot_card_count:,}], and some selected ballots will have this contest."
+        )
+        print()
+        print(f"  Proceeding with verification using domain [1, {ballot_card_count:,}]...")
+        print()
+        domain_size = ballot_card_count
     print()
 
     # Generate random selections using contest domain size

@@ -67,6 +67,10 @@ def create_schema(connection: sqlite3.Connection) -> None:
         CREATE TABLE IF NOT EXISTS contest_counties (
             contest_id INTEGER NOT NULL,
             county_id INTEGER NOT NULL,
+            original_county_id TEXT,
+            original_contest_id TEXT,
+            original_county_name TEXT,
+            original_contest_name TEXT,
             PRIMARY KEY (contest_id, county_id),
             FOREIGN KEY (contest_id) REFERENCES contests(contest_id),
             FOREIGN KEY (county_id) REFERENCES counties(county_id)
@@ -82,6 +86,7 @@ def create_schema(connection: sqlite3.Connection) -> None:
             location TEXT,
             start_position INTEGER,
             end_position INTEGER,
+            raw_row TEXT,
             PRIMARY KEY (county_id, tabulator_id, batch_number),
             FOREIGN KEY (county_id) REFERENCES counties(county_id)
         );
@@ -99,6 +104,12 @@ def create_schema(connection: sqlite3.Connection) -> None:
             consensus TEXT,
             discrepancy_type TEXT,
             timestamp TEXT,
+            ballot_type TEXT,
+            record_type TEXT,
+            audit_board_comment TEXT,
+            cvr_id TEXT,
+            audit_reason TEXT,
+            raw_row TEXT,
             FOREIGN KEY (contest_id) REFERENCES contests(contest_id),
             FOREIGN KEY (county_id) REFERENCES counties(county_id)
         );
@@ -117,6 +128,18 @@ def create_schema(connection: sqlite3.Connection) -> None:
             PRIMARY KEY (contest_id, round, imprinted_id),
             FOREIGN KEY (contest_id) REFERENCES contests(contest_id),
             FOREIGN KEY (county_id) REFERENCES counties(county_id)
+        );
+        """,
+        # Contest selections raw data (contestSelection.csv)
+        """
+        CREATE TABLE IF NOT EXISTS contest_selection_rows (
+            selection_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            contest_id INTEGER NOT NULL,
+            round INTEGER NOT NULL,
+            min_margin INTEGER,
+            contest_cvr_ids TEXT,
+            raw_row TEXT,
+            FOREIGN KEY (contest_id) REFERENCES contests(contest_id)
         );
         """,
         # Vote totals (contest-level and county-level)
@@ -157,3 +180,67 @@ def create_schema(connection: sqlite3.Connection) -> None:
     ]
 
     execute_script(connection, statements)
+
+    # Ensure legacy tables gain any newly required columns
+    cursor = connection.cursor()
+
+    # Contests extra columns
+    cursor.execute("PRAGMA table_info(contests)")
+    existing_columns = {row[1] for row in cursor.fetchall()}
+
+    required_columns = {
+        "random_audit_status": "TEXT",
+        "winners_allowed": "INTEGER",
+        "ballot_card_count": "INTEGER",
+        "risk_limit": "REAL",
+        "audited_sample_count": "INTEGER",
+        "overstatements": "INTEGER",
+        "optimistic_samples_to_audit": "INTEGER",
+        "estimated_samples_to_audit": "INTEGER",
+    }
+
+    for column_name, column_type in required_columns.items():
+        if column_name not in existing_columns:
+            cursor.execute(
+                f"ALTER TABLE contests ADD COLUMN {column_name} {column_type}"
+            )
+
+    # Contest counties original columns
+    cursor.execute("PRAGMA table_info(contest_counties)")
+    contest_county_columns = {row[1] for row in cursor.fetchall()}
+    contest_county_required = {
+        "original_county_id": "TEXT",
+        "original_contest_id": "TEXT",
+        "original_county_name": "TEXT",
+        "original_contest_name": "TEXT",
+    }
+    for column_name, column_type in contest_county_required.items():
+        if column_name not in contest_county_columns:
+            cursor.execute(
+                f"ALTER TABLE contest_counties ADD COLUMN {column_name} {column_type}"
+            )
+
+    # Ballot manifests raw row storage
+    cursor.execute("PRAGMA table_info(ballot_manifests)")
+    ballot_manifest_columns = {row[1] for row in cursor.fetchall()}
+    if "raw_row" not in ballot_manifest_columns:
+        cursor.execute("ALTER TABLE ballot_manifests ADD COLUMN raw_row TEXT")
+
+    # Ballot comparisons additional columns
+    cursor.execute("PRAGMA table_info(ballot_comparisons)")
+    ballot_comparison_columns = {row[1] for row in cursor.fetchall()}
+    ballot_comparison_required = {
+        "ballot_type": "TEXT",
+        "record_type": "TEXT",
+        "audit_board_comment": "TEXT",
+        "cvr_id": "TEXT",
+        "audit_reason": "TEXT",
+        "raw_row": "TEXT",
+    }
+    for column_name, column_type in ballot_comparison_required.items():
+        if column_name not in ballot_comparison_columns:
+            cursor.execute(
+                f"ALTER TABLE ballot_comparisons ADD COLUMN {column_name} {column_type}"
+            )
+
+    connection.commit()

@@ -7,6 +7,7 @@ export into the normalized database schema.
 from __future__ import annotations
 
 import csv
+import json
 import sqlite3
 from pathlib import Path
 from typing import Any
@@ -75,6 +76,7 @@ def load_manifest_batches(manifest_file: Path) -> list[dict[str, Any]]:
                     "batch_number": batch_number.strip(),
                     "ballot_count": ballot_count,
                     "location": location.strip(),
+                    "raw_row": {k: (v if v is not None else "") for k, v in row.items()},
                 }
             )
 
@@ -146,8 +148,8 @@ def import_counties_and_manifests(
             cursor.execute(
                 """
                 INSERT OR REPLACE INTO ballot_manifests
-                    (county_id, tabulator_id, batch_number, ballot_count, location, start_position, end_position)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                    (county_id, tabulator_id, batch_number, ballot_count, location, start_position, end_position, raw_row)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
                 (
                     county_id,
@@ -157,6 +159,7 @@ def import_counties_and_manifests(
                     batch["location"],
                     current_position,
                     end_position,
+                    json.dumps(batch["raw_row"], ensure_ascii=False),
                 ),
             )
 
@@ -232,10 +235,29 @@ def import_contests_and_contest_counties(
 
         cursor.execute(
             """
-            INSERT OR IGNORE INTO contest_counties (contest_id, county_id)
-            VALUES (?, ?)
+            INSERT INTO contest_counties (
+                contest_id,
+                county_id,
+                original_county_id,
+                original_contest_id,
+                original_county_name,
+                original_contest_name
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+            ON CONFLICT(contest_id, county_id) DO UPDATE SET
+                original_county_id=excluded.original_county_id,
+                original_contest_id=excluded.original_contest_id,
+                original_county_name=excluded.original_county_name,
+                original_contest_name=excluded.original_contest_name
         """,
-            (contest_id, county_id),
+            (
+                contest_id,
+                county_id,
+                row.get("county_id"),
+                row.get("contest_id"),
+                row.get("county_name"),
+                contest_name,
+            ),
         )
 
     conn.commit()
@@ -412,6 +434,33 @@ def import_round_data(
                 ):
                     diluted_margin = min_margin / contest_ballot_card_count
 
+                random_audit_status = row.get("random_audit_status")
+                winners_allowed = (
+                    int(row["winners_allowed"]) if row.get("winners_allowed") else None
+                )
+                ballot_card_count = (
+                    int(row["ballot_card_count"]) if row.get("ballot_card_count") else None
+                )
+                risk_limit = float(row["risk_limit"]) if row.get("risk_limit") else None
+                audited_sample_count = (
+                    int(row["audited_sample_count"])
+                    if row.get("audited_sample_count")
+                    else None
+                )
+                overstatements = (
+                    int(row["overstatements"]) if row.get("overstatements") else None
+                )
+                optimistic_samples_to_audit = (
+                    int(row["optimistic_samples_to_audit"])
+                    if row.get("optimistic_samples_to_audit")
+                    else None
+                )
+                estimated_samples_to_audit = (
+                    int(row["estimated_samples_to_audit"])
+                    if row.get("estimated_samples_to_audit")
+                    else None
+                )
+
                 cursor.execute(
                     """
                     UPDATE contests SET 
@@ -421,13 +470,21 @@ def import_round_data(
                         contest_ballot_card_count = ?,
                         diluted_margin = ?,
                         audit_reason = ?,
+                        random_audit_status = ?,
+                        winners_allowed = ?,
+                        ballot_card_count = ?,
+                        risk_limit = ?,
+                        audited_sample_count = ?,
                         two_vote_over_count = ?,
                         one_vote_over_count = ?,
                         one_vote_under_count = ?,
                         two_vote_under_count = ?,
                         disagreement_count = ?,
                         other_count = ?,
-                        gamma = ?
+                        gamma = ?,
+                        overstatements = ?,
+                        optimistic_samples_to_audit = ?,
+                        estimated_samples_to_audit = ?
                     WHERE contest_id = ?
                 """,
                     (
@@ -437,6 +494,11 @@ def import_round_data(
                         contest_ballot_card_count,
                         diluted_margin,
                         row.get("audit_reason"),
+                        random_audit_status,
+                        winners_allowed,
+                        ballot_card_count,
+                        risk_limit,
+                        audited_sample_count,
                         int(row["two_vote_over_count"]) if row.get("two_vote_over_count") else None,
                         int(row["one_vote_over_count"]) if row.get("one_vote_over_count") else None,
                         (
@@ -452,6 +514,9 @@ def import_round_data(
                         int(row["disagreement_count"]) if row.get("disagreement_count") else None,
                         int(row["other_count"]) if row.get("other_count") else None,
                         float(row["gamma"]) if row.get("gamma") else None,
+                        overstatements,
+                        optimistic_samples_to_audit,
+                        estimated_samples_to_audit,
                         contest_id,
                     ),
                 )
@@ -483,19 +548,39 @@ def import_round_data(
                 cursor.execute(
                     """
                     INSERT INTO ballot_comparisons
-                        (contest_id, county_id, round, imprinted_id, cvr_choice, 
-                         audit_choice, consensus, timestamp)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        (
+                            contest_id,
+                            county_id,
+                            round,
+                            imprinted_id,
+                            cvr_choice,
+                            audit_choice,
+                            consensus,
+                            timestamp,
+                            ballot_type,
+                            record_type,
+                            audit_board_comment,
+                            cvr_id,
+                            audit_reason,
+                            raw_row
+                        )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                     (
                         contest_id,
                         county_id,
                         round_num,
-                        row["imprinted_id"],
+                        row.get("imprinted_id"),
                         row.get("choice_per_voting_computer", ""),
                         row.get("audit_board_selection", ""),
                         row.get("consensus", "YES"),
                         row.get("timestamp"),
+                        row.get("ballot_type"),
+                        row.get("record_type"),
+                        row.get("audit_board_comment"),
+                        row.get("cvr_id"),
+                        row.get("audit_reason"),
+                        json.dumps({k: (v if v is not None else "") for k, v in row.items()}, ensure_ascii=False),
                     ),
                 )
                 count += 1
@@ -511,6 +596,11 @@ def import_round_data(
 
         import csv
 
+        cursor.execute(
+            "DELETE FROM contest_selection_rows WHERE round = ?",
+            (round_num,),
+        )
+
         with open(selection_file, "r", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             count = 0
@@ -520,11 +610,31 @@ def import_round_data(
                     continue
 
                 contest_id = contest_map[contest_name]
+                min_margin_value = int(row["min_margin"]) if row.get("min_margin") else None
+                contest_cvr_ids = row.get("contest_cvr_ids")
 
-                # We don't have direct county mapping for CVR IDs, so skip for now
-                # This could be expanded later if needed
-                if progress_callback and count == 0:
-                    progress_callback("  Skipping CVR ID selections (not yet implemented)")
+                cursor.execute(
+                    """
+                    INSERT INTO contest_selection_rows (
+                        contest_id,
+                        round,
+                        min_margin,
+                        contest_cvr_ids,
+                        raw_row
+                    )
+                    VALUES (?, ?, ?, ?, ?)
+                """,
+                    (
+                        contest_id,
+                        round_num,
+                        min_margin_value,
+                        contest_cvr_ids,
+                        json.dumps({k: (v if v is not None else "") for k, v in row.items()}, ensure_ascii=False),
+                    ),
+                )
                 count += 1
+
+            if progress_callback:
+                progress_callback(f"  Loaded {count} contest selection rows")
 
     conn.commit()
