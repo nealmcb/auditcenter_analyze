@@ -17,6 +17,16 @@ from pathlib import Path
 from typing import Optional
 import argparse
 
+# Import rlacalc for risk calculations
+try:
+    import rlacalc
+except ImportError:
+    # Try to add rlacalc to path
+    rlacalc_path = Path(__file__).parent.parent.parent / "rlacalc"
+    if rlacalc_path.exists():
+        sys.path.insert(0, str(rlacalc_path.parent))
+    import rlacalc
+
 # Import verification functions from existing scripts
 try:
     from auditcenter_analyze.verify_any_contest import (
@@ -125,7 +135,7 @@ def load_contest_from_db(
     )
     county_details = [dict(row) for row in c.fetchall()]
 
-    # Get actual selected ballots
+    # Get actual selected ballots (distinct imprinted_ids)
     c.execute(
         """
         SELECT DISTINCT imprinted_id
@@ -137,6 +147,25 @@ def load_contest_from_db(
     )
     selected_ballots = [row[0] for row in c.fetchall()]
 
+    # Get ballot comparison details for risk calculation
+    # Note: We get one row per ballot (may have multiple rows if ballot appears in multiple rounds)
+    # We'll use the contest data discrepancy counts which are already aggregated
+    c.execute(
+        """
+        SELECT imprinted_id, cvr_choice, audit_choice, consensus
+        FROM ballot_comparisons
+        WHERE contest_id = ?
+        GROUP BY imprinted_id
+        ORDER BY imprinted_id
+    """,
+        (contest["contest_id"],),
+    )
+    ballot_rows = c.fetchall()
+    ballot_comparisons_data = [
+        {"imprinted_id": row[0], "cvr": row[1], "audit": row[2], "consensus": row[3]}
+        for row in ballot_rows
+    ]
+
     conn.close()
 
     contest["vote_totals"] = vote_totals
@@ -144,13 +173,96 @@ def load_contest_from_db(
     contest["risk_analysis"] = risk_analysis
     contest["county_details"] = county_details
     contest["selected_ballots"] = selected_ballots
+    contest["ballot_comparisons"] = ballot_comparisons_data
 
     return contest
 
 
+def has_discrepancy(ballot):
+    """Check if a ballot has a discrepancy."""
+    if ballot.get("consensus") == "NO":
+        return True
+    cvr = (ballot.get("cvr") or "").strip()
+    audit = (ballot.get("audit") or "").strip()
+    # Both empty: no discrepancy
+    if cvr == "" and audit == "":
+        return False
+    # Any difference is a discrepancy
+    return cvr != audit
+
+
+def calculate_targeted_risk(
+    contest: dict,
+    ballot_comparisons: list,
+    gamma: float = 1.03905,
+) -> Optional[dict]:
+    """Calculate risk using ONLY the contest's own samples (for targeted contests).
+
+    This verifies that the risk calculation matches what ColoradoRLA calculated
+    for the targeted audit, using only the ballots specifically selected for this contest.
+    """
+    # Only calculate for targeted contests
+    audit_reason = contest.get("audit_reason", "")
+    if audit_reason not in ("state_wide_contest", "county_wide_contest"):
+        return None
+
+    # Get contest parameters
+    min_margin = contest.get("min_margin")
+    contest_ballot_card_count = contest.get("contest_ballot_card_count")
+
+    if not min_margin or not contest_ballot_card_count or contest_ballot_card_count == 0:
+        return None
+
+    # For single-county contests, use county ballot_card_count for diluted margin
+    if contest["counties"] and len(contest["counties"]) == 1:
+        county = contest["counties"][0]
+        ballot_card_count = county["ballot_card_count"]
+    else:
+        ballot_card_count = contest_ballot_card_count
+
+    diluted_margin = min_margin / ballot_card_count
+
+    # Count samples
+    n = len(ballot_comparisons)
+
+    # Get discrepancy counts from contest data (ColoradoRLA's classifications)
+    o2 = contest.get("two_vote_over_count", 0)
+    o1 = contest.get("one_vote_over_count", 0)
+    u1 = contest.get("one_vote_under_count", 0)
+    u2 = contest.get("two_vote_under_count", 0)
+
+    # Calculate risk
+    try:
+        risk_value = rlacalc.KM_P_value(
+            n=n,
+            gamma=gamma,
+            margin=diluted_margin,
+            o1=o1,
+            o2=o2,
+            u1=u1,
+            u2=u2,
+        )
+    except Exception as e:
+        return {"error": str(e)}
+
+    return {
+        "n": n,
+        "min_margin": min_margin,
+        "ballot_card_count": ballot_card_count,
+        "diluted_margin": diluted_margin,
+        "gamma": gamma,
+        "o1": o1,
+        "o2": o2,
+        "u1": u1,
+        "u2": u2,
+        "risk_value": risk_value,
+        "achieved_risk_limit": risk_value <= 0.03,
+    }
+
+
 def count_winners(winners_str: Optional[str]) -> int:
     """Count the number of winners from the winners string.
-    
+
     The winners field stores winner names in quotes, possibly multiple.
     Format examples: "Name" or "Name1" "Name2"
     """
@@ -159,6 +271,7 @@ def count_winners(winners_str: Optional[str]) -> int:
     # Remove quotes and split by quote-space-quote pattern or just count quoted strings
     # Simple approach: count occurrences of quoted strings
     import re
+
     quoted_names = re.findall(r'"([^"]+)"', winners_str)
     return len(quoted_names)
 
@@ -230,7 +343,7 @@ def generate_report(
     report_lines.append("")
     report_lines.append(f"- **Contest Name:** {contest['name']}")
     report_lines.append(f"- **Audit Reason:** {contest.get('audit_reason', 'N/A')}")
-    num_winners = count_winners(contest.get('winners'))
+    num_winners = count_winners(contest.get("winners"))
     report_lines.append(f"- **Number of Winners:** {num_winners}")
     report_lines.append("")
     report_lines.append("### Counties Involved")
@@ -283,8 +396,8 @@ def generate_report(
         # For single-county contests, use county ballot_card_count for diluted margin
         if contest["counties"] and len(contest["counties"]) == 1:
             county = contest["counties"][0]
-            county_ballot_count = county['ballot_card_count']
-            min_margin = contest.get('min_margin', 0)
+            county_ballot_count = county["ballot_card_count"]
+            min_margin = contest.get("min_margin", 0)
             if min_margin and county_ballot_count:
                 diluted_margin = min_margin / county_ballot_count
                 report_lines.append(f"- **County Ballot Card Count:** {county_ballot_count:,}")
@@ -304,15 +417,73 @@ def generate_report(
                 report_lines.append("  - (Multi-county calculation - see documentation)")
         report_lines.append(f"- **Sample Size:** {risk.get('sample_size', 'N/A')}")
         report_lines.append(f"- **Discrepancies Found:** {risk.get('discrepancies', 'N/A')}")
-        risk_value = risk.get('risk_value')
+
+        # Show opportunistic risk (from database, may include samples from other contests)
+        risk_value = risk.get("risk_value")
         if risk_value is not None:
             risk_percentage = risk_value * 100
-            report_lines.append(f"- **Risk Level:** {risk_percentage:.3f}%")
+            report_lines.append(
+                f"- **Risk Level (Opportunistic - all available samples):** {risk_percentage:.3f}%"
+            )
+            report_lines.append(
+                "  - This uses all uniformly distributed samples, which may include"
+            )
+            report_lines.append(
+                "    ballots selected for other targeted contests (e.g., presidential)."
+            )
         else:
-            report_lines.append("- **Risk Level:** N/A")
+            report_lines.append("- **Risk Level (Opportunistic):** N/A")
         report_lines.append(
             f"- **Achieved Risk Limit:** {'✓ Yes' if risk.get('achieved_risk_limit') else '✗ No'}"
         )
+
+        # For targeted contests, also calculate risk using only this contest's samples
+        audit_reason = contest.get("audit_reason", "")
+        if audit_reason in ("state_wide_contest", "county_wide_contest"):
+            report_lines.append("")
+            report_lines.append("### Targeted Contest Verification")
+            report_lines.append("")
+            targeted_risk = calculate_targeted_risk(contest, contest.get("ballot_comparisons", []))
+            if targeted_risk and "error" not in targeted_risk:
+                targeted_risk_pct = targeted_risk["risk_value"] * 100
+                report_lines.append("**Risk calculation using ONLY this contest's samples:**")
+                report_lines.append("")
+                report_lines.append(f"- **Sample Size (n):** {targeted_risk['n']}")
+                report_lines.append(f"- **Diluted Margin:** {targeted_risk['diluted_margin']:.6f}")
+                report_lines.append(f"- **Gamma:** {targeted_risk['gamma']}")
+                report_lines.append(
+                    f"- **Discrepancies:** o1={targeted_risk['o1']}, o2={targeted_risk['o2']}, u1={targeted_risk['u1']}, u2={targeted_risk['u2']}"
+                )
+                report_lines.append(f"- **Risk Level (Targeted):** {targeted_risk_pct:.6f}%")
+                report_lines.append(
+                    f"- **Achieved Risk Limit:** {'✓ Yes' if targeted_risk['achieved_risk_limit'] else '✗ No'}"
+                )
+
+                # Compare to opportunistic risk
+                if risk_value is not None:
+                    diff = abs(targeted_risk["risk_value"] - risk_value)
+                    if diff < 0.000001:
+                        report_lines.append("")
+                        report_lines.append(
+                            "✓ **Verification:** Targeted risk matches opportunistic risk (within rounding)"
+                        )
+                    else:
+                        report_lines.append("")
+                        report_lines.append(
+                            f"⚠️  **Note:** Targeted risk ({targeted_risk_pct:.6f}%) differs from"
+                        )
+                        report_lines.append(f"   opportunistic risk ({risk_percentage:.6f}%)")
+                        report_lines.append(f"   Difference: {diff * 100:.6f} percentage points")
+                        report_lines.append(
+                            "   This may indicate the opportunistic calculation used additional samples"
+                        )
+                        report_lines.append(
+                            "   from other targeted contests (e.g., presidential election)."
+                        )
+            elif targeted_risk and "error" in targeted_risk:
+                report_lines.append(
+                    f"⚠️  **Error calculating targeted risk:** {targeted_risk['error']}"
+                )
     report_lines.append("")
     report_lines.append("---")
     report_lines.append("")
