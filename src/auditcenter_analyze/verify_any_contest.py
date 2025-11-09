@@ -13,8 +13,9 @@ import csv
 import sys
 import argparse
 import re
+from collections import defaultdict
 from pathlib import Path
-from typing import List, Tuple, Optional
+from typing import Dict, List, Optional, Tuple
 
 
 def generate_random_numbers(seed: str, count: int, domain_size: int) -> List[int]:
@@ -135,6 +136,24 @@ def ballot_to_imprinted_id(county: str, tabulator: str, batch: str, position: in
     return f"{tabulator}-{batch}-{position}"
 
 
+def generate_random_number_details(seed: str, index: int, domain_size: int) -> dict:
+    """Return detailed SHA-256 information for a single selection."""
+    hash_input = f"{seed},{index}"
+    hash_output = hashlib.sha256(hash_input.encode("utf-8")).digest()
+    hash_hex = hash_output.hex()
+    hash_int = int.from_bytes(hash_output, byteorder="big")
+    modulo = hash_int % domain_size
+    pick = modulo + 1
+    return {
+        "index": index,
+        "hash_input": hash_input,
+        "hash_hex": hash_hex,
+        "hash_int": hash_int,
+        "modulo": modulo,
+        "result": pick,
+    }
+
+
 def get_contest_counties(contest_name: str, base_path: Path) -> List[str]:
     """Return counties in which the contest appears."""
     counties: List[str] = []
@@ -197,17 +216,26 @@ def find_contest(contest_name: str, contest_file: str) -> Optional[dict]:
     return None
 
 
-def load_actual_selections(comparison_file: str, contest_name: str) -> List[str]:
-    """Load actual ballot selections from contest comparison file."""
-    selections = []
-
-    with open(comparison_file, "r") as f:
+def load_imprinted_index(comparison_file: str) -> Dict[str, set[str]]:
+    """Build an index mapping imprinted IDs to all contests they appear under."""
+    index: Dict[str, set[str]] = defaultdict(set)
+    with open(comparison_file, "r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            if row["contest_name"] == contest_name:
-                selections.append(row["imprinted_id"])
+            imprint = (row.get("imprinted_id") or "").strip()
+            contest = row.get("contest_name") or ""
+            if imprint:
+                index[imprint].add(contest)
+    return index
 
-    return selections
+
+def load_contest_imprinted_ids(
+    comparison_file: str, contest_name: str
+) -> Tuple[set[str], Dict[str, set[str]]]:
+    """Return imprinted IDs for a contest plus the global imprinted index."""
+    index = load_imprinted_index(comparison_file)
+    contest_ids = {imprint for imprint, contests in index.items() if contest_name in contests}
+    return contest_ids, index
 
 
 def verify_contest(contest_name: str, county: Optional[str] = None, base_path=None) -> bool:
@@ -354,7 +382,9 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
         print(f"  Counties involved ({len(contest_counties)}): {', '.join(contest_counties)}")
 
         combined_manifest: List[Tuple[str, str, str, int]] = []
+        county_ranges: Dict[str, Tuple[int, int]] = {}
         unresolved_counties: List[str] = []
+        running_total = 0
 
         for county_name in contest_counties:
             manifest = resolve_manifest_file(base_path, county_name)
@@ -369,7 +399,10 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
                 unresolved_counties.append(county_name)
                 continue
 
+            start_idx = running_total + 1
             combined_manifest.extend(ballots)
+            running_total += len(ballots)
+            county_ranges[county_name] = (start_idx, running_total)
 
         if unresolved_counties:
             print(
@@ -383,11 +416,27 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
                 f"  ⚠ Contest ballot card count ({contest_ballot_card_count:,}) exceeds combined manifest size."
             )
 
-        first_two = generate_random_numbers(SEED, 2, contest_ballot_card_count)
-        print(f"  First two selections (contest domain): {first_two}")
+        print("\n  County coverage (alphabetical order):")
+        for county_name in contest_counties:
+            start_idx, end_idx = county_ranges[county_name]
+            print(
+                f"    {county_name:15s}: positions {start_idx:,}–{end_idx:,} "
+                f"({end_idx - start_idx + 1:,} cards)"
+            )
 
-        mapped = []
-        for pick in first_two:
+        print()
+        print(f"  Contest domain size (contest_ballot_card_count): {contest_ballot_card_count:,}")
+        print(f"  Combined manifest domain size:                {len(combined_manifest):,}")
+        print(f"  Seed: {SEED}")
+        print()
+
+        domain_size = len(combined_manifest)
+        detail_count = min(5, audited_sample_count or 5)
+        selections = generate_random_numbers(SEED, detail_count, domain_size)
+        print(f"  First {detail_count} selections (manifest domain): {selections}")
+
+        mapped: List[Tuple[str, str]] = []
+        for pick in selections:
             if pick <= len(combined_manifest):
                 county_name, tabulator, batch, position = combined_manifest[pick - 1]
                 mapped.append(
@@ -397,17 +446,37 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
                 mapped.append(("OUT_OF_RANGE", f"index:{pick}"))
 
         comparison_file = f"{base_path}/round{round_num}/contestComparison.csv"
-        try:
-            actual_imprinted_ids = set(load_actual_selections(comparison_file, contest_name))
-        except Exception:
-            actual_imprinted_ids = set()
+        contest_imprinted_ids, imprinted_index = load_contest_imprinted_ids(
+            comparison_file, contest_name
+        )
 
         for idx, (county_name, imprint) in enumerate(mapped, start=1):
+            details = generate_random_number_details(SEED, idx, domain_size)
+            print(f"\n  Selection #{idx} details:")
+            print(f"    Hash input:  {details['hash_input']}")
+            print(f"    SHA-256 hex: {details['hash_hex']}")
+            print(f"    As integer:  {details['hash_int']}")
+            print(f"    Modulo:      {details['hash_int']} mod {domain_size} = {details['modulo']}")
+            print(f"    Result:      {details['result']} (1-indexed)")
+
             if county_name == "OUT_OF_RANGE":
-                print(f"  ✗ Selection #{idx}: index {imprint} exceeds combined manifest size")
+                print(f"    ✗ Selection #{idx}: index {imprint} exceeds combined manifest size")
             else:
-                status = "MATCH" if imprint in actual_imprinted_ids else "not found"
-                print(f"  Selection #{idx}: {county_name} -> {imprint} ({status})")
+                if imprint in contest_imprinted_ids:
+                    status = "MATCH"
+                elif imprint in imprinted_index:
+                    status = "recorded in other contests"
+                else:
+                    status = "not found"
+                start_idx, end_idx = county_ranges[county_name]
+                print(f"    County:      {county_name} (positions {start_idx:,}–{end_idx:,})")
+                print(f"    Imprinted ID: {imprint} ({status})")
+                if status == "recorded in other contests":
+                    other_contests = sorted(imprinted_index[imprint] - {contest_name})
+                    detail = ", ".join(other_contests) if other_contests else "(none)"
+                    print(f"    Note: appears under contests: {detail}")
+                if status == "not found":
+                    print("    Note: imprinted ID not present in contestComparison data.")
 
         print()
         print(
@@ -501,7 +570,10 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
     comparison_file = f"{base_path}/round{round_num}/contestComparison.csv"
     print(f"Loading actual selections from round {round_num}...")
     try:
-        actual_imprinted_ids = load_actual_selections(comparison_file, contest_name)
+        contest_imprinted_ids, imprinted_index = load_contest_imprinted_ids(
+            comparison_file, contest_name
+        )
+        actual_imprinted_ids = sorted(contest_imprinted_ids)
         print(f"✓ Loaded {len(actual_imprinted_ids)} actual selections")
     except Exception as e:
         print(f"✗ ERROR: Could not load actual selections: {e}")
@@ -513,42 +585,33 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
     print("VERIFICATION RESULTS")
     print("=" * 80)
 
-    expected_sorted = sorted(expected_imprinted_ids)
-    actual_sorted = sorted(actual_imprinted_ids)
+    expected_unique = set(expected_imprinted_ids)
+    actual_unique = set(actual_imprinted_ids)
 
-    if expected_sorted == actual_sorted:
+    missing_entirely = [bid for bid in expected_unique if bid not in imprinted_index]
+    present_elsewhere_only = [
+        (bid, sorted(imprinted_index[bid] - {contest_name}))
+        for bid in expected_unique
+        if bid in imprinted_index and contest_name not in imprinted_index[bid]
+    ]
+    matching = len(expected_unique & actual_unique)
+
+    if not missing_entirely:
         print("✓✓✓ VERIFICATION SUCCESSFUL ✓✓✓")
         print()
-        print("All ballot selections match the expected random selections!")
-        print(f"Verified {len(expected_sorted)} ballots using seed {SEED}")
+        print("All selected imprinted IDs were found in the audit data.")
+        print(f"Verified {len(expected_unique)} unique ballots using seed {SEED}")
         return True
     else:
         print("✗✗✗ VERIFICATION FAILED ✗✗✗")
         print()
-
-        expected_set = set(expected_sorted)
-        actual_set = set(actual_sorted)
-
-        missing = expected_set - actual_set
-        extra = actual_set - expected_set
-        matching = len(expected_set & actual_set)
-
-        print(f"Matching: {matching} / {len(expected_sorted)}")
-
-        if missing:
-            print(f"\nExpected but NOT in audit ({len(missing)}):")
-            for ballot in sorted(missing)[:10]:
-                print(f"  - {ballot}")
-            if len(missing) > 10:
-                print(f"  ... and {len(missing) - 10} more")
-
-        if extra:
-            print(f"\nIn audit but NOT expected ({len(extra)}):")
-            for ballot in sorted(extra)[:10]:
-                print(f"  + {ballot}")
-            if len(extra) > 10:
-                print(f"  ... and {len(extra) - 10} more")
-
+        print(f"Matching (unique IDs): {matching} / {len(expected_unique)}")
+        print("Expected but NOT found in audit data:")
+        for ballot in sorted(missing_entirely):
+            print(f"  - {ballot}")
+        for bid, contests in present_elsewhere_only:
+            detail = ", ".join(contests) if contests else "(none)"
+            print(f"  (recorded under other contests: {bid} -> {detail})")
         return False
 
 
