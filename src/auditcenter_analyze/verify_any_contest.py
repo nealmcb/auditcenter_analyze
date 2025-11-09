@@ -238,7 +238,12 @@ def load_contest_imprinted_ids(
     return contest_ids, index
 
 
-def verify_contest(contest_name: str, county: Optional[str] = None, base_path=None) -> bool:
+def verify_contest(
+    contest_name: str,
+    county: Optional[str] = None,
+    base_path=None,
+    force_county_only: bool = False,
+) -> bool:
     """
     Verify random ballot selection for a given contest.
 
@@ -376,116 +381,182 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
     contest_counties = get_contest_counties(contest_name, base_path)
     multi_county = len(contest_counties) > 1
     domain_size = contest_ballot_card_count
+    ballot_manifest: Optional[List[Tuple[str, str, str, int]]] = None
+    manifest_path: Optional[Path] = None
+    forced_single_county = False
 
     if multi_county:
-        print("ℹ Detected multi-county contest. Trying alphabetical manifest combination...")
-        print(f"  Counties involved ({len(contest_counties)}): {', '.join(contest_counties)}")
-
-        combined_manifest: List[Tuple[str, str, str, int]] = []
-        county_ranges: Dict[str, Tuple[int, int]] = {}
-        unresolved_counties: List[str] = []
-        running_total = 0
-
-        for county_name in contest_counties:
-            manifest = resolve_manifest_file(base_path, county_name)
-            if not manifest:
-                unresolved_counties.append(county_name)
-                continue
-
+        if force_county_only and county and county in contest_counties:
+            print(
+                "ℹ Forcing single-county verification using only the specified county manifest."
+            )
+            manifest_path = resolve_manifest_file(base_path, county)
+            if not manifest_path:
+                print(f"✗ ERROR: Could not locate manifest file for {county} County")
+                return False
             try:
-                ballots = load_ballot_manifest(str(manifest))
-            except Exception as exc:
-                print(f"  ✗ Failed to load manifest for {county_name}: {exc}")
-                unresolved_counties.append(county_name)
-                continue
+                print(f"Loading manifest: {manifest_path}")
+                ballot_manifest = load_ballot_manifest(str(manifest_path))
+                print(f"✓ Loaded {len(ballot_manifest):,} ballot cards from manifest")
+            except FileNotFoundError:
+                print(f"✗ ERROR: Could not find manifest file: {manifest_path}")
+                return False
+            contest_ballot_card_count = len(ballot_manifest)
+            domain_size = contest_ballot_card_count
+            multi_county = False
+            forced_single_county = True
+        else:
+            print("ℹ Detected multi-county contest. Trying alphabetical manifest combination...")
+            print(f"  Counties involved ({len(contest_counties)}): {', '.join(contest_counties)}")
 
-            start_idx = running_total + 1
-            combined_manifest.extend(ballots)
-            running_total += len(ballots)
-            county_ranges[county_name] = (start_idx, running_total)
+            combined_manifest: List[Tuple[str, str, str, int]] = []
+            county_ranges: Dict[str, Tuple[int, int]] = {}
+            unresolved_counties: List[str] = []
+            running_total = 0
 
-        if unresolved_counties:
-            print(
-                f"  ⚠ Could not load manifests for: {', '.join(unresolved_counties)}. Aborting verification."
-            )
-            return False
+            for county_name in contest_counties:
+                manifest = resolve_manifest_file(base_path, county_name)
+                if not manifest:
+                    unresolved_counties.append(county_name)
+                    continue
 
-        print(f"  ✓ Combined manifest size: {len(combined_manifest):,} ballot cards")
-        if contest_ballot_card_count > len(combined_manifest):
-            print(
-                f"  ⚠ Contest ballot card count ({contest_ballot_card_count:,}) exceeds combined manifest size."
-            )
+                try:
+                    ballots = load_ballot_manifest(str(manifest))
+                except Exception as exc:
+                    print(f"  ✗ Failed to load manifest for {county_name}: {exc}")
+                    unresolved_counties.append(county_name)
+                    continue
 
-        print("\n  County coverage (alphabetical order):")
-        for county_name in contest_counties:
-            start_idx, end_idx = county_ranges[county_name]
-            print(
-                f"    {county_name:15s}: positions {start_idx:,}–{end_idx:,} "
-                f"({end_idx - start_idx + 1:,} cards)"
-            )
+                start_idx = running_total + 1
+                combined_manifest.extend(ballots)
+                running_total += len(ballots)
+                county_ranges[county_name] = (start_idx, running_total)
 
-        print()
-        print(f"  Contest domain size (contest_ballot_card_count): {contest_ballot_card_count:,}")
-        print(f"  Combined manifest domain size:                {len(combined_manifest):,}")
-        print(f"  Seed: {SEED}")
-        print()
-
-        domain_size = len(combined_manifest)
-        detail_count = min(5, audited_sample_count or 5)
-        selections = generate_random_numbers(SEED, detail_count, domain_size)
-        print(f"  First {detail_count} selections (manifest domain): {selections}")
-
-        mapped: List[Tuple[str, str]] = []
-        for pick in selections:
-            if pick <= len(combined_manifest):
-                county_name, tabulator, batch, position = combined_manifest[pick - 1]
-                mapped.append(
-                    (county_name, ballot_to_imprinted_id(county_name, tabulator, batch, position))
+            if unresolved_counties:
+                print(
+                    f"  ⚠ Could not load manifests for: {', '.join(unresolved_counties)}. Aborting verification."
                 )
-            else:
-                mapped.append(("OUT_OF_RANGE", f"index:{pick}"))
+                return False
 
-        comparison_file = f"{base_path}/round{round_num}/contestComparison.csv"
-        contest_imprinted_ids, imprinted_index = load_contest_imprinted_ids(
-            comparison_file, contest_name
-        )
+            print(f"  ✓ Combined manifest size: {len(combined_manifest):,} ballot cards")
+            if contest_ballot_card_count > len(combined_manifest):
+                print(
+                    f"  ⚠ Contest ballot card count ({contest_ballot_card_count:,}) exceeds combined manifest size."
+                )
 
-        for idx, (county_name, imprint) in enumerate(mapped, start=1):
-            details = generate_random_number_details(SEED, idx, domain_size)
-            print(f"\n  Selection #{idx} details:")
-            print(f"    Hash input:  {details['hash_input']}")
-            print(f"    SHA-256 hex: {details['hash_hex']}")
-            print(f"    As integer:  {details['hash_int']}")
-            print(f"    Modulo:      {details['hash_int']} mod {domain_size} = {details['modulo']}")
-            print(f"    Result:      {details['result']} (1-indexed)")
-
-            if county_name == "OUT_OF_RANGE":
-                print(f"    ✗ Selection #{idx}: index {imprint} exceeds combined manifest size")
-            else:
-                if imprint in contest_imprinted_ids:
-                    status = "MATCH"
-                elif imprint in imprinted_index:
-                    status = "recorded in other contests"
-                else:
-                    status = "not found"
+            print("\n  County coverage (alphabetical order):")
+            for county_name in contest_counties:
                 start_idx, end_idx = county_ranges[county_name]
-                print(f"    County:      {county_name} (positions {start_idx:,}–{end_idx:,})")
-                print(f"    Imprinted ID: {imprint} ({status})")
-                if status == "recorded in other contests":
-                    other_contests = sorted(imprinted_index[imprint] - {contest_name})
-                    detail = ", ".join(other_contests) if other_contests else "(none)"
-                    print(f"    Note: appears under contests: {detail}")
-                if status == "not found":
-                    print("    Note: imprinted ID not present in contestComparison data.")
+                print(
+                    f"    {county_name:15s}: positions {start_idx:,}–{end_idx:,} "
+                    f"({end_idx - start_idx + 1:,} cards)"
+                )
 
-        print()
-        print(
-            "✗ ERROR: Multi-county contest verification requires confirmed manifest ordering and contest presence per ballot."
-        )
-        print(
-            "  The alphabetical combination attempt above shows the assumed ordering does not currently reconcile with audited selections."
-        )
-        return False
+            print()
+            print(f"  Contest domain size (contest_ballot_card_count): {contest_ballot_card_count:,}")
+            print(f"  Combined manifest domain size:                {len(combined_manifest):,}")
+            print(f"  Seed: {SEED}")
+            print()
+
+            domain_size = len(combined_manifest)
+            detail_count = min(5, audited_sample_count or 5)
+            selections = generate_random_numbers(SEED, detail_count, domain_size)
+            print(f"  First {detail_count} selections (manifest domain): {selections}")
+
+            mapped: List[Tuple[str, str]] = []
+            for pick in selections:
+                if pick <= len(combined_manifest):
+                    county_name, tabulator, batch, position = combined_manifest[pick - 1]
+                    mapped.append(
+                        (county_name, ballot_to_imprinted_id(county_name, tabulator, batch, position))
+                    )
+                else:
+                    mapped.append(("OUT_OF_RANGE", f"index:{pick}"))
+
+            # Additionally compute the full set of expected imprinted IDs to gauge mismatches
+            full_selections = generate_random_numbers(SEED, audited_sample_count, domain_size)
+            full_expected = []
+            for pick in full_selections:
+                if pick <= len(combined_manifest):
+                    county_name, tabulator, batch, position = combined_manifest[pick - 1]
+                    full_expected.append(
+                        (county_name, ballot_to_imprinted_id(county_name, tabulator, batch, position))
+                    )
+
+            comparison_file = f"{base_path}/round{round_num}/contestComparison.csv"
+            contest_imprinted_ids, imprinted_index = load_contest_imprinted_ids(
+                comparison_file, contest_name
+            )
+
+            for idx, (county_name, imprint) in enumerate(mapped, start=1):
+                details = generate_random_number_details(SEED, idx, domain_size)
+                print(f"\n  Selection #{idx} details:")
+                print(f"    Hash input:  {details['hash_input']}")
+                print(f"    SHA-256 hex: {details['hash_hex']}")
+                print(f"    As integer:  {details['hash_int']}")
+                print(f"    Modulo:      {details['hash_int']} mod {domain_size} = {details['modulo']}")
+                print(f"    Result:      {details['result']} (1-indexed)")
+
+                if county_name == "OUT_OF_RANGE":
+                    print(f"    ✗ Selection #{idx}: index {imprint} exceeds combined manifest size")
+                else:
+                    if imprint in contest_imprinted_ids:
+                        status = "MATCH"
+                    elif imprint in imprinted_index:
+                        status = "recorded in other contests"
+                    else:
+                        status = "not found"
+                    start_idx, end_idx = county_ranges[county_name]
+                    print(f"    County:      {county_name} (positions {start_idx:,}–{end_idx:,})")
+                    print(f"    Imprinted ID: {imprint} ({status})")
+                    if status == "recorded in other contests":
+                        other_contests = sorted(imprinted_index[imprint] - {contest_name})
+                        detail = ", ".join(other_contests) if other_contests else "(none)"
+                        print(f"    Note: appears under contests: {detail}")
+                    if status == "not found":
+                        print("    Note: imprinted ID not present in contestComparison data.")
+
+            print()
+            expected_unique = {imprint for _, imprint in full_expected if imprint != "OUT_OF_RANGE"}
+            missing_entirely = [
+                bid
+                for bid in expected_unique
+                if bid not in contest_imprinted_ids and bid not in imprinted_index
+            ]
+            present_elsewhere = [
+                (bid, sorted(imprinted_index[bid] - {contest_name}))
+                for bid in expected_unique
+                if bid in imprinted_index and contest_name not in imprinted_index[bid]
+            ]
+            if not missing_entirely and not present_elsewhere:
+                print("✓✓✓ VERIFICATION SUCCESSFUL ✓✓✓")
+                print()
+                print("All selected imprinted IDs were found in the audit data.")
+                print(f"Verified {len(expected_unique)} unique ballots using seed {SEED}")
+                return True
+            else:
+                print(
+                    "✗ ERROR: Multi-county contest verification requires confirmed manifest ordering and contest presence per ballot."
+                )
+                print(
+                    "  The alphabetical combination attempt above shows the assumed ordering does not currently reconcile with audited selections."
+                )
+                if missing_entirely:
+                    print(f"  Expected but NOT found in audit data: {len(missing_entirely)}")
+                    for ballot in sorted(missing_entirely)[:5]:
+                        print(f"    - {ballot}")
+                    if len(missing_entirely) > 5:
+                        print(f"    ... and {len(missing_entirely) - 5} more")
+                if present_elsewhere:
+                    print(
+                        f"  Expected but recorded under other contests: {len(present_elsewhere)}"
+                    )
+                    for ballot, contests in present_elsewhere[:5]:
+                        detail = ", ".join(contests) if contests else "(none)"
+                        print(f"    - {ballot} (under: {detail})")
+                    if len(present_elsewhere) > 5:
+                        print(f"    ... and {len(present_elsewhere) - 5} more")
+                return False
 
     # Single-county contests
     if not county:
@@ -505,25 +576,29 @@ def verify_contest(contest_name: str, county: Optional[str] = None, base_path=No
         print("✗ ERROR: Please specify --county parameter")
         return False
 
-    manifest_path = resolve_manifest_file(base_path, county)
-    if not manifest_path:
-        print(f"✗ ERROR: Could not locate manifest file for {county} County")
-        return False
+    if manifest_path is None:
+        manifest_path = resolve_manifest_file(base_path, county)
+        if not manifest_path:
+            print(f"✗ ERROR: Could not locate manifest file for {county} County")
+            return False
 
-    try:
-        print(f"Loading manifest: {manifest_path}")
-        ballot_manifest = load_ballot_manifest(str(manifest_path))
-        print(f"✓ Loaded {len(ballot_manifest):,} ballot cards from manifest")
-    except FileNotFoundError:
-        print(f"✗ ERROR: Could not find manifest file: {manifest_path}")
-        return False
+    if ballot_manifest is None:
+        try:
+            print(f"Loading manifest: {manifest_path}")
+            ballot_manifest = load_ballot_manifest(str(manifest_path))
+            print(f"✓ Loaded {len(ballot_manifest):,} ballot cards from manifest")
+        except FileNotFoundError:
+            print(f"✗ ERROR: Could not find manifest file: {manifest_path}")
+            return False
+    else:
+        print(f"Using preloaded manifest: {manifest_path}")
 
     if len(ballot_manifest) != ballot_card_count:
         print(
             f"⚠ WARNING: Manifest has {len(ballot_manifest)} cards, county reports {ballot_card_count}"
         )
 
-    if contest_ballot_card_count != ballot_card_count:
+    if contest_ballot_card_count != ballot_card_count and not forced_single_county:
         print(f"ℹ NOTE: This is a DISTRICT-LEVEL contest within {county} County.")
         print(
             f"  Contest appears on {contest_ballot_card_count:,} of {ballot_card_count:,} ballot cards."
@@ -795,6 +870,11 @@ def main():
         metavar="CONTEST",
         help="List counties that had ballots audited for specified contest",
     )
+    parser.add_argument(
+        "--force-county-only",
+        action="store_true",
+        help="For multi-county contests, verify using only the specified county manifest",
+    )
 
     args = parser.parse_args()
 
@@ -838,7 +918,11 @@ def main():
             county = "Adams"
         # Add more as needed
 
-    success = verify_contest(args.contest, county)
+    success = verify_contest(
+        args.contest,
+        county,
+        force_county_only=args.force_county_only,
+    )
     sys.exit(0 if success else 1)
 
 
