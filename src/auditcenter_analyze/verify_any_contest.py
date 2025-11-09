@@ -387,9 +387,7 @@ def verify_contest(
 
     if multi_county:
         if force_county_only and county and county in contest_counties:
-            print(
-                "ℹ Forcing single-county verification using only the specified county manifest."
-            )
+            print("ℹ Forcing single-county verification using only the specified county manifest.")
             manifest_path = resolve_manifest_file(base_path, county)
             if not manifest_path:
                 print(f"✗ ERROR: Could not locate manifest file for {county} County")
@@ -453,7 +451,9 @@ def verify_contest(
                 )
 
             print()
-            print(f"  Contest domain size (contest_ballot_card_count): {contest_ballot_card_count:,}")
+            print(
+                f"  Contest domain size (contest_ballot_card_count): {contest_ballot_card_count:,}"
+            )
             print(f"  Combined manifest domain size:                {len(combined_manifest):,}")
             print(f"  Seed: {SEED}")
             print()
@@ -468,7 +468,10 @@ def verify_contest(
                 if pick <= len(combined_manifest):
                     county_name, tabulator, batch, position = combined_manifest[pick - 1]
                     mapped.append(
-                        (county_name, ballot_to_imprinted_id(county_name, tabulator, batch, position))
+                        (
+                            county_name,
+                            ballot_to_imprinted_id(county_name, tabulator, batch, position),
+                        )
                     )
                 else:
                     mapped.append(("OUT_OF_RANGE", f"index:{pick}"))
@@ -480,7 +483,10 @@ def verify_contest(
                 if pick <= len(combined_manifest):
                     county_name, tabulator, batch, position = combined_manifest[pick - 1]
                     full_expected.append(
-                        (county_name, ballot_to_imprinted_id(county_name, tabulator, batch, position))
+                        (
+                            county_name,
+                            ballot_to_imprinted_id(county_name, tabulator, batch, position),
+                        )
                     )
 
             comparison_file = f"{base_path}/round{round_num}/contestComparison.csv"
@@ -494,7 +500,9 @@ def verify_contest(
                 print(f"    Hash input:  {details['hash_input']}")
                 print(f"    SHA-256 hex: {details['hash_hex']}")
                 print(f"    As integer:  {details['hash_int']}")
-                print(f"    Modulo:      {details['hash_int']} mod {domain_size} = {details['modulo']}")
+                print(
+                    f"    Modulo:      {details['hash_int']} mod {domain_size} = {details['modulo']}"
+                )
                 print(f"    Result:      {details['result']} (1-indexed)")
 
                 if county_name == "OUT_OF_RANGE":
@@ -548,9 +556,7 @@ def verify_contest(
                     if len(missing_entirely) > 5:
                         print(f"    ... and {len(missing_entirely) - 5} more")
                 if present_elsewhere:
-                    print(
-                        f"  Expected but recorded under other contests: {len(present_elsewhere)}"
-                    )
+                    print(f"  Expected but recorded under other contests: {len(present_elsewhere)}")
                     for ballot, contests in present_elsewhere[:5]:
                         detail = ", ".join(contests) if contests else "(none)"
                         print(f"    - {ballot} (under: {detail})")
