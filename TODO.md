@@ -30,6 +30,9 @@
   - These contests appear in ballot_comparisons but not in contest_risk_analysis
   - Determine why calculate_opportunistic_risk.py skipped them
 
+- [ ] **Compare with official tabulation results and call out pretend audits of irrelevant county results**
+  - Document where county-specific “targets” are actually slices of wider contests, e.g. Proposition 130 - Kit Carson
+
 - [ ] **address FIXME to determine winners, losers, and proper discrepancy type**
   - Reference rla_report and related documentation
   - Implement proper winner/loser determination logic
@@ -130,6 +133,13 @@
   - Map random numbers to manifest positions
   - Verify all 15 selected ballots
   - See docs/VERIFICATION_REPORT_PLAN.md for spec
+  - Needs testing: `src/auditcenter_analyze/generate_verification_report.py`
+
+- [ ] **Verify discrepancy classifications in contest.csv**
+  - Currently relying on ColoradoRLA's o1/o2/u1/u2 counts from contest.csv
+  - Need to verify these classifications are correct by examining actual ballot comparisons
+  - Check cvr_choice vs audit_choice against winner/loser to confirm overstatement vs understatement
+  - Verify vote count differences (1-vote vs 2-vote errors)
 
 ## Additional Notes
 

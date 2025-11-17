@@ -75,9 +75,7 @@ def load_contest_selections(data_root: Path) -> Dict[str, Tuple[int, List[str]]]
                 if not raw_ids or raw_ids == "[]":
                     continue
                 tokens = [
-                    token.strip()
-                    for token in raw_ids.strip("[]").split(",")
-                    if token.strip()
+                    token.strip() for token in raw_ids.strip("[]").split(",") if token.strip()
                 ]
                 if not tokens:
                     continue
@@ -155,8 +153,7 @@ def main() -> None:
     ).fetchall()
 
     county_lookup = {
-        row["county_id"]: row["name"]
-        for row in cur.execute("SELECT county_id, name FROM counties")
+        row["county_id"]: row["name"] for row in cur.execute("SELECT county_id, name FROM counties")
     }
 
     targeted_records: List[Dict[str, object]] = []
@@ -181,9 +178,7 @@ def main() -> None:
             if not mapped:
                 missing_mappings.append((contest_name, contest_id, cvr_id))
                 continue
-            for occurrence_index, (county_id, imprinted_id) in enumerate(
-                mapped, start=1
-            ):
+            for occurrence_index, (county_id, imprinted_id) in enumerate(mapped, start=1):
                 targeted_records.append(
                     {
                         "contest_id": contest_id,
@@ -231,9 +226,7 @@ def main() -> None:
         for record in targeted_records
         if record["imprinted_id"]
     }
-    residual_pairs = [
-        pair for pair in all_pairs if pair not in targeted_pairs
-    ]
+    residual_pairs = [pair for pair in all_pairs if pair not in targeted_pairs]
 
     # Dump all pairs
     all_pairs_path = OUTPUT_DIR / "contest_comparison_all_pairs.csv"
@@ -290,4 +283,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
