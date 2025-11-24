@@ -31,17 +31,17 @@ def comprehensive(
     ),
 ) -> None:
     """Generate single comprehensive plot with CV, stdev, mean, and sample count."""
-    
+
     if not STATS_CSV.exists():
         raise FileNotFoundError(f"Statistics file not found: {STATS_CSV}")
-    
+
     # Load data
     counties = []
     counts = []
     means = []
     stdevs = []
     cvs = []
-    
+
     with STATS_CSV.open("r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -50,7 +50,7 @@ def comprehensive(
             means.append(float(row["mean_seconds"]))
             stdevs.append(float(row["stdev_seconds"]))
             cvs.append(float(row["coefficient_of_variation"]))
-    
+
     # Create single comprehensive plot with dual axes
     fig, ax1 = plt.subplots(figsize=(14, max(16, len(counties) * 0.4)))
     fig.suptitle(
@@ -59,23 +59,33 @@ def comprehensive(
         fontweight="bold",
         y=0.995,
     )
-    
+
     # Second axis for CV and count (dimensionless/metric values)
     ax2 = ax1.twiny()
-    
+
     y_pos = np.arange(len(counties))
-    
+
     # Plot mean ± stddev as horizontal bars (centered on mean, width = 2*stddev)
     # Bars go from (mean - stddev) to (mean + stddev)
     bar_lefts = [m - s for m, s in zip(means, stdevs)]
     bar_widths = [2 * s for s in stdevs]
-    ax1.barh(y_pos, bar_widths, left=bar_lefts, height=0.6, label="Mean ± StdDev (seconds)", 
-             color="mediumseagreen", alpha=0.7, edgecolor="darkgreen", linewidth=0.5)
-    
+    ax1.barh(
+        y_pos,
+        bar_widths,
+        left=bar_lefts,
+        height=0.6,
+        label="Mean ± StdDev (seconds)",
+        color="mediumseagreen",
+        alpha=0.7,
+        edgecolor="darkgreen",
+        linewidth=0.5,
+    )
+
     # Plot mean as center line marker
-    ax1.scatter(means, y_pos, color="darkgreen", marker="|", s=200, zorder=5, 
-                label="Mean (seconds)")
-    
+    ax1.scatter(
+        means, y_pos, color="darkgreen", marker="|", s=200, zorder=5, label="Mean (seconds)"
+    )
+
     # Plot CV and sample count as dots on second axis
     # Normalize CV and count to a reasonable scale for visualization
     cv_max = max(cvs)
@@ -83,38 +93,56 @@ def comprehensive(
     # Scale CV to 0-1, then map to reasonable x-axis range (maybe 0-1000 for second axis)
     cv_scaled = [cv / cv_max * 800 for cv in cvs]  # Scale to 0-800 range
     count_scaled = [c / count_max * 800 for c in counts]  # Scale to 0-800 range
-    
-    ax2.scatter(cv_scaled, y_pos, color="steelblue", s=60, alpha=0.8, marker="o", 
-                label="CV", zorder=4)
-    ax2.scatter(count_scaled, y_pos, color="purple", s=60, alpha=0.8, marker="s", 
-                label="Sample Count", zorder=4)
-    
+
+    ax2.scatter(
+        cv_scaled, y_pos, color="steelblue", s=60, alpha=0.8, marker="o", label="CV", zorder=4
+    )
+    ax2.scatter(
+        count_scaled,
+        y_pos,
+        color="purple",
+        s=60,
+        alpha=0.8,
+        marker="s",
+        label="Sample Count",
+        zorder=4,
+    )
+
     # Set labels and limits
     ax1.set_yticks(y_pos)
     ax1.set_yticklabels(counties, fontsize=8)
-    ax1.set_xlabel("Time (seconds) - Mean ± StdDev shown as bars", 
-                   fontsize=11, fontweight="bold", color="darkgreen")
+    ax1.set_xlabel(
+        "Time (seconds) - Mean ± StdDev shown as bars",
+        fontsize=11,
+        fontweight="bold",
+        color="darkgreen",
+    )
     ax1.set_ylabel("County (sorted by CV, descending)", fontsize=11, fontweight="bold")
     ax1.grid(axis="x", alpha=0.3)
     ax1.invert_yaxis()
     ax1.tick_params(axis="x", labelcolor="darkgreen")
-    
+
     # Set second axis labels
-    ax2.set_xlabel("Normalized Scale (0-800) - CV (circles) and Sample Count (squares)", 
-                   fontsize=11, fontweight="bold", color="steelblue")
+    ax2.set_xlabel(
+        "Normalized Scale (0-800) - CV (circles) and Sample Count (squares)",
+        fontsize=11,
+        fontweight="bold",
+        color="steelblue",
+    )
     ax2.set_xlim(0, 850)
     ax2.tick_params(axis="x", labelcolor="steelblue")
-    
+
     # Create custom legend combining both axes
     lines1, labels1 = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
     ax1.legend(lines1 + lines2, labels1 + labels2, loc="lower right", fontsize=9)
-    
+
     # Add CV values as text next to dots
     for i, (y, cv, cv_s) in enumerate(zip(y_pos, cvs, cv_scaled)):
-        ax2.text(cv_s + 20, y, f"{cv:.3f}", va="center", fontsize=6, 
-                color="steelblue", fontweight="bold")
-    
+        ax2.text(
+            cv_s + 20, y, f"{cv:.3f}", va="center", fontsize=6, color="steelblue", fontweight="bold"
+        )
+
     plt.tight_layout()
     output_file.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_file, dpi=300, bbox_inches="tight")
@@ -138,17 +166,17 @@ def main(
     ),
 ) -> None:
     """Generate plots of county statistics."""
-    
+
     if not STATS_CSV.exists():
         raise FileNotFoundError(f"Statistics file not found: {STATS_CSV}")
-    
+
     # Load data
     counties = []
     counts = []
     means = []
     stdevs = []
     cvs = []
-    
+
     with STATS_CSV.open("r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -157,7 +185,7 @@ def main(
             means.append(float(row["mean_seconds"]))
             stdevs.append(float(row["stdev_seconds"]))
             cvs.append(float(row["coefficient_of_variation"]))
-    
+
     # Create figure with subplots
     fig, axes = plt.subplots(2, 2, figsize=(16, 12))
     fig.suptitle(
@@ -165,7 +193,7 @@ def main(
         fontsize=16,
         fontweight="bold",
     )
-    
+
     # 1. Coefficient of Variation (bar chart, top counties)
     ax1 = axes[0, 0]
     top_n = 20
@@ -181,7 +209,7 @@ def main(
     )
     ax1.grid(axis="x", alpha=0.3)
     ax1.invert_yaxis()
-    
+
     # 2. Mean vs Standard Deviation (scatter plot)
     ax2 = axes[0, 1]
     ax2.scatter(means, stdevs, alpha=0.6, s=50, color="coral")
@@ -192,7 +220,7 @@ def main(
     ax2.set_ylabel("Standard Deviation (seconds)", fontsize=10)
     ax2.set_title("Mean vs Standard Deviation", fontsize=11, fontweight="bold")
     ax2.grid(alpha=0.3)
-    
+
     # 3. Mean time per county (bar chart, sorted by mean)
     ax3 = axes[1, 0]
     sorted_by_mean = sorted(zip(counties, means), key=lambda x: x[1], reverse=True)
@@ -211,7 +239,7 @@ def main(
     )
     ax3.grid(axis="x", alpha=0.3)
     ax3.invert_yaxis()
-    
+
     # 4. Sample count vs coefficient of variation
     ax4 = axes[1, 1]
     ax4.scatter(counts, cvs, alpha=0.6, s=50, color="purple")
@@ -219,13 +247,13 @@ def main(
     ax4.set_ylabel("Coefficient of Variation", fontsize=10)
     ax4.set_title("Sample Count vs Coefficient of Variation", fontsize=11, fontweight="bold")
     ax4.grid(alpha=0.3)
-    
+
     plt.tight_layout()
     output_plots.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_plots, dpi=300, bbox_inches="tight")
     print(f"✓ Saved 4-panel plot to {output_plots}")
     plt.close()
-    
+
     # Also create a detailed bar chart of all counties by CV
     fig2, ax = plt.subplots(figsize=(12, max(16, len(counties) * 0.3)))
     y_pos = np.arange(len(counties))
@@ -244,7 +272,7 @@ def main(
     )
     ax.grid(axis="x", alpha=0.3)
     ax.invert_yaxis()
-    
+
     # Add value labels on bars
     for i, (bar, cv) in enumerate(zip(bars, cvs)):
         width = bar.get_width()
@@ -256,7 +284,7 @@ def main(
             va="center",
             fontsize=7,
         )
-    
+
     plt.tight_layout()
     output_all_cv.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_all_cv, dpi=300, bbox_inches="tight")
@@ -266,4 +294,3 @@ def main(
 
 if __name__ == "__main__":
     app()
-
