@@ -1,0 +1,11 @@
+{
+  "counts": {
+    "all_pairs": 4897,
+    "residual_pairs": 0,
+    "targeted_pairs": 4897,
+    "targeted_records": 454101
+  },
+  "missing_cvr_mappings": [],
+  "missing_selection_entries": [],
+  "residual_distribution": {}
+}
