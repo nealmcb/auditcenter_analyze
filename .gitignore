@@ -14,3 +14,6 @@ output/*.db
 __pycache__/
 *.pyc
 *.pyo
+
+# Claude Code working files
+.claude/
