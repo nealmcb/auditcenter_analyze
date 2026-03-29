@@ -1,0 +1,443 @@
+{
+  "Adams County Commissioner - District 5": {
+    "actual_total": 119,
+    "expected_total": 194,
+    "extras": 17,
+    "manifest_missing": 0,
+    "missing": 92
+  },
+  "Alamosa County Commissioner - District 1": {
+    "actual_total": 33,
+    "expected_total": 65,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 33
+  },
+  "Amendment 80 (CONSTITUTIONAL) - Rio Blanco": {
+    "actual_total": 58,
+    "expected_total": 58,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Archuleta County Commissioner - District 1": {
+    "actual_total": 38,
+    "expected_total": 38,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Bent County Commissioner-District 1": {
+    "actual_total": 32,
+    "expected_total": 32,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Broomfield Ballot Question 2G": {
+    "actual_total": 56,
+    "expected_total": 53,
+    "extras": 3,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Chaffee County Commissioner - District 2": {
+    "actual_total": 89,
+    "expected_total": 89,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "City of Colorado Springs Ballot Question 300": {
+    "actual_total": 102,
+    "expected_total": 128,
+    "extras": 17,
+    "manifest_missing": 0,
+    "missing": 43
+  },
+  "City of Craig Ballot Question 2A": {
+    "actual_total": 27,
+    "expected_total": 47,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 20
+  },
+  "City of Fort Morgan Ballot Question 2A": {
+    "actual_total": 16,
+    "expected_total": 38,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 23
+  },
+  "City of Holyoke Mayor": {
+    "actual_total": 28,
+    "expected_total": 68,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 40
+  },
+  "Clear Creek County Commissioner - District 3": {
+    "actual_total": 73,
+    "expected_total": 72,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Conejos County Commissioner District 3": {
+    "actual_total": 75,
+    "expected_total": 75,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Costilla County Commissioner District 3": {
+    "actual_total": 47,
+    "expected_total": 47,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "County Commissioner - District 2": {
+    "actual_total": 117,
+    "expected_total": 117,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "County Court Judge - Cheyenne": {
+    "actual_total": 20,
+    "expected_total": 20,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Crowley County Commissioner - District 3": {
+    "actual_total": 15,
+    "expected_total": 15,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Custer County Board of County Commissioners - District 2": {
+    "actual_total": 34,
+    "expected_total": 34,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Delta County Court - Zeerip": {
+    "actual_total": 83,
+    "expected_total": 80,
+    "extras": 3,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Denver Ballot Issue 2Q": {
+    "actual_total": 99,
+    "expected_total": 211,
+    "extras": 27,
+    "manifest_missing": 0,
+    "missing": 139
+  },
+  "District Attorney - 18th Judicial District": {
+    "actual_total": 92,
+    "expected_total": 56,
+    "extras": 36,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "District Court Judge - 19th Judicial District - Crowther": {
+    "actual_total": 101,
+    "expected_total": 87,
+    "extras": 15,
+    "manifest_missing": 0,
+    "missing": 1
+  },
+  "Douglas County Commissioner - District 2": {
+    "actual_total": 73,
+    "expected_total": 62,
+    "extras": 11,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Dove Creek Ambulance District Ballot Issue 6A": {
+    "actual_total": 117,
+    "expected_total": 146,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 32
+  },
+  "Eagle County Commissioner - District 1": {
+    "actual_total": 48,
+    "expected_total": 47,
+    "extras": 2,
+    "manifest_missing": 0,
+    "missing": 1
+  },
+  "Elbert County Question 1A": {
+    "actual_total": 23,
+    "expected_total": 17,
+    "extras": 6,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Fremont County Board of County Commissioners - District 3": {
+    "actual_total": 21,
+    "expected_total": 21,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 1
+  },
+  "Gilpin County Commissioner - District 1": {
+    "actual_total": 140,
+    "expected_total": 139,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Grand County Commissioner - District 2": {
+    "actual_total": 57,
+    "expected_total": 57,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Gunnison County Library District Ballot Issue 6A": {
+    "actual_total": 49,
+    "expected_total": 49,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Hinsdale County Commissioner District 1": {
+    "actual_total": 81,
+    "expected_total": 81,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Huerfano County Commissioner - District 1": {
+    "actual_total": 54,
+    "expected_total": 53,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Jefferson County Commissioner - District 2": {
+    "actual_total": 89,
+    "expected_total": 66,
+    "extras": 24,
+    "manifest_missing": 0,
+    "missing": 1
+  },
+  "Kiowa County Hospital District Ballot Question 6A": {
+    "actual_total": 57,
+    "expected_total": 57,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "La Plata County Commissioner District 3": {
+    "actual_total": 65,
+    "expected_total": 64,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Lake County School District R-1 Ballot Issue 4A": {
+    "actual_total": 116,
+    "expected_total": 116,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Larimer County Clerk and Recorder": {
+    "actual_total": 62,
+    "expected_total": 103,
+    "extras": 10,
+    "manifest_missing": 0,
+    "missing": 51
+  },
+  "Las Animas County Commissioner District 2": {
+    "actual_total": 40,
+    "expected_total": 40,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Lincoln County Commissioner - District 3": {
+    "actual_total": 25,
+    "expected_total": 25,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Logan County Court Judge - Brammer": {
+    "actual_total": 64,
+    "expected_total": 64,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Mesa County Ballot Issue 1A": {
+    "actual_total": 64,
+    "expected_total": 60,
+    "extras": 4,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Mineral County Commissioner - District 3": {
+    "actual_total": 18,
+    "expected_total": 18,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Montezuma County Ballot Issue 1-A": {
+    "actual_total": 57,
+    "expected_total": 56,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Montrose County Commissioner - District 3": {
+    "actual_total": 33,
+    "expected_total": 32,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "NORTH PARK SCHOOL DISTRICT R-1 BALLOT ISSUE 4A": {
+    "actual_total": 57,
+    "expected_total": 57,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Otero County Ballot Question 1A": {
+    "actual_total": 37,
+    "expected_total": 36,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Ouray County Commissioner - District 1": {
+    "actual_total": 75,
+    "expected_total": 75,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Park County Commissioner District 1": {
+    "actual_total": 50,
+    "expected_total": 55,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 5
+  },
+  "Pitkin County Ballot Issue 1A: Affordable and Workforce Housing Mill Levy": {
+    "actual_total": 41,
+    "expected_total": 41,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Proposition 130 (STATUTORY) - Kit Carson": {
+    "actual_total": 106,
+    "expected_total": 109,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 3
+  },
+  "Prowers County Ballot Issue 1A": {
+    "actual_total": 18,
+    "expected_total": 18,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Pueblo County Commissioner - District 2": {
+    "actual_total": 193,
+    "expected_total": 378,
+    "extras": 4,
+    "manifest_missing": 0,
+    "missing": 189
+  },
+  "Rio Grande County Court - Stenger": {
+    "actual_total": 35,
+    "expected_total": 35,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Routt County Commissioner - District 1": {
+    "actual_total": 77,
+    "expected_total": 175,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 98
+  },
+  "Saguache County Commissioner District 1": {
+    "actual_total": 119,
+    "expected_total": 120,
+    "extras": 116,
+    "manifest_missing": 0,
+    "missing": 119
+  },
+  "San Miguel County Ballot Question 1A": {
+    "actual_total": 39,
+    "expected_total": 38,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Sedgwick County Commissioner - District 3": {
+    "actual_total": 84,
+    "expected_total": 84,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "State Representative - District 10": {
+    "actual_total": 11,
+    "expected_total": 106,
+    "extras": 2,
+    "manifest_missing": 0,
+    "missing": 97
+  },
+  "Summit School District RE-1 Ballot Issue 4A": {
+    "actual_total": 61,
+    "expected_total": 59,
+    "extras": 2,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Teller County Ballot Question 1A": {
+    "actual_total": 76,
+    "expected_total": 74,
+    "extras": 3,
+    "manifest_missing": 0,
+    "missing": 1
+  },
+  "Town of Springfield Ballot Issue 2A": {
+    "actual_total": 32,
+    "expected_total": 91,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 59
+  },
+  "Washington County Commissioner - District 2": {
+    "actual_total": 31,
+    "expected_total": 31,
+    "extras": 0,
+    "manifest_missing": 0,
+    "missing": 0
+  },
+  "Yuma County Court - Jones": {
+    "actual_total": 19,
+    "expected_total": 18,
+    "extras": 1,
+    "manifest_missing": 0,
+    "missing": 0
+  }
+}

@@ -1,0 +1,9 @@
+Round 2 new ballots (vs round 1):
+Total: 101
+  Dolores: 48
+  Hinsdale: 37
+  Otero: 16
+
+Round 3 new ballots (vs round 2):
+Total: 44
+  Dolores: 44

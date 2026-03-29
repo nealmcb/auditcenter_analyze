@@ -1,0 +1,1509 @@
+Adams: 2364 entries
+  17th Judicial District Ballot Question 7B: 60
+  Adams County Ballot Issue 1A: 60
+  Regional Transportation District Ballot Issue 7A: 60
+  Adams County Commissioner - District 1: 51
+  Adams County Commissioner - District 2: 51
+  Adams County Commissioner - District 5: 51
+  Adams County Court Judge - Dinnel: 51
+  Adams County Court Judge - Flaum: 51
+  Adams County Court Judge - Ivey: 51
+  Adams County Court Judge - Jean: 51
+  Adams County Court Judge - Kirby: 51
+  Adams County Court Judge - Nowak: 51
+  Amendment 79 (CONSTITUTIONAL): 51
+  Amendment 80 (CONSTITUTIONAL): 51
+  Amendment G (CONSTITUTIONAL): 51
+  Amendment H (CONSTITUTIONAL): 51
+  Amendment I (CONSTITUTIONAL): 51
+  Amendment J (CONSTITUTIONAL): 51
+  Amendment K (CONSTITUTIONAL): 51
+  Colorado Court of Appeals Judge - Dunn: 51
+  Colorado Court of Appeals Judge - Jones: 51
+  Colorado Court of Appeals Judge - Kuhn: 51
+  Colorado Court of Appeals Judge - Roman: 51
+  Colorado Court of Appeals Judge - Schutz: 51
+  Colorado Supreme Court Justice - Berkenkotter: 51
+  Colorado Supreme Court Justice - Boatright: 51
+  Colorado Supreme Court Justice - Marquez: 51
+  District Attorney - 17th Judicial District: 51
+  District Court Judge - 17th Judicial District - Holbrook: 51
+  District Court Judge - 17th Judicial District - Martin: 51
+  District Court Judge - 17th Judicial District - Vasquez: 51
+  Presidential Electors: 51
+  Proposition 127 (STATUTORY): 51
+  Proposition 128 (STATUTORY): 51
+  Proposition 129 (STATUTORY): 51
+  Proposition 130 (STATUTORY): 51
+  Proposition 131 (STATUTORY): 51
+  Proposition JJ (STATUTORY): 51
+  Proposition KK (STATUTORY): 51
+  Regent of the University of Colorado - At Large: 51
+  Representative to the 119th United States Congress - District 8: 48
+  State Board of Education Member - Congressional District 8: 48
+  Adams 12 Five Star Schools Ballot Issue 5D: 27
+  Adams 12 Five Star Schools Ballot Issue 5E: 27
+  City of Thornton Question 2A: 27
+  State Senator - District 21: 15
+  State Representative - District 35: 12
+  State Representative - District 34: 12
+  State Representative - District 29: 9
+  South Adams County Water and Sanitation District Ballot Issue No. 6A: 9
+  Adams-Arapahoe School District 28J Ballot Issue 5A: 6
+  Adams-Arapahoe School District 28J Ballot Issue 5B: 6
+  City of Aurora Question 3A: 6
+  State Representative - District 48: 6
+  State Senator - District 13: 6
+  State Representative - District 31: 6
+  City of Westminster Ballot Issue 3C: 3
+  City of Westminster Ballot Question 3D: 3
+  Hyland Hills Park and Recreation District Ballot Issue No. 6B: 3
+  Representative to the 119th United States Congress - District 4: 3
+  State Board of Education Member - Congressional District 4: 3
+  State Representative - District 56: 3
+  State Representative - District 32: 3
+  Adams County School District 14 Ballot Issue 4A: 3
+  Adams County School District 14 Ballot Issue 4B: 3
+
+Alamosa: 90 entries
+  Alamosa County Commissioner - District 1: 3
+  Alamosa County Commissioner - District 3: 3
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  District Attorney - 12th Judicial District: 3
+  District Court Judge - 12th Judicial District - Cortez: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Regent of the University of Colorado - Congressional District 3: 3
+  Representative to the 119th United States Congress - District 3: 3
+  State Board of Education Member - Congressional District 3: 3
+  State Representative - District 62: 3
+  State Senator - District 6: 3
+
+Arapahoe: 2157 entries
+  Amendment 79 (CONSTITUTIONAL): 51
+  Amendment 80 (CONSTITUTIONAL): 51
+  Amendment G (CONSTITUTIONAL): 51
+  Amendment H (CONSTITUTIONAL): 51
+  Amendment I (CONSTITUTIONAL): 51
+  Amendment J (CONSTITUTIONAL): 51
+  Amendment K (CONSTITUTIONAL): 51
+  Arapahoe County Ballot Issue 1A: 51
+  Arapahoe County Court - Hernandez: 51
+  Arapahoe County Court - Williford: 51
+  Colorado Court of Appeals Judge - Dunn: 51
+  Colorado Court of Appeals Judge - Jones: 51
+  Colorado Court of Appeals Judge - Kuhn: 51
+  Colorado Court of Appeals Judge - Roman: 51
+  Colorado Court of Appeals Judge - Schutz: 51
+  Colorado Supreme Court Justice - Berkenkotter: 51
+  Colorado Supreme Court Justice - Boatright: 51
+  Colorado Supreme Court Justice - Marquez: 51
+  District Attorney - 18th Judicial District: 51
+  District Court Judge - 18th Judicial District - Figa: 51
+  District Court Judge - 18th Judicial District - Leutwyler: 51
+  District Court Judge - 18th Judicial District - Lung: 51
+  District Court Judge - 18th Judicial District - McLean: 51
+  District Court Judge - 18th Judicial District - Toussaint: 51
+  District Court Judge - 18th Judicial District - Whitaker: 51
+  District Court Judge - 18th Judicial District - Whitfield: 51
+  Presidential Electors: 51
+  Proposition 127 (STATUTORY): 51
+  Proposition 128 (STATUTORY): 51
+  Proposition 129 (STATUTORY): 51
+  Proposition 130 (STATUTORY): 51
+  Proposition 131 (STATUTORY): 51
+  Proposition JJ (STATUTORY): 51
+  Proposition KK (STATUTORY): 51
+  Regent of the University of Colorado - At Large: 51
+  Regional Transportation District Ballot Issue 7A: 42
+  Representative to the 119th United States Congress - District 6: 42
+  Cherry Creek School District No. 5 Ballot Issue 4A: 24
+  Cherry Creek School District No. 5 Ballot Issue 4B: 24
+  Arapahoe County Commissioner - District 3: 21
+  City of Aurora Question 3A: 18
+  Arapahoe County Commissioner - District 1: 12
+  State Senator - District 26: 12
+  State Representative - District 37: 12
+  Regional Transportation District Director - District E: 9
+  Regional Transportation District Director - District H: 9
+  State Senator - District 16: 9
+  Representative to the 119th United States Congress - District 4: 9
+  State Board of Education Member - Congressional District 4: 9
+  State Representative - District 56: 9
+  State Senator - District 21: 9
+  Regional Transportation District Director - District F: 9
+  State Representative - District 61: 9
+  Regional Transportation District Director - District G: 9
+  City of Englewood Ballot Issue 2C: 6
+  City of Englewood Ballot Question 301: 6
+  City of Englewood Ballot Question  302: 6
+  Regional Transportation District Director - District D: 6
+  State Representative - District 3: 6
+  State Representative - District 41: 6
+  State Senator - District 29: 6
+  State Representative - District 38: 6
+  Byers School District No. 32J Ballot Issue 5C: 6
+  Adams-Arapahoe School District 28J Ballot Issue 5A: 6
+  Adams-Arapahoe School District 28J Ballot Issue 5B: 6
+  City of Littleton Ballot Issue 3B: 3
+  State Representative - District 36: 3
+  State Senator - District 28: 3
+
+Boulder: 1815 entries
+  Amendment 79 (CONSTITUTIONAL): 45
+  Amendment 80 (CONSTITUTIONAL): 45
+  Amendment G (CONSTITUTIONAL): 45
+  Amendment H (CONSTITUTIONAL): 45
+  Amendment I (CONSTITUTIONAL): 45
+  Amendment J (CONSTITUTIONAL): 45
+  Amendment K (CONSTITUTIONAL): 45
+  Boulder County Commissioner - District 1: 45
+  Boulder County Commissioner - District 2: 45
+  Boulder County Coroner: 45
+  Boulder County Court - Martin: 45
+  Colorado Court of Appeals Judge - Dunn: 45
+  Colorado Court of Appeals Judge - Jones: 45
+  Colorado Court of Appeals Judge - Kuhn: 45
+  Colorado Court of Appeals Judge - Roman: 45
+  Colorado Court of Appeals Judge - Schutz: 45
+  Colorado Supreme Court Justice - Berkenkotter: 45
+  Colorado Supreme Court Justice - Boatright: 45
+  Colorado Supreme Court Justice - Marquez: 45
+  District Attorney - 20th Judicial District: 45
+  District Court Judge - 20th Judicial District - Collins: 45
+  District Court Judge - 20th Judicial District - Gunning: 45
+  District Court Judge - 20th Judicial District - Lindsey: 45
+  District Court Judge - 20th Judicial District - Mulvahill: 45
+  Presidential Electors: 45
+  Proposition JJ (STATUTORY): 45
+  Proposition KK (STATUTORY): 45
+  Regent of the University of Colorado - At Large: 45
+  Representative to the 119th United States Congress - District 2: 45
+  State Board of Education Member - Congressional District 2: 45
+  Proposition 127 (STATUTORY): 42
+  Proposition 128 (STATUTORY): 42
+  Proposition 129 (STATUTORY): 42
+  Proposition 130 (STATUTORY): 42
+  Proposition 131 (STATUTORY): 42
+  Regional Transportation District Ballot Issue 7A: 42
+  State Senator - District 17: 27
+  Regional Transportation District Director - District I: 24
+  City of Boulder Ballot Question 2C: 15
+  City of Boulder Ballot Question 2D: 15
+  City of Boulder Ballot Question 2E: 15
+  City of Longmont Ballot Issue 3A: 15
+  St. Vrain and Left Hand Water Conservancy District Ballot Issue 7C: 15
+  St. Vrain Valley School District RE-1J Ballot Issue 5C: 15
+  State Representative - District 12: 15
+  State Senator - District 18: 12
+  State Representative - District 19: 9
+  State Representative - District 11: 9
+  State Representative - District 10: 6
+  Town of Erie Mayor: 6
+  State Representative - District 49: 6
+  Town of Erie - Council Member District 2: 3
+  City of Lafayette Ballot Question 2A: 3
+  Town of Erie - Council Member District 1: 3
+
+Broomfield: 387 entries
+  17th Judicial District Ballot Question 7B: 9
+  Adams 12 Five Star Schools Ballot Issue 5D: 9
+  Adams 12 Five Star Schools Ballot Issue 5E: 9
+  Amendment 79 (CONSTITUTIONAL): 9
+  Amendment 80 (CONSTITUTIONAL): 9
+  Amendment G (CONSTITUTIONAL): 9
+  Amendment H (CONSTITUTIONAL): 9
+  Amendment I (CONSTITUTIONAL): 9
+  Amendment J (CONSTITUTIONAL): 9
+  Amendment K (CONSTITUTIONAL): 9
+  Broomfield Ballot Question 2A: 9
+  Broomfield Ballot Question 2B: 9
+  Broomfield Ballot Question 2C: 9
+  Broomfield Ballot Question 2D: 9
+  Broomfield Ballot Question 2E: 9
+  Broomfield Ballot Question 2F: 9
+  Broomfield Ballot Question 2G: 9
+  Broomfield County Court - DeWick: 9
+  Colorado Court of Appeals Judge - Dunn: 9
+  Colorado Court of Appeals Judge - Jones: 9
+  Colorado Court of Appeals Judge - Kuhn: 9
+  Colorado Court of Appeals Judge - Roman: 9
+  Colorado Court of Appeals Judge - Schutz: 9
+  Colorado Supreme Court Justice - Berkenkotter: 9
+  Colorado Supreme Court Justice - Boatright: 9
+  Colorado Supreme Court Justice - Marquez: 9
+  District Attorney - 17th Judicial District: 9
+  District Court Judge - 17th Judicial District - Holbrook: 9
+  District Court Judge - 17th Judicial District - Martin: 9
+  District Court Judge - 17th Judicial District - Vasquez: 9
+  Presidential Electors: 9
+  Proposition 127 (STATUTORY): 9
+  Proposition 128 (STATUTORY): 9
+  Proposition 129 (STATUTORY): 9
+  Proposition 130 (STATUTORY): 9
+  Proposition 131 (STATUTORY): 9
+  Proposition JJ (STATUTORY): 9
+  Proposition KK (STATUTORY): 9
+  Regent of the University of Colorado - At Large: 9
+  Regional Transportation District Ballot Issue 7A: 9
+  Regional Transportation District Director - District I: 9
+  Representative to the 119th United States Congress - District 7: 9
+  State Representative - District 33: 9
+
+Clear Creek: 105 entries
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  CLEAR CREEK COUNTY BALLOT ISSUE 1A: 3
+  Clear Creek County Commissioner - District 2: 3
+  Clear Creek County Commissioner - District 3: 3
+  Clear Creek County Court - Jones: 3
+  CLEAR CREEK COUNTY LIBRARY DISTRICT BALLOT ISSUE 6A: 3
+  Clear Creek County Sheriff: 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  District Attorney - 5th Judicial District: 3
+  District Court Judge - 5th Judicial District - Olguin-Fresquez: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition 129 (STATUTORY): 3
+  Proposition 130 (STATUTORY): 3
+  Proposition 131 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Representative to the 119th United States Congress - District 2: 3
+  State Board of Education Member - Congressional District 2: 3
+  State Representative - District 49: 3
+
+Delta: 312 entries
+  Amendment 79 (CONSTITUTIONAL): 9
+  Amendment 80 (CONSTITUTIONAL): 9
+  Amendment G (CONSTITUTIONAL): 9
+  Amendment H (CONSTITUTIONAL): 9
+  Amendment I (CONSTITUTIONAL): 9
+  Amendment J (CONSTITUTIONAL): 9
+  Amendment K (CONSTITUTIONAL): 9
+  Colorado Court of Appeals Judge - Dunn: 9
+  Colorado Court of Appeals Judge - Jones: 9
+  Colorado Court of Appeals Judge - Kuhn: 9
+  Colorado Court of Appeals Judge - Roman: 9
+  Colorado Court of Appeals Judge - Schutz: 9
+  Colorado Supreme Court Justice - Berkenkotter: 9
+  Colorado Supreme Court Justice - Boatright: 9
+  Colorado Supreme Court Justice - Marquez: 9
+  Delta County Commissioner - District 2: 9
+  Delta County Commissioner - District 3: 9
+  Delta County Court - Zeerip: 9
+  District Attorney - 7th Judicial District: 9
+  District Court Judge - 7th Judicial District - Schultz: 9
+  District Court Judge - 7th Judicial District - Yoder: 9
+  Presidential Electors: 9
+  Proposition 127 (STATUTORY): 9
+  Proposition 128 (STATUTORY): 9
+  Proposition 129 (STATUTORY): 9
+  Proposition 130 (STATUTORY): 9
+  Proposition 131 (STATUTORY): 9
+  Proposition JJ (STATUTORY): 9
+  Proposition KK (STATUTORY): 9
+  Regent of the University of Colorado - At Large: 9
+  Regent of the University of Colorado - Congressional District 3: 9
+  Representative to the 119th United States Congress - District 3: 9
+  State Board of Education Member - Congressional District 3: 9
+  State Representative - District 54: 9
+  State Senator - District 5: 6
+
+Denver: 3942 entries
+  Denver Ballot Issue 2Q: 81
+  Denver Ballot Issue 2R: 81
+  Denver Referred Question 2S: 81
+  Denver Referred Question 2T: 81
+  Denver Referred Question 2U: 81
+  Denver Referred Question 2V: 81
+  Proposition 127 (STATUTORY): 81
+  Proposition 128 (STATUTORY): 81
+  Proposition 129 (STATUTORY): 81
+  Proposition 130 (STATUTORY): 81
+  Proposition 131 (STATUTORY): 81
+  Proposition JJ (STATUTORY): 81
+  Proposition KK (STATUTORY): 81
+  Amendment 79 (CONSTITUTIONAL): 66
+  Amendment 80 (CONSTITUTIONAL): 66
+  Amendment G (CONSTITUTIONAL): 66
+  Amendment H (CONSTITUTIONAL): 66
+  Amendment I (CONSTITUTIONAL): 66
+  Amendment J (CONSTITUTIONAL): 66
+  Amendment K (CONSTITUTIONAL): 66
+  Colorado Court of Appeals Judge - Dunn: 66
+  Colorado Court of Appeals Judge - Jones: 66
+  Colorado Court of Appeals Judge - Kuhn: 66
+  Colorado Court of Appeals Judge - Roman: 66
+  Colorado Court of Appeals Judge - Schutz: 66
+  Colorado Supreme Court Justice - Berkenkotter: 66
+  Colorado Supreme Court Justice - Boatright: 66
+  Colorado Supreme Court Justice - Marquez: 66
+  County Court Judge - Denver Blackett: 66
+  County Court Judge - Denver Cherry: 66
+  County Court Judge - Denver Faragher: 66
+  County Court Judge - Denver Goble: 66
+  County Court Judge - Denver Pallares: 66
+  County Court Judge - Denver Rodarte: 66
+  County Court Judge - Denver Rudolph: 66
+  County Court Judge - Denver Schwartz: 66
+  County Court Judge - Denver Simonet: 66
+  County Court Judge - Denver Spahn: 66
+  District Attorney - 2nd Judicial District : 66
+  District Court Judge - 2nd Judicial District Bailey: 66
+  District Court Judge - 2nd Judicial District Espinosa: 66
+  District Court Judge - 2nd Judicial District Grant: 66
+  District Court Judge - 2nd Judicial District Moses: 66
+  District Court Judge - 2nd Judicial District Myers: 66
+  District Court Judge - 2nd Judicial District Schutte: 66
+  District Court Judge - 2nd Judicial District Scoville: 66
+  District Court Judge - 2nd Judicial District Trujillo: 66
+  Presidential Electors: 66
+  Regent of the University of Colorado - At Large: 66
+  Representative to the 119th United States Congress - District 1: 66
+  Denver Initiated Ordinance 308: 60
+  Denver Initiated Ordinance 309: 60
+  Denver Public Schools Ballot Issue 4A: 60
+  Denver Referred Question 2W: 60
+  Regional Transportation District Ballot Issue 7A: 60
+  Regional Transportation District Director - District A: 30
+  State Senator - District 31 : 27
+  State Representative - District 2 : 15
+  State Representative - District 9 : 12
+  State Representative - District 5 : 12
+  State Representative - District 8 : 9
+  Regional Transportation District Director - District D: 9
+  State Senator - District 33 : 9
+  State Representative - District 4 : 6
+  State Representative - District 1  : 6
+  State Representative - District 6 : 3
+  Regional Transportation District Director - District E: 3
+  State Senator - District 26: 3
+  State Representative - District 7 : 3
+
+Douglas: 1356 entries
+  Amendment 79 (CONSTITUTIONAL): 33
+  Amendment 80 (CONSTITUTIONAL): 33
+  Amendment G (CONSTITUTIONAL): 33
+  Amendment H (CONSTITUTIONAL): 33
+  Amendment I (CONSTITUTIONAL): 33
+  Amendment J (CONSTITUTIONAL): 33
+  Amendment K (CONSTITUTIONAL): 33
+  Colorado Court of Appeals Judge - Dunn: 33
+  Colorado Court of Appeals Judge - Jones: 33
+  Colorado Court of Appeals Judge - Kuhn: 33
+  Colorado Court of Appeals Judge - Roman: 33
+  Colorado Court of Appeals Judge - Schutz: 33
+  Colorado Supreme Court Justice - Berkenkotter: 33
+  Colorado Supreme Court Justice - Boatright: 33
+  Colorado Supreme Court Justice - Marquez: 33
+  District Attorney - 23rd Judicial District: 33
+  District Court Judge - 18th Judicial District - Figa: 33
+  District Court Judge - 18th Judicial District - Leutwyler: 33
+  District Court Judge - 18th Judicial District - Lung: 33
+  District Court Judge - 18th Judicial District - McLean: 33
+  District Court Judge - 18th Judicial District - Toussaint: 33
+  District Court Judge - 18th Judicial District - Whitaker: 33
+  District Court Judge - 18th Judicial District - Whitfield: 33
+  Douglas County Commissioner - District 2: 33
+  Douglas County Commissioner - District 3: 33
+  Douglas County Court - Waidler: 33
+  Douglas County School District RE-1 Ballot Issue 5A: 33
+  Presidential Electors: 33
+  Proposition 127 (STATUTORY): 33
+  Proposition 128 (STATUTORY): 33
+  Proposition 129 (STATUTORY): 33
+  Proposition 130 (STATUTORY): 33
+  Proposition 131 (STATUTORY): 33
+  Proposition JJ (STATUTORY): 33
+  Proposition KK (STATUTORY): 33
+  Regent of the University of Colorado - At Large: 33
+  Representative to the 119th United States Congress - District 4: 30
+  State Board of Education Member - Congressional District 4: 30
+  State Senator - District 2: 18
+  Regional Transportation District Ballot Issue 7A: 15
+  State Representative - District 45: 15
+  Town of Castle Rock Ballot Issue 2A: 12
+  Regional Transportation District Director - District G: 9
+  State Representative - District 39: 6
+  Regional Transportation District Director - District H: 6
+  State Representative - District 43: 6
+  State Representative - District 44: 3
+  Town Councilmember District 1: 3
+  Town Councilmember District 4: 3
+  Town Councilmember District 6: 3
+  City of Aurora Question 3A: 3
+  Representative to the 119th United States Congress - District 6: 3
+  State Representative - District 61: 3
+
+Eagle: 186 entries
+  Amendment 79 (CONSTITUTIONAL): 6
+  Amendment 80 (CONSTITUTIONAL): 6
+  Amendment G (CONSTITUTIONAL): 6
+  Amendment H (CONSTITUTIONAL): 6
+  Amendment I (CONSTITUTIONAL): 6
+  Amendment J (CONSTITUTIONAL): 6
+  Amendment K (CONSTITUTIONAL): 6
+  Colorado Court of Appeals Judge - Dunn: 6
+  Colorado Court of Appeals Judge - Jones: 6
+  Colorado Court of Appeals Judge - Kuhn: 6
+  Colorado Court of Appeals Judge - Roman: 6
+  Colorado Court of Appeals Judge - Schutz: 6
+  Colorado Supreme Court Justice - Berkenkotter: 6
+  Colorado Supreme Court Justice - Boatright: 6
+  Colorado Supreme Court Justice - Marquez: 6
+  District Attorney - 5th Judicial District: 6
+  District Court Judge - 5th Judicial District - Olguin-Fresquez: 6
+  Eagle County Commissioner - District 1: 6
+  Eagle County Commissioner - District 2: 6
+  Presidential Electors: 6
+  Proposition 127 (STATUTORY): 6
+  Proposition 128 (STATUTORY): 6
+  Proposition 129 (STATUTORY): 6
+  Proposition 130 (STATUTORY): 6
+  Proposition 131 (STATUTORY): 6
+  Proposition JJ (STATUTORY): 6
+  Proposition KK (STATUTORY): 6
+  Regent of the University of Colorado - At Large: 6
+  Representative to the 119th United States Congress - District 2: 6
+  State Board of Education Member - Congressional District 2: 6
+  State Representative - District 26: 6
+
+ElPaso: 21312 entries
+  Amendment 79 (CONSTITUTIONAL): 480
+  Amendment 80 (CONSTITUTIONAL): 480
+  Amendment G (CONSTITUTIONAL): 480
+  Amendment H (CONSTITUTIONAL): 480
+  Amendment I (CONSTITUTIONAL): 480
+  Amendment J (CONSTITUTIONAL): 480
+  Amendment K (CONSTITUTIONAL): 480
+  Colorado Court of Appeals Judge - Dunn: 480
+  Colorado Court of Appeals Judge - Jones: 480
+  Colorado Court of Appeals Judge - Kuhn: 480
+  Colorado Court of Appeals Judge - Roman: 480
+  Colorado Court of Appeals Judge - Schutz: 480
+  Colorado Supreme Court Justice - Berkenkotter: 480
+  Colorado Supreme Court Justice - Boatright: 480
+  Colorado Supreme Court Justice - Marquez: 480
+  District Attorney - 4th Judicial District: 480
+  District Court Judge - 4th Judicial District - Bentley: 480
+  District Court Judge - 4th Judicial District - Billings-Vela: 480
+  District Court Judge - 4th Judicial District - Brady: 480
+  District Court Judge - 4th Judicial District - Evig: 480
+  District Court Judge - 4th Judicial District - Findorff: 480
+  District Court Judge - 4th Judicial District - May: 480
+  District Court Judge - 4th Judicial District - Moller: 480
+  District Court Judge - 4th Judicial District - Shakes: 480
+  El Paso County Court - Ankeny: 480
+  El Paso County Court - Fennick: 480
+  El Paso County Court - Gerhart: 480
+  El Paso County Court - Katzman: 480
+  El Paso County Court - McKedy: 480
+  Presidential Electors: 480
+  Proposition 127 (STATUTORY): 480
+  Proposition 128 (STATUTORY): 480
+  Proposition 129 (STATUTORY): 480
+  Proposition 130 (STATUTORY): 480
+  Proposition 131 (STATUTORY): 480
+  Proposition JJ (STATUTORY): 480
+  Proposition KK (STATUTORY): 480
+  Regent of the University of Colorado - At Large: 480
+  Regent of the University of Colorado - Congressional District 5: 477
+  Representative to the 119th United States Congress - District 5: 477
+  City of Colorado Springs Ballot Issue 2C: 306
+  City of Colorado Springs Ballot Question 2D: 306
+  City of Colorado Springs Ballot Question 300: 306
+  State Senator - District 10: 120
+  El Paso County Commissioner - District 2: 117
+  El Paso County School District No. 20 (Academy) Ballot Issue 4B: 105
+  El Paso County Commissioner - District 3: 99
+  State Senator - District 12: 90
+  El Paso County Commissioner - District 4: 84
+  State Representative - District 14: 81
+  State Representative - District 20: 75
+  State Representative - District 15: 72
+  State Representative - District 22: 69
+  State Representative - District 18: 51
+  State Representative - District 16: 51
+  State Representative - District 21: 42
+  Harrison School District No. 2 Ballot Issue 4A: 27
+  State Representative - District 17: 21
+  State Representative - District 56: 18
+  Town of Monument Ballot Issue 2A: 12
+  Town of Monument Ballot Question 2B: 12
+  Town of Monument Councilmember At-Large - 4 Year Term: 12
+  Cimarron Hills Fire Protection District Ballot Issue 6A: 12
+  Town of Monument Councilmember Residential District 2 - 4 Year Term: 9
+  Town of Palmer Lake - Mayor: 3
+  Town of Palmer Lake - Trustee: 3
+  Flying Horse Metropolitan District No. 2 Ballot Question 6C: 3
+  Representative to the 119th United States Congress - District 4: 3
+  State Board of Education Member - Congressional District 4: 3
+  Stratmoor Hills Fire Protection District Ballot Issue 6B: 3
+  Town of Monument Councilmember Residential District 1 - 4 Year Term: 3
+
+Elbert: 234 entries
+  Amendment 79 (CONSTITUTIONAL): 6
+  Amendment 80 (CONSTITUTIONAL): 6
+  Amendment G (CONSTITUTIONAL): 6
+  Amendment H (CONSTITUTIONAL): 6
+  Amendment I (CONSTITUTIONAL): 6
+  Amendment J (CONSTITUTIONAL): 6
+  Amendment K (CONSTITUTIONAL): 6
+  Colorado Court of Appeals Judge - Dunn: 6
+  Colorado Court of Appeals Judge - Jones: 6
+  Colorado Court of Appeals Judge - Kuhn: 6
+  Colorado Court of Appeals Judge - Roman: 6
+  Colorado Court of Appeals Judge - Schutz: 6
+  Colorado Supreme Court Justice - Berkenkotter: 6
+  Colorado Supreme Court Justice - Boatright: 6
+  Colorado Supreme Court Justice - Marquez: 6
+  District Attorney - 18th Judicial District: 6
+  District Attorney - 23rd Judicial District: 6
+  District Court Judge - 18th Judicial District - Figa: 6
+  District Court Judge - 18th Judicial District - Leutwyler: 6
+  District Court Judge - 18th Judicial District - Lung: 6
+  District Court Judge - 18th Judicial District - McLean: 6
+  District Court Judge - 18th Judicial District - Toussaint: 6
+  District Court Judge - 18th Judicial District - Whitaker: 6
+  District Court Judge - 18th Judicial District - Whitfield: 6
+  Elbert County Commissioner - District 1: 6
+  Elbert County Commissioner - District 3: 6
+  Elbert County Question 1A: 6
+  Presidential Electors: 6
+  Proposition 127 (STATUTORY): 6
+  Proposition 128 (STATUTORY): 6
+  Proposition 129 (STATUTORY): 6
+  Proposition 130 (STATUTORY): 6
+  Proposition 131 (STATUTORY): 6
+  Proposition JJ (STATUTORY): 6
+  Proposition KK (STATUTORY): 6
+  Regent of the University of Colorado - At Large: 6
+  Representative to the 119th United States Congress - District 4: 6
+  State Board of Education Member - Congressional District 4: 6
+  State Representative - District 56: 6
+
+Fremont: 93 entries
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  District Attorney - 11th Judicial District: 3
+  District Court Judge - 11th Judicial District - Turner: 3
+  Fremont County Board of County Commissioners - District 1: 3
+  Fremont County Board of County Commissioners - District 3: 3
+  Fremont County Surveyor: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition 129 (STATUTORY): 3
+  Proposition 130 (STATUTORY): 3
+  Proposition 131 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Representative to the 119th United States Congress - District 7: 3
+  State Representative - District 60: 3
+
+Gilpin: 96 entries
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  District Attorney - 1st Judicial District: 3
+  District Court Judge - 1st Judicial District - Carrithers: 3
+  District Court Judge - 1st Judicial District - Hunt: 3
+  Gilpin County Commissioner - District 1: 3
+  Gilpin County Commissioner - District 3: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition 129 (STATUTORY): 3
+  Proposition 130 (STATUTORY): 3
+  Proposition 131 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Representative to the 119th United States Congress - District 2: 3
+  State Board of Education Member - Congressional District 2: 3
+  State Representative - District 49: 3
+
+Huerfano: 93 entries
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  District Attorney - 3rd Judicial District: 3
+  Huerfano County Commissioner - District 1: 3
+  Huerfano County Commissioner - District 2: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition 129 (STATUTORY): 3
+  Proposition 130 (STATUTORY): 3
+  Proposition 131 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Regent of the University of Colorado - Congressional District 3: 3
+  Representative to the 119th United States Congress - District 3: 3
+  State Board of Education Member - Congressional District 3: 3
+  State Representative - District 47: 3
+
+Jefferson: 2844 entries
+  Amendment 79 (CONSTITUTIONAL): 72
+  Amendment 80 (CONSTITUTIONAL): 72
+  Amendment G (CONSTITUTIONAL): 72
+  Amendment H (CONSTITUTIONAL): 72
+  Amendment I (CONSTITUTIONAL): 72
+  Amendment J (CONSTITUTIONAL): 72
+  Amendment K (CONSTITUTIONAL): 72
+  Colorado Court of Appeals Judge - Dunn: 72
+  Colorado Court of Appeals Judge - Jones: 72
+  Colorado Court of Appeals Judge - Kuhn: 72
+  Colorado Court of Appeals Judge - Roman: 72
+  Colorado Court of Appeals Judge - Schutz: 72
+  Colorado Supreme Court Justice - Berkenkotter: 72
+  Colorado Supreme Court Justice - Boatright: 72
+  Colorado Supreme Court Justice - Marquez: 72
+  District Attorney - 1st Judicial District: 72
+  District Court Judge - 1st Judicial District - Carrithers: 72
+  District Court Judge - 1st Judicial District - Hunt: 72
+  Jefferson County Ballot Issue 1A: 72
+  Jefferson County Commissioner - District 1: 72
+  Jefferson County Commissioner - District 2: 72
+  Jefferson County Court- Burback: 72
+  Jefferson County Court-Carpenter: 72
+  Jefferson County Court-Goman: 72
+  Jefferson County Court-Peper: 72
+  Jefferson County Court-Wheeler: 72
+  Presidential Electors: 72
+  Proposition 127 (STATUTORY): 72
+  Proposition 128 (STATUTORY): 72
+  Proposition 129 (STATUTORY): 72
+  Proposition 130 (STATUTORY): 72
+  Proposition 131 (STATUTORY): 72
+  Proposition JJ (STATUTORY): 72
+  Proposition KK (STATUTORY): 72
+  Regent of the University of Colorado - At Large: 72
+  Regional Transportation District Ballot Issue 7A: 72
+  Representative to the 119th United States Congress - District 7: 66
+  Regional Transportation District Director - District M: 30
+  Foothills Park & Recreation District Ballot Issue 6D: 21
+  State Representative - District 28: 15
+  State Representative - District 27: 12
+  City of Lakewood Ballot Issue 2A: 12
+  State Representative - District 25: 12
+  State Representative - District 30: 9
+  State Senator - District 19: 9
+  State Representative - District 24: 9
+  State Representative - District 23: 6
+  Representative to the 119th United States Congress - District 6: 6
+  State Senator - District 16: 6
+  City of Westminster Ballot Issue 3C: 6
+  City of Westminster Ballot Question 3D: 6
+  State Representative - District 29: 6
+  Arvada Fire Protection District Ballot Question 6A: 6
+  Fairmount Fire Protection District Ballot Issue 6B: 6
+  Fairmount Fire Protection District Ballot Question 6C: 6
+  State Representative - District 38: 3
+
+KitCarson: 10542 entries
+  Amendment 79 (CONSTITUTIONAL): 318
+  Amendment 80 (CONSTITUTIONAL): 318
+  Amendment G (CONSTITUTIONAL): 318
+  Amendment H (CONSTITUTIONAL): 318
+  Amendment I (CONSTITUTIONAL): 318
+  Amendment J (CONSTITUTIONAL): 318
+  Amendment K (CONSTITUTIONAL): 318
+  Colorado Court of Appeals Judge - Dunn: 318
+  Colorado Court of Appeals Judge - Jones: 318
+  Colorado Court of Appeals Judge - Kuhn: 318
+  Colorado Court of Appeals Judge - Roman: 318
+  Colorado Court of Appeals Judge - Schutz: 318
+  Colorado Supreme Court Justice - Berkenkotter: 318
+  Colorado Supreme Court Justice - Boatright: 318
+  Colorado Supreme Court Justice - Marquez: 318
+  District Attorney - 13th Judicial District: 318
+  District Court Judge - 13th Judicial District - Haenlein: 318
+  District Court Judge - 13th Judicial District - James: 318
+  District Court Judge - 13th Judicial District - McGuire: 318
+  Kit Carson County Commissioner - District 1: 318
+  Kit Carson County Commissioner - District 3: 318
+  Presidential Electors: 318
+  Proposition 127 (STATUTORY): 318
+  Proposition 128 (STATUTORY): 318
+  Proposition 129 (STATUTORY): 318
+  Proposition 130 (STATUTORY) - Kit Carson: 318
+  Proposition 131 (STATUTORY): 318
+  Proposition JJ (STATUTORY): 318
+  Proposition KK (STATUTORY): 318
+  Regent of the University of Colorado - At Large: 318
+  Representative to the 119th United States Congress - District 4: 318
+  State Board of Education Member - Congressional District 4: 318
+  State Representative - District 56: 318
+  Flagler Rural Fire Protection District Ballot Issue 6C: 48
+
+LaPlata: 6915 entries
+  Amendment 79 (CONSTITUTIONAL): 195
+  Amendment 80 (CONSTITUTIONAL): 195
+  Amendment G (CONSTITUTIONAL): 195
+  Amendment H (CONSTITUTIONAL): 195
+  Amendment I (CONSTITUTIONAL): 195
+  Amendment J (CONSTITUTIONAL): 195
+  Amendment K (CONSTITUTIONAL): 195
+  Colorado Court of Appeals Judge - Dunn: 195
+  Colorado Court of Appeals Judge - Jones: 195
+  Colorado Court of Appeals Judge - Kuhn: 195
+  Colorado Court of Appeals Judge - Roman: 195
+  Colorado Court of Appeals Judge - Schutz: 195
+  Colorado Supreme Court Justice - Berkenkotter: 195
+  Colorado Supreme Court Justice - Boatright: 195
+  Colorado Supreme Court Justice - Marquez: 195
+  District Attorney - 6th Judicial District: 195
+  District Court Judge - 6th Judicial District - Shropshire: 195
+  La Plata County Commissioner District 2: 195
+  La Plata County Commissioner District 3: 195
+  La Plata County Treasurer: 195
+  Presidential Electors: 195
+  Proposition 127 (STATUTORY): 195
+  Proposition 128 (STATUTORY): 195
+  Proposition 129 (STATUTORY): 195
+  Proposition 130 (STATUTORY): 195
+  Proposition 131 (STATUTORY): 195
+  Proposition JJ (STATUTORY): 195
+  Proposition KK (STATUTORY): 195
+  Regent of the University of Colorado - At Large: 195
+  Regent of the University of Colorado - Congressional District 3: 195
+  Representative to the 119th United States Congress - District 3: 195
+  State Board of Education Member - Congressional District 3: 195
+  State Representative - District 59: 195
+  State Senator - District 6: 195
+  Durango School District 9-R Ballot Issue 4A: 147
+  La Plata County Ballot Issue 1A: 138
+
+Larimer: 1464 entries
+  Larimer County Ballot Issue 1A: 54
+  Proposition 129 (STATUTORY): 54
+  Proposition 130 (STATUTORY): 54
+  Proposition 131 (STATUTORY): 54
+  Poudre School District R-1 Ballot Issue 4A: 42
+  City of Fort Collins Ballot Issue 2A: 30
+  City of Fort Collins Ballot Question 2B: 30
+  City of Fort Collins Ballot Question 2C: 30
+  City of Fort Collins Ballot Question 2D: 30
+  Amendment 79 (CONSTITUTIONAL): 30
+  Amendment 80 (CONSTITUTIONAL): 30
+  Amendment G (CONSTITUTIONAL): 30
+  Amendment H (CONSTITUTIONAL): 30
+  Amendment I (CONSTITUTIONAL): 30
+  Amendment J (CONSTITUTIONAL): 30
+  Amendment K (CONSTITUTIONAL): 30
+  Colorado Court of Appeals Judge - Dunn: 30
+  Colorado Court of Appeals Judge - Jones: 30
+  Colorado Court of Appeals Judge - Kuhn: 30
+  Colorado Court of Appeals Judge - Roman: 30
+  Colorado Court of Appeals Judge - Schutz: 30
+  Colorado Supreme Court Justice - Berkenkotter: 30
+  Colorado Supreme Court Justice - Boatright: 30
+  Colorado Supreme Court Justice - Marquez: 30
+  District Attorney - 8th Judicial District: 30
+  District Court Judge - 8th Judicial District - Cure: 30
+  District Court Judge - 8th Judicial District - Findley: 30
+  Larimer County Clerk and Recorder: 30
+  Larimer County Commissioner - District 2: 30
+  Larimer County Commissioner - District 3: 30
+  Larimer County Court Judge - Ecton: 30
+  Larimer County Court Judge - Lehman: 30
+  Presidential Electors: 30
+  Proposition 127 (STATUTORY): 30
+  Proposition 128 (STATUTORY): 30
+  Proposition JJ (STATUTORY): 30
+  Proposition KK (STATUTORY): 30
+  Regent of the University of Colorado - At Large: 30
+  Representative to the 119th United States Congress - District 2: 27
+  State Board of Education Member - Congressional District 2: 27
+  State Senator - District 14: 21
+  State Representative - District 53: 12
+  City of Loveland Ballot Issue 2E: 12
+  City of Loveland Ballot Issue 2F: 12
+  City of Loveland Ballot Issue 2G: 12
+  City of Loveland Ballot Question 2H: 12
+  City of Loveland Ballot Question 2I: 12
+  City of Loveland Ballot Question 2J: 12
+  Thompson School District R2-J Ballot Issue 5A: 12
+  Thompson School District R2-J Ballot Issue 5B: 12
+  State Representative - District 52: 9
+  Town of Wellington Ballot Question 2K: 6
+  State Representative - District 65: 3
+  State Senator - District 23: 3
+  State Representative - District 49: 3
+  Representative to the 119th United States Congress - District 4: 3
+  State Board of Education Member - Congressional District 4: 3
+  State Representative - District 51: 3
+
+LasAnimas: 3765 entries
+  Amendment 79 (CONSTITUTIONAL): 120
+  Amendment 80 (CONSTITUTIONAL): 120
+  Amendment G (CONSTITUTIONAL): 120
+  Amendment H (CONSTITUTIONAL): 120
+  Amendment I (CONSTITUTIONAL): 120
+  Amendment J (CONSTITUTIONAL): 120
+  Amendment K (CONSTITUTIONAL): 120
+  Colorado Court of Appeals Judge - Dunn: 120
+  Colorado Court of Appeals Judge - Jones: 120
+  Colorado Court of Appeals Judge - Kuhn: 120
+  Colorado Court of Appeals Judge - Roman: 120
+  Colorado Court of Appeals Judge - Schutz: 120
+  Colorado Supreme Court Justice - Berkenkotter: 120
+  Colorado Supreme Court Justice - Boatright: 120
+  Colorado Supreme Court Justice - Marquez: 120
+  District Attorney - 3rd Judicial District: 120
+  Las Animas County Commissioner District 1: 120
+  Las Animas County Commissioner District 2: 120
+  Presidential Electors: 120
+  Proposition 127 (STATUTORY): 120
+  Proposition 128 (STATUTORY): 120
+  Proposition 129 (STATUTORY): 120
+  Proposition 130 (STATUTORY): 120
+  Proposition 131 (STATUTORY): 120
+  Proposition JJ (STATUTORY): 120
+  Proposition KK (STATUTORY): 120
+  Regent of the University of Colorado - At Large: 120
+  Regent of the University of Colorado - Congressional District 3: 120
+  Representative to the 119th United States Congress - District 3: 120
+  State Board of Education Member - Congressional District 3: 120
+  State Representative - District 47: 120
+  CITY OF TRINIDAD BALLOT ISSUE 2A: 45
+
+Mesa: 432 entries
+  Amendment 79 (CONSTITUTIONAL): 12
+  Amendment 80 (CONSTITUTIONAL): 12
+  Amendment G (CONSTITUTIONAL): 12
+  Amendment H (CONSTITUTIONAL): 12
+  Amendment I (CONSTITUTIONAL): 12
+  Amendment J (CONSTITUTIONAL): 12
+  Amendment K (CONSTITUTIONAL): 12
+  Colorado Court of Appeals Judge - Dunn: 12
+  Colorado Court of Appeals Judge - Jones: 12
+  Colorado Court of Appeals Judge - Kuhn: 12
+  Colorado Court of Appeals Judge - Roman: 12
+  Colorado Court of Appeals Judge - Schutz: 12
+  Colorado Supreme Court Justice - Berkenkotter: 12
+  Colorado Supreme Court Justice - Boatright: 12
+  Colorado Supreme Court Justice - Marquez: 12
+  District Attorney - 21st Judicial District: 12
+  Mesa County Ballot Issue 1A: 12
+  Mesa County Ballot Issue 1B: 12
+  Mesa County Commissioner - District 1: 12
+  Mesa County Commissioner - District 3: 12
+  Mesa County Court Judge - Grattan III: 12
+  Mesa County Valley School District 51 Ballot Issue 4A: 12
+  Mesa County Valley School District 51 Ballot Issue 4B: 12
+  Presidential Electors: 12
+  Proposition 127 (STATUTORY): 12
+  Proposition 128 (STATUTORY): 12
+  Proposition 129 (STATUTORY): 12
+  Proposition 130 (STATUTORY): 12
+  Proposition 131 (STATUTORY): 12
+  Proposition JJ (STATUTORY): 12
+  Proposition KK (STATUTORY): 12
+  Regent of the University of Colorado - At Large: 12
+  Regent of the University of Colorado - Congressional District 3: 12
+  Representative to the 119th United States Congress - District 3: 12
+  State Board of Education Member - Congressional District 3: 12
+  State Representative - District 54: 12
+
+Montezuma: 108 entries
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  Cortez Fire Protection District Ballot Issue 6-A: 3
+  District Attorney - 22nd Judicial District: 3
+  District Court Judge - 22nd Judicial District - Plewe: 3
+  Montezuma Cortez RE-1 Ballot Issue 4-B: 3
+  Montezuma County Ballot Issue 1-A: 3
+  Montezuma County Commissioner District 2: 3
+  Montezuma County Commissioner District 3: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition 129 (STATUTORY): 3
+  Proposition 130 (STATUTORY): 3
+  Proposition 131 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Regent of the University of Colorado - Congressional District 3: 3
+  Representative to the 119th United States Congress - District 3: 3
+  State Board of Education Member - Congressional District 3: 3
+  State Representative - District 59: 3
+  State Senator - District 6: 3
+
+Montrose: 111 entries
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  District Attorney - 7th Judicial District: 3
+  District Court Judge - 7th Judicial District - Schultz: 3
+  District Court Judge - 7th Judicial District - Yoder: 3
+  Montrose County Commissioner - District 1: 3
+  Montrose County Commissioner - District 3: 3
+  Montrose County Court - Beckenhauer: 3
+  Montrose County Court - Harvell: 3
+  Montrose School District RE-1J Ballot Issue 5A: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition 129 (STATUTORY): 3
+  Proposition 130 (STATUTORY): 3
+  Proposition 131 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Regent of the University of Colorado - Congressional District 3: 3
+  Representative to the 119th United States Congress - District 3: 3
+  State Board of Education Member - Congressional District 3: 3
+  State Representative - District 58: 3
+  State Senator - District 5: 3
+
+Morgan: 102 entries
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  City of Fort Morgan Ballot Question 2A: 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  District Attorney - 13th Judicial District: 3
+  District Court Judge - 13th Judicial District - Haenlein: 3
+  District Court Judge - 13th Judicial District - James: 3
+  District Court Judge - 13th Judicial District - McGuire: 3
+  Morgan County Commissioner District 1: 3
+  Morgan County Commissioner District 3: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition 129 (STATUTORY): 3
+  Proposition 130 (STATUTORY): 3
+  Proposition 131 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Representative to the 119th United States Congress - District 4: 3
+  State Board of Education Member - Congressional District 4: 3
+  State Representative - District 63: 3
+
+Otero: 99 entries
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  District Attorney - 16th Judicial District: 3
+  District Court Judge - 16th Judicial District - Vigil: 3
+  Otero County Ballot Question 1A: 3
+  Otero County Commissioner District 1: 3
+  Otero County Commissioner District 3: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition 129 (STATUTORY): 3
+  Proposition 130 (STATUTORY): 3
+  Proposition 131 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Regent of the University of Colorado - Congressional District 3: 3
+  Representative to the 119th United States Congress - District 3: 3
+  State Board of Education Member - Congressional District 3: 3
+  State Representative - District 47: 3
+
+Park: 3 entries
+  Hartsel Fire Protection District Ballot Issue 6A - Mill Levy Increase: 3
+
+Pueblo: 435 entries
+  Amendment 79 (CONSTITUTIONAL): 12
+  Amendment 80 (CONSTITUTIONAL): 12
+  Amendment G (CONSTITUTIONAL): 12
+  Amendment H (CONSTITUTIONAL): 12
+  Amendment I (CONSTITUTIONAL): 12
+  Amendment J (CONSTITUTIONAL): 12
+  Amendment K (CONSTITUTIONAL): 12
+  Colorado Court of Appeals Judge - Dunn: 12
+  Colorado Court of Appeals Judge - Jones: 12
+  Colorado Court of Appeals Judge - Kuhn: 12
+  Colorado Court of Appeals Judge - Roman: 12
+  Colorado Court of Appeals Judge - Schutz: 12
+  Colorado Supreme Court Justice - Berkenkotter: 12
+  Colorado Supreme Court Justice - Boatright: 12
+  Colorado Supreme Court Justice - Marquez: 12
+  District Attorney - 10th Judicial District: 12
+  District Court Judge - 10th Judicial District - O'Shea: 12
+  Presidential Electors: 12
+  Proposition 127 (STATUTORY): 12
+  Proposition 128 (STATUTORY): 12
+  Proposition 129 (STATUTORY): 12
+  Proposition 130 (STATUTORY): 12
+  Proposition 131 (STATUTORY): 12
+  Proposition JJ (STATUTORY): 12
+  Proposition KK (STATUTORY): 12
+  Pueblo County Commissioner - District 1: 12
+  Pueblo County Commissioner - District 2: 12
+  Pueblo County Court - Silva: 12
+  Pueblo County Court - Vellar: 12
+  Regent of the University of Colorado - At Large: 12
+  Regent of the University of Colorado - Congressional District 3: 12
+  Representative to the 119th United States Congress - District 3: 12
+  State Board of Education Member - Congressional District 3: 12
+  City of Pueblo Ballot Question 2A - Charter Amendment - Municipal Court Maximum Fines: 6
+  City of Pueblo Ballot Question 2B - Charter Amendment - Modernize Terms & Technology: 6
+  City of Pueblo Ballot Question 2C - Charter Amendment - Greater Election Coordination: 6
+  City of Pueblo Ballot Question 2D - Charter Amendment - Municipal Election Provisions: 6
+  State Representative - District 46: 6
+  Pueblo County Rural 70 School District Ballot Issue 4A: 3
+  State Representative - District 47: 3
+  State Representative - District 62: 3
+
+RioBlanco: 5622 entries
+  Amendment 79 (CONSTITUTIONAL): 174
+  Amendment 80 (CONSTITUTIONAL) - Rio Blanco: 174
+  Amendment G (CONSTITUTIONAL): 174
+  Amendment H (CONSTITUTIONAL): 174
+  Amendment I (CONSTITUTIONAL): 174
+  Amendment J (CONSTITUTIONAL): 174
+  Amendment K (CONSTITUTIONAL): 174
+  Colorado Court of Appeals Judge - Dunn: 174
+  Colorado Court of Appeals Judge - Jones: 174
+  Colorado Court of Appeals Judge - Kuhn: 174
+  Colorado Court of Appeals Judge - Roman: 174
+  Colorado Court of Appeals Judge - Schutz: 174
+  Colorado Supreme Court Justice - Berkenkotter: 174
+  Colorado Supreme Court Justice - Boatright: 174
+  Colorado Supreme Court Justice - Marquez: 174
+  District Attorney - 9th Judicial District: 174
+  District Court Judge - 9th Judicial District - Norrdin: 174
+  Presidential Electors: 174
+  Proposition 127 (STATUTORY): 174
+  Proposition 128 (STATUTORY): 174
+  Proposition 129 (STATUTORY): 174
+  Proposition 130 (STATUTORY): 174
+  Proposition 131 (STATUTORY): 174
+  Proposition JJ (STATUTORY): 174
+  Proposition KK (STATUTORY): 174
+  Regent of the University of Colorado - At Large: 174
+  Regent of the University of Colorado - Congressional District 3: 174
+  Representative to the 119th United States Congress - District 3: 174
+  Rio Blanco County Commissioner District 2: 174
+  Rio Blanco County Commissioner District 3: 174
+  State Board of Education Member - Congressional District 3: 174
+  State Representative - District 26: 174
+  Rangely School District RE-4 Ballot Issue 4A: 54
+
+RioGrande: 3570 entries
+  Amendment 79 (CONSTITUTIONAL): 105
+  Amendment 80 (CONSTITUTIONAL): 105
+  Amendment G (CONSTITUTIONAL): 105
+  Amendment H (CONSTITUTIONAL): 105
+  Amendment I (CONSTITUTIONAL): 105
+  Amendment J (CONSTITUTIONAL): 105
+  Amendment K (CONSTITUTIONAL): 105
+  Colorado Court of Appeals Judge - Dunn: 105
+  Colorado Court of Appeals Judge - Jones: 105
+  Colorado Court of Appeals Judge - Kuhn: 105
+  Colorado Court of Appeals Judge - Roman: 105
+  Colorado Court of Appeals Judge - Schutz: 105
+  Colorado Supreme Court Justice - Berkenkotter: 105
+  Colorado Supreme Court Justice - Boatright: 105
+  Colorado Supreme Court Justice - Marquez: 105
+  District Attorney - 12th Judicial District: 105
+  District Court Judge - 12th Judicial District - Cortez: 105
+  Presidential Electors: 105
+  Proposition 127 (STATUTORY): 105
+  Proposition 128 (STATUTORY): 105
+  Proposition 129 (STATUTORY): 105
+  Proposition 130 (STATUTORY): 105
+  Proposition 131 (STATUTORY): 105
+  Proposition JJ (STATUTORY): 105
+  Proposition KK (STATUTORY): 105
+  Regent of the University of Colorado - At Large: 105
+  Regent of the University of Colorado - Congressional District 3: 105
+  Representative to the 119th United States Congress - District 3: 105
+  Rio Grande County Commissioner District 1: 105
+  Rio Grande County Commissioner District 3: 105
+  Rio Grande County Court - Stenger: 105
+  State Board of Education Member - Congressional District 3: 105
+  State Representative - District 62: 105
+  State Senator - District 6: 105
+
+Saguache: 11832 entries
+  Amendment 79 (CONSTITUTIONAL): 348
+  Amendment 80 (CONSTITUTIONAL): 348
+  Amendment G (CONSTITUTIONAL): 348
+  Amendment H (CONSTITUTIONAL): 348
+  Amendment I (CONSTITUTIONAL): 348
+  Amendment J (CONSTITUTIONAL): 348
+  Amendment K (CONSTITUTIONAL): 348
+  Colorado Court of Appeals Judge - Dunn: 348
+  Colorado Court of Appeals Judge - Jones: 348
+  Colorado Court of Appeals Judge - Kuhn: 348
+  Colorado Court of Appeals Judge - Roman: 348
+  Colorado Court of Appeals Judge - Schutz: 348
+  Colorado Supreme Court Justice - Berkenkotter: 348
+  Colorado Supreme Court Justice - Boatright: 348
+  Colorado Supreme Court Justice - Marquez: 348
+  District Attorney - 12th Judicial District: 348
+  District Court Judge - 12th Judicial District - Cortez: 348
+  Presidential Electors: 348
+  Proposition 127 (STATUTORY): 348
+  Proposition 128 (STATUTORY): 348
+  Proposition 129 (STATUTORY): 348
+  Proposition 130 (STATUTORY): 348
+  Proposition 131 (STATUTORY): 348
+  Proposition JJ (STATUTORY): 348
+  Proposition KK (STATUTORY): 348
+  Regent of the University of Colorado - At Large: 348
+  Regent of the University of Colorado - Congressional District 3: 348
+  Representative to the 119th United States Congress - District 3: 348
+  Saguache County Commissioner District 1: 348
+  Saguache County Commissioner District 2: 348
+  Saguache County Court - Schuenemann: 348
+  State Board of Education Member - Congressional District 3: 348
+  State Representative - District 62: 348
+  State Senator - District 6: 348
+
+SanMiguel: 4449 entries
+  Amendment 79 (CONSTITUTIONAL): 117
+  Amendment 80 (CONSTITUTIONAL): 117
+  Amendment G (CONSTITUTIONAL): 117
+  Amendment H (CONSTITUTIONAL): 117
+  Amendment I (CONSTITUTIONAL): 117
+  Amendment J (CONSTITUTIONAL): 117
+  Amendment K (CONSTITUTIONAL): 117
+  Colorado Court of Appeals Judge - Dunn: 117
+  Colorado Court of Appeals Judge - Jones: 117
+  Colorado Court of Appeals Judge - Kuhn: 117
+  Colorado Court of Appeals Judge - Roman: 117
+  Colorado Court of Appeals Judge - Schutz: 117
+  Colorado Supreme Court Justice - Berkenkotter: 117
+  Colorado Supreme Court Justice - Boatright: 117
+  Colorado Supreme Court Justice - Marquez: 117
+  District Attorney - 7th Judicial District: 117
+  District Court Judge - 7th Judicial District - Schultz: 117
+  District Court Judge - 7th Judicial District - Yoder: 117
+  Presidential Electors: 117
+  Proposition 127 (STATUTORY): 117
+  Proposition 128 (STATUTORY): 117
+  Proposition 129 (STATUTORY): 117
+  Proposition 130 (STATUTORY): 117
+  Proposition 131 (STATUTORY): 117
+  Proposition JJ (STATUTORY): 117
+  Proposition KK (STATUTORY): 117
+  Regent of the University of Colorado - At Large: 117
+  Regent of the University of Colorado - Congressional District 3: 117
+  Representative to the 119th United States Congress - District 3: 117
+  San Miguel County Ballot Question 1A: 117
+  San Miguel County Ballot Question 1B: 117
+  San Miguel County Clerk and Recorder: 117
+  San Miguel County Commissioner - District 1: 117
+  San Miguel County Commissioner - District 3: 117
+  State Board of Education Member - Congressional District 3: 117
+  State Representative - District 58: 117
+  State Senator - District 6: 117
+  San Miguel Authority for Regional Transportation (SMART) Ballot Issue 3A: 108
+  Norwood Fire Protection District Ballot Issue 7A: 6
+  Norwood School District R-2J Issue 5B: 6
+
+Summit: 204 entries
+  Amendment 79 (CONSTITUTIONAL): 6
+  Amendment 80 (CONSTITUTIONAL): 6
+  Amendment G (CONSTITUTIONAL): 6
+  Amendment H (CONSTITUTIONAL): 6
+  Amendment I (CONSTITUTIONAL): 6
+  Amendment J (CONSTITUTIONAL): 6
+  Amendment K (CONSTITUTIONAL): 6
+  Colorado Court of Appeals Judge - Dunn: 6
+  Colorado Court of Appeals Judge - Jones: 6
+  Colorado Court of Appeals Judge - Kuhn: 6
+  Colorado Court of Appeals Judge - Roman: 6
+  Colorado Court of Appeals Judge - Schutz: 6
+  Colorado Supreme Court Justice - Berkenkotter: 6
+  Colorado Supreme Court Justice - Boatright: 6
+  Colorado Supreme Court Justice - Marquez: 6
+  District Attorney - 5th Judicial District: 6
+  District Court Judge - 5th Judicial District - Olguin-Fresquez: 6
+  Presidential Electors: 6
+  Proposition 127 (STATUTORY): 6
+  Proposition 128 (STATUTORY): 6
+  Proposition 129 (STATUTORY): 6
+  Proposition 130 (STATUTORY): 6
+  Proposition 131 (STATUTORY): 6
+  Proposition JJ (STATUTORY): 6
+  Proposition KK (STATUTORY): 6
+  Regent of the University of Colorado - At Large: 6
+  Representative to the 119th United States Congress - District 2: 6
+  State Board of Education Member - Congressional District 2: 6
+  State Representative - District 13: 6
+  Summit County Clerk and Recorder: 6
+  Summit County Commissioner - District 1: 6
+  Summit County Commissioner - District 2: 6
+  Summit County Commissioner - District 3: 6
+  Summit School District RE-1 Ballot Issue 4A: 6
+
+Teller: 369 entries
+  Amendment 79 (CONSTITUTIONAL): 9
+  Amendment 80 (CONSTITUTIONAL): 9
+  Amendment G (CONSTITUTIONAL): 9
+  Amendment H (CONSTITUTIONAL): 9
+  Amendment I (CONSTITUTIONAL): 9
+  Amendment J (CONSTITUTIONAL): 9
+  Amendment K (CONSTITUTIONAL): 9
+  Colorado Court of Appeals Judge - Dunn: 9
+  Colorado Court of Appeals Judge - Jones: 9
+  Colorado Court of Appeals Judge - Kuhn: 9
+  Colorado Court of Appeals Judge - Roman: 9
+  Colorado Court of Appeals Judge - Schutz: 9
+  Colorado Supreme Court Justice - Berkenkotter: 9
+  Colorado Supreme Court Justice - Boatright: 9
+  Colorado Supreme Court Justice - Marquez: 9
+  District Attorney - 4th Judicial District: 9
+  District Court Judge - 4th Judicial District - Bentley: 9
+  District Court Judge - 4th Judicial District - Billings-Vela: 9
+  District Court Judge - 4th Judicial District - Brady: 9
+  District Court Judge - 4th Judicial District - Evig: 9
+  District Court Judge - 4th Judicial District - Findorff: 9
+  District Court Judge - 4th Judicial District - May: 9
+  District Court Judge - 4th Judicial District - Moller: 9
+  District Court Judge - 4th Judicial District - Shakes: 9
+  Presidential Electors: 9
+  Proposition 127 (STATUTORY): 9
+  Proposition 128 (STATUTORY): 9
+  Proposition 129 (STATUTORY): 9
+  Proposition 130 (STATUTORY): 9
+  Proposition 131 (STATUTORY): 9
+  Proposition JJ (STATUTORY): 9
+  Proposition KK (STATUTORY): 9
+  Regent of the University of Colorado - At Large: 9
+  Representative to the 119th United States Congress - District 7: 9
+  State Representative - District 60: 9
+  Teller County Ballot Question 1A: 9
+  Teller County Ballot Question 1B: 9
+  Teller County Commissioner District 1: 9
+  Teller County Commissioner District 3: 9
+  Teller County Treasurer: 9
+  Ute Pass Regional Health Service District Ballot Issue 7A1: 9
+
+Weld: 1623 entries
+  Amendment 79 (CONSTITUTIONAL): 45
+  Amendment 80 (CONSTITUTIONAL): 45
+  Amendment G (CONSTITUTIONAL): 45
+  Amendment H (CONSTITUTIONAL): 45
+  Amendment I (CONSTITUTIONAL): 45
+  Amendment J (CONSTITUTIONAL): 45
+  Amendment K (CONSTITUTIONAL): 45
+  Colorado Court of Appeals Judge - Dunn: 45
+  Colorado Court of Appeals Judge - Jones: 45
+  Colorado Court of Appeals Judge - Kuhn: 45
+  Colorado Court of Appeals Judge - Roman: 45
+  Colorado Court of Appeals Judge - Schutz: 45
+  Colorado Supreme Court Justice - Berkenkotter: 45
+  Colorado Supreme Court Justice - Boatright: 45
+  Colorado Supreme Court Justice - Marquez: 45
+  District Attorney - 19th Judicial District: 45
+  District Court Judge - 19th Judicial District - Crowther: 45
+  District Court Judge - 19th Judicial District - Esser: 45
+  District Court Judge - 19th Judicial District - Taylor: 45
+  Presidential Electors: 45
+  Proposition 127 (STATUTORY): 45
+  Proposition 128 (STATUTORY): 45
+  Proposition 129 (STATUTORY): 45
+  Proposition 130 (STATUTORY): 45
+  Proposition 131 (STATUTORY): 45
+  Proposition JJ (STATUTORY): 45
+  Proposition KK (STATUTORY): 45
+  Regent of the University of Colorado - At Large: 45
+  Weld County Commissioner - At-Large: 45
+  Representative to the 119th United States Congress - District 8: 33
+  State Board of Education Member - Congressional District 8: 33
+  Weld County Commissioner - District 3: 21
+  State Representative - District 19: 15
+  State Senator - District 23: 15
+  St. Vrain Valley School District RE-1J Ballot Issue 5C: 15
+  State Senator - District 13: 12
+  Carbon Valley Parks and Recreation District Ballot Issue 6C: 9
+  State Representative - District 64: 9
+  State Representative - District 50: 9
+  Representative to the 119th United States Congress - District 4: 6
+  State Board of Education Member - Congressional District 4: 6
+  Weld County Commissioner - District 1: 6
+  Weld County Council - District 1: 6
+  State Representative - District 48: 6
+  Weld County School District RE-8 Ballot Issue 5G Override: 6
+  Weld County School District RE-8 Ballot Issue 5H Bonds: 6
+  Regional Transportation District Ballot Issue 7A: 6
+  Regional Transportation District Director - District I: 6
+  Representative to the 119th United States Congress - District 2: 6
+  State Board of Education Member - Congressional District 2: 6
+  State Senator - District 17: 6
+  Town of Erie Ballot Issue 3C: 6
+  Town of Erie - Council Member District 3: 6
+  Town of Erie Mayor: 6
+  City of Greeley Ballot Issue 2L: 6
+  City of Greeley Ballot Issue 2M: 6
+  City of Greeley Ballot Question 2N: 6
+  City of Greeley Ballot Question 2O: 6
+  City of Evans Mayor: 6
+  State Representative - District 65: 3
+  Town of Severance Ballot Issue 2A: 3
+  City of Fort Lupton Ballot Issue 2B: 3
+  City of Fort Lupton Ballot Issue 2D: 3
+  City of Fort Lupton Ballot Question 2C: 3
+  City of Fort Lupton Ballot Question 2E: 3
+  City of Evans Ward 2 Council Member: 3
+  State Representative - District 63: 3
+  City of Evans Ward 3 Council Member: 3
+
+Yuma: 102 entries
+  Amendment 79 (CONSTITUTIONAL): 3
+  Amendment 80 (CONSTITUTIONAL): 3
+  Amendment G (CONSTITUTIONAL): 3
+  Amendment H (CONSTITUTIONAL): 3
+  Amendment I (CONSTITUTIONAL): 3
+  Amendment J (CONSTITUTIONAL): 3
+  Amendment K (CONSTITUTIONAL): 3
+  Colorado Court of Appeals Judge - Dunn: 3
+  Colorado Court of Appeals Judge - Jones: 3
+  Colorado Court of Appeals Judge - Kuhn: 3
+  Colorado Court of Appeals Judge - Roman: 3
+  Colorado Court of Appeals Judge - Schutz: 3
+  Colorado Supreme Court Justice - Berkenkotter: 3
+  Colorado Supreme Court Justice - Boatright: 3
+  Colorado Supreme Court Justice - Marquez: 3
+  District Attorney - 13th Judicial District: 3
+  District Court Judge - 13th Judicial District - Haenlein: 3
+  District Court Judge - 13th Judicial District - James: 3
+  District Court Judge - 13th Judicial District - McGuire: 3
+  Presidential Electors: 3
+  Proposition 127 (STATUTORY): 3
+  Proposition 128 (STATUTORY): 3
+  Proposition 129 (STATUTORY): 3
+  Proposition 130 (STATUTORY): 3
+  Proposition 131 (STATUTORY): 3
+  Proposition JJ (STATUTORY): 3
+  Proposition KK (STATUTORY): 3
+  Regent of the University of Colorado - At Large: 3
+  Representative to the 119th United States Congress - District 4: 3
+  State Board of Education Member - Congressional District 4: 3
+  State Representative - District 63: 3
+  Yuma County Commissioner - District 2: 3
+  Yuma County Commissioner - District 3: 3
+  Yuma County Court - Jones: 3
+
