@@ -1,6 +1,6 @@
 # Analysis FAQ for Audit Center Data
 
-This FAQ is a practical guide for reading the archived Colorado auditcenter data without repeating earlier misunderstandings. It consolidates the more reliable findings from the notes in this repository and points out where older notes conflict with later code-backed conclusions.
+This FAQ is a practical guide for reading the archived Colorado audit center data without repeating earlier misunderstandings. It consolidates the more reliable findings from the notes in this repository and points out where older notes conflict with later code-backed conclusions.
 
 ## 1) What is the most important thing to know before analyzing anything?
 
@@ -8,7 +8,7 @@ The public CSV exports are useful, but they are not a perfect representation of 
 
 Two upstream export problems recur throughout the notes:
 
-- `contestSelection.csv` is cumulative across rounds, so later exports can include ballots drawn in earlier and later rounds together.
+- `contestSelection.csv` is cumulative across rounds, so later exports can include ballots drawn in all previous rounds.
 - `contestComparison.csv` can include comparison rows for contests that were never directly drawn, because opportunistic examination and SQL joins blur the boundary between “drawn for this contest” and “compared while this ballot card was already in hand.”
 
 See `docs/SELECTION_FLAWS.md`, `docs/SELECTION_FLAWS_SURVEY.md`, and `docs/copilot-sun_apr_26_2026_auditcenter_inconsistency_in_colorado_rla.md`.
