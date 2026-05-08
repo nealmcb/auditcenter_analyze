@@ -179,6 +179,7 @@ Key reference docs in `docs/`:
 |------|----------------|
 | [`SELECTION_FLAWS.md`](docs/SELECTION_FLAWS.md) | Original inconsistency discovery (Pueblo 2024) |
 | [`SELECTION_FLAWS_SURVEY.md`](docs/SELECTION_FLAWS_SURVEY.md) | Systemic scan across all 2019–2025 audits |
+| [`ANALYSIS_FAQ.md`](docs/ANALYSIS_FAQ.md) | Practical caveats for interpreting exports and planning the next analysis pass |
 | [`HANDOFF_DOCUMENT.md`](docs/HANDOFF_DOCUMENT.md) | Project history and current status |
 | [`VERIFICATION_TOOLS_README.md`](docs/VERIFICATION_TOOLS_README.md) | SHA-256 random selection verification |
 | [`DATASETTE_QUICKSTART.md`](docs/DATASETTE_QUICKSTART.md) | Exploring data via the web interface |

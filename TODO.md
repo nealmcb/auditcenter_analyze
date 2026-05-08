@@ -39,6 +39,11 @@
 
 ## Code Quality & Architecture
 
+- [x] **Create a practical FAQ for interpreting archive caveats** ✅
+  - Added `docs/ANALYSIS_FAQ.md`
+  - Consolidates reliable findings from notes and code
+  - Highlights ballot-card scope, export caveats, normalization, and next-pass guidance
+
 - [x] **Set up git pre-commit hooks to run tests, formatting, and lint checks** ✅
   - Hook stored in `.hooks/pre-commit` (version controlled)
   - Symlinked via `make setup-hooks`
@@ -163,4 +168,3 @@ Located in `data/2024/general/`:
 - Main CSV import plan: docs/HANDOFF_DOCUMENT.md "Import All CSVs to Database"
 - Data structure details: docs/cursor_chat/cursor_web_app_design_for_risk_analysis.md
 - Contest sampling factor: docs/HANDOFF_DOCUMENT.md "Contest Sampling Factor Discovery"
-
