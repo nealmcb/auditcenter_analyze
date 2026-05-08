@@ -1,5 +1,12 @@
 # ballot_card_count vs contest_ballot_card_count Explained
 
+> **Historical note:** This document contains an earlier interpretation that random
+> selection used `contest_ballot_card_count`. That part was later superseded by
+> `docs/DOMAIN_SIZE_CONFIRMED.md`, which ties the selection domain to manifest
+> totals from the upstream source code. The field definitions and ballot-card
+> caveats below are still useful, but treat `DOMAIN_SIZE_CONFIRMED.md` as the
+> authoritative statement on domain size.
+
 ## The Two Fields
 
 Every contest in `contest.csv` has two important fields:
@@ -191,4 +198,3 @@ This means:
 
 **Date:** October 23, 2025  
 **Status:** Explained but verification approach needs revision
-

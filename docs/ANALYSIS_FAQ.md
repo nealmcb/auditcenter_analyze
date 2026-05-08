@@ -51,7 +51,7 @@ The later, code-backed conclusion in this repo is:
 - random selection domain is driven by the manifest total for the participating counties,
 - `contest_ballot_card_count` is primarily for risk/sample calculations and contest prevalence.
 
-When older notes disagree, trust `docs/DOMAIN_SIZE_CONFIRMED.md` over the earlier interpretation in `docs/BALLOT_CARD_COUNT_EXPLAINED.md`.
+When older notes disagree, trust `docs/DOMAIN_SIZE_CONFIRMED.md` over the earlier interpretation in `docs/BALLOT_CARD_COUNT_EXPLAINED.md`. That older note is still useful for field definitions and ballot-card framing, but not for the final statement about random-selection domain.
 
 ## 5) Should `contestSelection.csv` and `contestComparison.csv` match 1:1?
 
@@ -192,10 +192,10 @@ Good starting points:
 - `docs/COUNTY_KEY_EXPLANATION.md`
 - `docs/AUDIT_TERMINOLOGY.md`
 - `docs/UNDERVOTE_QUERYING_CHALLENGES.md`
-- `src/auditcenter_analyze/normalize.py`
-- `src/auditcenter_analyze/csv_loaders.py`
-- `src/auditcenter_analyze/import_csvs.py`
-- `src/auditcenter_analyze/db_schema.py`
+- `src/auditcenter_analyze/normalize.py` for the current normalization rules the docs refer to
+- `src/auditcenter_analyze/csv_loaders.py` for the manifest/header handling the docs refer to
+- `src/auditcenter_analyze/import_csvs.py` for the current Typer-based import workflow
+- `src/auditcenter_analyze/db_schema.py` for the current normalized SQLite structure
 
 Be especially careful with older exploratory notes when a later file explicitly says the earlier interpretation was wrong.
 
