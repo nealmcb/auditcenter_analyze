@@ -6,7 +6,7 @@ This FAQ is a practical guide for reading the archived Colorado audit center dat
 
 The public CSV exports are useful, but they are not a perfect representation of what the live audit system did.
 
-Two upstream export problems recur throughout the notes:
+Two upstream export problems occur throughout the notes:
 
 - `contestSelection.csv` is cumulative across rounds, so later exports can include ballots drawn in all previous rounds.
 - `contestComparison.csv` can include comparison rows for contests that were never directly drawn, because opportunistic examination and SQL joins blur the boundary between “drawn for this contest” and “compared while this ballot card was already in hand.”
@@ -162,7 +162,7 @@ An empty string can mean different things depending on context, including:
 - contest not present on that card,
 - one side recorded nothing while the other side recorded selections.
 
-This is one reason the current notes emphasize better normalization of selections and caution around discrepancy counting. See `docs/UNDERVOTE_QUERYING_CHALLENGES.md`.
+This is one reason the current notes emphasize better normalization of selections and caution when counting discrepancies. See `docs/UNDERVOTE_QUERYING_CHALLENGES.md`.
 
 ## 15) Are all discrepancies interchangeable?
 
