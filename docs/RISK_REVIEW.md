@@ -7,6 +7,11 @@ the Python implementation (`src/auditcenter_analyze/calculate_opportunistic_risk
 initial analysis.  Both use the Kaplan-Markov comparison audit framework with γ = 1.03905 and
 a 3% risk limit.
 
+This document also synthesises prior notes from `docs/OPPORTUNISTIC_RISK_FINAL.md`,
+`docs/BALLOT_CARD_COUNT_EXPLAINED.md`, `docs/VOTE_BASED_ESTIMATION_CASE_STUDY.md`, and the
+October 2025 cursor chat transcripts, which established many of the correct algorithmic
+conclusions that the code does not yet fully implement.
+
 ---
 
 ## 1. What John's CSV Contains
@@ -52,8 +57,11 @@ The algorithm:
 3. Compute per-county sampling rate = `observed_with_contest / manifest_count`.
 4. Find the minimum county sampling rate and downsample all other counties to that rate.
 5. `n` = total contest-specific ballots in the downsampled uniform sample.
-6. `diluted_margin = min_margin / contest_ballot_card_count` ← **bug, see §3**.
+6. `diluted_margin = min_margin / contest_ballot_card_count` ← **bug, see §3.1**.
 7. Risk = `rlacalc.KM_P_value(n, gamma, diluted_margin)`.
+
+Steps 1–5 were established as correct in `OPPORTUNISTIC_RISK_FINAL.md` (October 24, 2025).
+The bug entered in step 6, where the wrong field from `contest.csv` was used.
 
 ---
 
@@ -73,9 +81,16 @@ denominator for the diluted margin under uniform sampling is `ballot_card_count`
 `contest.csv`, John's `npop`) — the total ballot cards in the jurisdiction from which the
 uniform sample is drawn.
 
-For a county-wide contest (nc = npop) the two are equal and the bug is invisible.  For a
-sub-county district race, nc can be roughly half of npop, making Python's diluted margin ~2×
-too large, which in turn makes the computed risk far too low.
+This was established conclusively in the October 2025 cursor chat and documented in
+`BALLOT_CARD_COUNT_EXPLAINED.md`: the CORLA software draws ballots from the **full county
+manifest** regardless of which contest it is targeting.  A ballot selected for Adams County
+Commissioner – District 5 is drawn from all 468,858 Adams cards, not just the 236,872 that
+happen to be in District 5.  Therefore npop (the full manifest count) is the correct
+denominator everywhere.
+
+For a county-wide contest (nc = npop) the two fields are equal and the bug is invisible.  For
+a sub-county district race, nc can be roughly half of npop, making Python's diluted margin ~2×
+too large and the computed risk far too low.
 
 **Fix (one line in `calculate_opportunistic_risk.py` around line 364):**
 ```python
@@ -83,29 +98,91 @@ ballot_card_count = int(contest_data["ballot_card_count"])   # npop — total ju
 diluted_margin = min_margin / ballot_card_count
 ```
 
-### 3.2 Definition of n — different but partially equivalent
+#### Why the "doubly diluted" sampling rate makes this work without needing per-county nc
+
+A concern sometimes raised is that when a contest appears on different fractions of ballots in
+different counties (e.g., a district race covering 50% of one county and 80% of another), the
+minimum-rate algorithm might need to know those per-county fractions.  It does not, and here
+is why.
+
+Define:
+- `s_A` = true uniform sampling rate in county A (fraction of its cards drawn)
+- `p_A` = contest prevalence in county A = `nc_A / npop_A`
+- `observed_A` = contest ballots seen in county A ≈ `s_A × p_A × npop_A`
+
+The rate we can compute from the data is:
+```
+rate_A = observed_A / npop_A  ≈  s_A × p_A
+```
+
+This is a product of sampling intensity and contest prevalence — two unknowns collapsed into
+one observable.  We cannot disentangle them without CVR data.  But we do not need to, because
+after downsampling all counties to `min_rate`:
+
+```
+n_total = min_rate × npop            (sum across all counties at min_rate)
+         ≈ s_min × p_min × npop_min_county + s_min × p_other × npop_other + …
+         = s_min × (nc_A + nc_B + …)
+         = s_min × nc_total
+```
+
+So `n_total ≈ s_min × nc` — the expected contest ballots in a true uniform sample drawn at
+rate `s_min`.  This is exactly the right n for the KM formula.  Different contest prevalences
+across counties are automatically absorbed into the diluted rate and require no separate
+treatment.
+
+### 3.2 Definition of n — Kotlin formula confirmed by cross-checking results
 
 | Implementation | n used in KM formula |
 |---|---|
 | **Python** | Contest-specific ballots in the downsampled uniform sample |
-| **John's Kotlin** | `haveMvrs` = unique non-statewide county ballot IDs in `contestComparison.csv` (includes all ballots drawn for the county, not only those with this contest) |
+| **John's Kotlin** | `haveMvrs` = unique non-statewide county ballot IDs in `contestComparison.csv` (all ballots drawn for the county, not only those with this contest) |
+
+We can confirm exactly what the Kotlin formula does by predicting John's reported risks from
+his own inputs.  If the Kotlin uses the standard closed-form `KM(n=haveMvrs, dm=min_margin/npop)`,
+the predictions should match.  They do, across every case checked:
+
+| Contest | nJ | nPy | dm (npop) | KM(nJ, npop) | John reported | KM(nPy, nc) | Python reported | Correct% |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Adams Cmr District 1 (opp) | 214 | 119 | 2.79% | **5.5%** | 5.5% | 4.1% | 4.1% | 20.0% |
+| Adams Cmr District 5 (tgt) | 214 | 119 | 3.79% | **1.95%** | 1.9% | 1.3% | 1.3% | 11.2% |
+| Arapahoe Cmr District 1 (opp) | 52 | 19 | 3.26% | **43.9%** | 43.9% | 26.0% | 26.0% | 74.1% |
+| 17th Judicial District (opp) | 236 | 123 | 7.27% | **0.02%** | ~0% | 0.03% | 0.03% | 1.25% |
+| Amendment 80 (opp) | 706 | 372 | 0.88% | **5.0%** | 5.0% | — | 18.7%* | 20.5% |
+| Chaffee Cmr District 2 (tgt) | 89 | 89 | 8.34% | **2.6%** | 2.6% | 2.6% | 2.6% | 2.6% |
+
+\* Amendment 80 Python prediction differs because contest.csv has a different `contest_ballot_card_count` than John's nc; Chaffee has nc = npop so all three columns agree.
+
+**Conclusion:** The Kotlin uses the standard closed-form KM formula — `(1 − dm/(2γ))^n` — with
+`n = haveMvrs` (total non-statewide county ballot IDs) and `dm = min_margin / npop`.  It does
+**not** implement the "explicit factor of 1.0 per non-contest draw" variant.  It simply passes
+the larger n directly to the formula, which gives those non-contest ballots unearned credit and
+understates the risk.
 
 In the KM test martingale, ballots that do **not** contain the contest contribute a factor of
 exactly 1.0 — they carry no information about the contest and should not count toward n.
-Therefore the Python definition (contest-specific ballots only) is mathematically correct for
-`rlacalc.KM_P_value`.
+Therefore Python's definition (contest-specific ballots only) is mathematically correct for
+`rlacalc.KM_P_value`, and John's larger n gives a result that is optimistic by a factor of
+`(1 − dm/(2γ))^(nJ − nPy)` — the spurious contribution of the extra non-contest draws.
 
-John's `haveMvrs` counts total county non-statewide ballot cards, including those without the
-contest.  Passing that larger n to the KM formula gives those non-contest ballots credit they
-don't deserve, understating the risk somewhat.  (John may be using a different variant of the
-KM formula that handles the full-population-draw setup explicitly — worth confirming.)
-
-**Note on the 17 "mixed" Adams ballots:** `haveMvrs = 214` for Adams, not 231.  The 17
+**Note on John's `haveMvrs` count:** For Adams County, `haveMvrs = 214`, not 231.  The 17
 ballots excluded are those that appear in `contestComparison.csv` under **both**
-`STATE_WIDE_CONTEST` and county-level reasons.  Python counts 231 unique ballot IDs for Adams
-total, and 119 with District 1 specifically.
+`STATE_WIDE_CONTEST` and county-level reasons.  Python counts all 231 unique ballot IDs for
+Adams total, and 119 with District 1 specifically.  John's choice to exclude statewide-mixed
+ballots is defensible (those ballots were selected for statewide reasons, not county-uniform
+reasons) but should be agreed upon explicitly.
 
-### 3.3 Contest coverage
+### 3.3 Multi-sheet ballots — already handled
+
+Some Colorado counties issue multiple ballot cards (sheets) per voter.  The concern is that
+such counties see "a higher proportion of selections than by population."  This is real but
+already handled: `ballot_card_count` in the ballot manifests is the count of **physical
+ballot sheets**, not voters.  All denominators — manifest totals for sampling rates and npop
+for the diluted margin — are consistently in units of ballot cards.  A voter who receives two
+sheets counts as 2 in npop.  No correction is needed as long as everything stays in
+card units, which it does.
+
+### 3.4 Contest coverage
 
 | | Targeted | Opportunistic | Total |
 |---|---|---|---|
@@ -118,10 +195,42 @@ The ~116-contest gap is the difference between the canonical list and everything
 
 ---
 
-## 4. Numerical Impact
+## 4. Statewide Contests: Minimum County Rate vs Statewide Rate
 
-The two bugs partially cancel — Python uses a larger (wrong) diluted margin but a smaller
-(correct) n — but the diluted margin error dominates for district races.
+John uses the minimum county sampling rate for statewide contests and notes it "came out
+better" than the statewide-only rate.  This requires some unpacking.
+
+The minimum county rate is always ≤ the statewide average rate (minimum ≤ average), so it
+gives *fewer* effective samples and *higher* (more conservative) risk — not a more favorable
+outcome in the sense of more contests passing.  "Better" most likely means more defensible:
+using county-level sampling avoids the CVR-mapping problem that arises when trying to use
+statewide targeted samples directly (the CORLA statewide selection domain is nc, not npop,
+which requires knowing which specific cards in each county carry the contest).
+
+**The resolved answer:** No separate "statewide rate" needs to be combined with the minimum
+county rate.  The minimum-county-rate algorithm applied uniformly — using all examined ballots
+(statewide-targeted and county-targeted alike) to compute the per-county rate, then taking the
+minimum across all involved counties — is the correct and sufficient approach for every contest
+type.  It naturally incorporates the full examined sample without needing CVR mapping.  There
+is no combination to perform; there is one algorithm.
+
+Concretely, for a statewide contest spanning all 63 counties:
+1. For each county: `rate_county = examined_in_county / ballot_card_count_county` (all
+   examined ballots, regardless of why they were selected).
+2. `min_rate = min(rate_county)` across all 63 counties.
+3. `n = min_rate × npop_statewide`.
+4. `diluted_margin = min_margin / npop_statewide`.
+
+This is identical to the multi-county algorithm already implemented.  No special statewide
+code path is needed.
+
+---
+
+## 5. Numerical Impact
+
+The two errors partially cancel — Python uses a larger (wrong) diluted margin but a smaller
+(correct) n — but the diluted margin error dominates for district races and statewide contests
+where nc << npop.
 
 ### Example: Adams County Commissioner – District 1 (opportunistic)
 - County total (`ballot_card_count` / npop) = 468,858
@@ -155,12 +264,13 @@ The two bugs partially cancel — Python uses a larger (wrong) diluted margin bu
 ### Statewide contests (npop ≠ nc)
 For Amendment 80 (62 counties), npop = 4,763,790 and nc = 3,235,954.  John's
 `dilutedMargin` = 0.88%, Python's = 1.30%.  At n = 372 (statewide minimum-rate sample), the
-correct margin gives risk ≈ **5.0%** (just above limit); Python's inflated margin gives
-**1.9%** (falsely under limit).
+correct margin gives risk ≈ **20.5%** (well above limit); Python's inflated margin gives
+**18.7%** — both fail, but Python understates the severity.  John's n = 706 gives **5.0%**,
+which is much closer to the limit and likely overstates the sample's effectiveness.
 
 ---
 
-## 5. Python Baseline Output Summary
+## 6. Python Baseline Output Summary
 
 From `tests/baseline_output.txt` — run of `calculate_opportunistic_risk.py` with the current
 (buggy) diluted margin, zero errors assumed:
@@ -205,38 +315,51 @@ The full per-contest listing (867 lines) is in `tests/baseline_output.txt`.
 
 ---
 
-## 6. Open Questions
+## 7. Open Questions
 
-1. **Which n is correct for KM?**  Python uses contest-specific ballot count (mathematically
-   correct for `rlacalc.KM_P_value`).  John uses total county non-statewide ballots.  If
-   John's Kotlin implements a different KM variant that explicitly handles a full-population
-   draw (with non-contest ballots contributing factor 1 per draw), the results should converge
-   once the diluted margin denominator is aligned.  Can John share the Kotlin KM
-   implementation?
+1. **Kotlin KM formula — now confirmed (§3.2).**  Cross-checking John's reported risks against
+   `KM(haveMvrs, min_margin/npop)` reproduces his numbers exactly.  The Kotlin uses the
+   standard closed-form KM with `n = haveMvrs` (all county non-statewide ballot IDs), which
+   gives non-contest ballots unearned credit.  The correct n is contest-specific ballots only
+   (Python's approach).  The Kotlin should be updated to use `n = observed_contest_ballots`
+   after downsampling to minimum county rate.
 
-2. **Statewide contests: minimum-county-rate vs statewide rate.**  John uses the minimum county
-   sampling rate for statewide contests because it "came out better."  The two rates should
-   eventually be combined (e.g., take the minimum of the statewide rate and the minimum county
-   rate) to be fully conservative.  This is open for both implementations.
-
-3. **Contest list discrepancy (~116 contests).**  Python processes everything in
+2. **Contest list discrepancy (~116 contests).**  Python processes everything in
    `round3/contest.csv`; John uses the canonical list.  We should agree on the authoritative
    source and filter accordingly.
 
-4. **Non-zero errors.**  Both implementations currently assume zero discrepancies.  The Python
+3. **Non-zero errors.**  Both implementations currently assume zero discrepancies.  The Python
    code already reads discrepancy counts from `contest.csv` for targeted contests; extending
    this to opportunistic contests requires determining winner/loser per choice for each contest.
 
-5. **Statewide-selected ballot IDs in county samples.**  John excludes the 17 Adams ballots
+4. **Statewide-selected ballot IDs in county samples.**  John excludes the 17 Adams ballots
    that appear under both `STATE_WIDE_CONTEST` and county reasons from `haveMvrs`.  Python
-   counts all contest ballots regardless of selection reason.  We should decide the correct
-   treatment: those 17 ballots were physically audited and their contest entries are valid
-   comparisons.
+   counts all contest ballots regardless of selection reason.  Those 17 ballots were physically
+   audited and their contest entries are valid comparisons; the question is whether their
+   inclusion breaks the "uniform sample from county ballots" claim.
+
+5. **Zero-ballot counties.**  The current Python code inserts a fake "1 ballot" when a county
+   has the contest but zero examined contest ballots; `VOTE_BASED_ESTIMATION_CASE_STUDY.md`
+   shows that using vote totals from `tabulateCounty.csv` as a prevalence proxy is more
+   accurate and still conservative.  The fake-ballot approach is safe in practice because it
+   always downsamples to zero, but the vote-based rate gives a better estimate of the true
+   minimum county rate.
 
 ---
 
-## 7. Recommended Next Step
+## 8. Recommended Next Steps
 
-Fix the one-line diluted margin bug in Python, re-run, and compare the corrected output with
-John's CSV side-by-side.  After that fix, the remaining gap will be purely in how n is defined
-(§3.2 and open question 1 above).
+1. **Fix the one-line diluted margin bug** in `calculate_opportunistic_risk.py`:
+   use `ballot_card_count` (npop) instead of `contest_ballot_card_count` (nc).
+
+2. **Fix the Kotlin n** to use contest-specific ballots after downsampling rather than all
+   county non-statewide ballot IDs.  The formula `KM(haveMvrs, dm_npop)` is confirmed to be
+   what the Kotlin currently computes; `haveMvrs` should be replaced with the count of
+   contest-specific ballot comparisons at the minimum county rate.
+
+3. **Re-run both implementations after their respective fixes** and compare side-by-side.
+   After both fixes, results should agree closely (differences only from integer truncation
+   in downsampling and the statewide-mixed ballot exclusion question).
+
+4. **Agree on the contest list** — canonical list vs `contest.csv` — before further
+   cross-implementation comparison.
